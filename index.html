@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>CS171 - Lab 7</title>
+
+	<!-- Load Google Font -->
+	<link href='https://fonts.googleapis.com/css?family=Roboto:100,400,300,400italic,700' rel='stylesheet' type='text/css'>
+
+	<!-- CSS libraries -->
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/colorbrewer.css">
+
+	<!-- Custom CSS code -->
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+	<div class="container-fluid">
+        <!--<a download="data.json" id="download">Download</a>-->
+
+
+		<h1 align="center">Cuisine: World Map</h1>
+
+		<div class="row">
+			<div id="bar-area" class="col-md-3" align="center">
+				<div align="right" class="selectpicker">
+					<select  id="bar-selector" onchange="updatebar()">
+						<option value="UN_population">Condiment</option>
+						<option value="At_risk">Protein</option>
+					</select>
+				</div>
+			</div>
+
+			<div id="chart-area" class=" col-md-9" align="center"></div>
+		</div>
+
+		<h1 align="left">Force Diagram</h1>
+        <form>
+            <input type="radio" name="graph-type" value="recipe" checked onchange="forceplot.wrangleData()"> Recipes<br>
+            <input type="radio" name="graph-type" value="ingredient" onchange="forceplot.wrangleData()"> Ingredients<br>
+        </form>
+        <div id="force-layout"></div>
+
+	</div>
+
+
+
+
+	<h1>Popular ingredients per cuisine</h1>
+	<!-- Select box to choose the selection criteria -->
+	<form class="form-inline">
+		<div class="form-group">
+			<label for="rankingType">Cuisine</label>
+			<select class="form-control" id="ranking-type">
+				<option value="American">American</option>
+				<option value="Canada">Canada</option>
+				<option value="Caribbeans">Caribbeans</option>
+				<option value="China">China</option>
+				<option value="East_African">East_African</option>
+				<option value="Eastern_European">Eastern_European</option>
+				<option value="France">France</option>
+				<option value="Great_Britain">Great_Britain</option>
+				<option value="India">India</option>
+				<option value="Italy">Italy</option>
+				<option value="Japan">Japan</option>
+				<option value="Korean">Korean</option>
+				<option value="Mediterranean">Mediterranean</option>
+				<option value="Korean">Korean</option>
+				<option value="Mexican">Mexican</option>
+				<option value="Middle_East">Middle_East</option>
+				<option value="North_African">North_African</option>
+				<option value="Portuguese_Spanish">Portuguese_Spanish</option>
+				<option value="Mexican">Mexican</option>
+				<option value="Scandinavia">Scandinavia</option>
+				<option value="South_African">South_African</option>
+				<option value="South_American">South_American</option>
+				<option value="South_Asian">South_Asian</option>
+				<option value="Southeast_Asian">Southeast_Asian</option>
+				<option value="West_African">West_African</option>
+				<option value="Western_Europeean">Western_Europeean</option>
+
+			</select>
+
+			<!-- Activity IV -->
+			<!--<button type="button" class="btn btn-link" id="change-sorting"><i class="glyphicon glyphicon-sort"></i> Sort</button>-->
+		</div>
+	</form>
+	<div id="bar-chart"></div>
+
+	<!-- Load JS libraries -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/d3.min.js"></script>
+	<script src="js/underscore-min.js"></script>
+    <script src="js/d3-legend.min.js"></script>
+	<script src="js/colorbrewer.js"></script>
+    <script src="js/queue.v1.min.js"></script>
+	<script src="js/topojson.v1.min.js"></script>
+
+
+	<!-- Visualization objects -->
+	<script src="js/cuisine_map.js"></script>
+	<script src="js/main.js"></script>
+    <script src="js/forceDiagram.js"></script>
+	<script src="js/main-barchart.js"></script>
+	<!-- Load dataForceLayout, create visualizations -->
+
+
+
+
+</body>
+</html>
