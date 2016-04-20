@@ -1,9 +1,9 @@
 // SVG drawing area
 
-var margin = {top: 60, right: 40, bottom: 100, left: 60};
+var margin = {top: 60, right: 20, bottom: 100, left: 30};
 
-var width = 1000 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom;
+var width = 500 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
 
 var svg = d3.select("#bar-chart").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -158,7 +158,7 @@ queue()
             .append("text")
             .attr("y", -20)
             .attr("dy", ".71em")
-            .style("text-anchor", "middle")
+            .style("text-anchor", "left")
             .text("% of appearance in recipes");
 
         data_i = data_ing
@@ -169,6 +169,7 @@ queue()
 function updateVisualization(data_ing, data_percentages, selection) {
 
     //We set the domain of the scales
+
     varXdomain = data_ing.map(function(d) { return d[selection].replace("_", " ") });
 
     ing_colors = colors(varXdomain)
@@ -258,7 +259,7 @@ function colors(varXdomain) {
 function barchart2(selected_ingredient,this_color) {
 
     svg2 = d3.select("#bar-chart2").append("svg")
-        .attr("width", width + margin.left + margin.right)
+        .attr("width", width + margin.left + 100 +  margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -286,6 +287,7 @@ function barchart2(selected_ingredient,this_color) {
             d3.select("#ingredient-image")
                 .attr("src", "./images/" + selected_ingredient.replace(" ","_") + ".jpg")
                 .attr("width","100")
+                .attr("vspace","100px")
 
             //var g2 = svg2.append("g");
             //
@@ -335,7 +337,7 @@ function barchart2(selected_ingredient,this_color) {
                 .attr("fill", this_color)
                 .on("click", function(d,i) {
                     d3.select("#ranking-type")
-                        .property({value: varXdomain2[i]})
+                        .property({value: varXdomain2[i].replace(" ","_")})
 
                     updateVisualization(data_i, data_p,varXdomain2[i].replace(" ","_"))
 
@@ -371,7 +373,7 @@ function barchart2(selected_ingredient,this_color) {
                 .append("text")
                 .attr("y", -20)
                 .attr("dy", ".71em")
-                .style("text-anchor", "middle")
+                .style("text-anchor", "left")
                 .text("% of appearance in recipes");
 
         })
@@ -391,6 +393,7 @@ function updateVisualization2(selected_ingredient,this_color) {
     d3.select("#ingredient-image")
         .attr("src", "./images/" + selected_ingredient.replace(" ","_") + ".jpg")
         .attr("width","100")
+        .attr("top","150px")
 
 
     //.data(dataset.map(function(d) { return +d; }))

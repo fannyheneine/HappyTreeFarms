@@ -7,6 +7,9 @@
 /*   BAR-CHART  */
 /****************/
 
+body{
+  margin-left: 20px;
+}
 .row{
   /*font-family: Gill Sans, Verdana;*/
   font-family: cursive;
@@ -18,7 +21,9 @@ h1{
   color: #666666;
 }
 
-
+.bar {
+  fill: #3C948B;
+}
 
 .bar:hover {
   fill: #327972;
@@ -65,26 +70,7 @@ h1{
   fill:  #8B907C;
 }
 
-.graticule {
-    fill: none;
-    stroke: #777777;
-    stroke-opacity: .5;
-    stroke-width: .5px;
+.back{
+  background-color: transparent;
+  z-index: -1;
 }
-
-.land {
-    fill: #aaaaaa;
-}
-
-.boundary {
-    fill: none;
-    stroke: #ffffff;
-    stroke-width: .5px;
-}
-
-h1{
-    font-family: Verdana;
-    stroke: #777777;
-}
-
-
