@@ -12,7 +12,6 @@ var svg = d3.select("#bar-chart").append("svg")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var svg2;
-var svg3;
 
 // Ingredients and percentages
 var data_i;
@@ -30,8 +29,6 @@ var ingredients = []
 var ing_colors = []
 var count = 0;
 var clicks = 0;
-var clicks2 = 0;
-
 
 //Intiate scales
 var xScale_ing = d3.scale.ordinal()
@@ -236,12 +233,6 @@ function updateVisualization(data_ing, data_percentages, selection) {
 d3.select("#ranking-type").on("change", function(){
     selection = d3.select("#ranking-type").property("value");
 
-    if (clicks2<1){
-        imagechart(data_i, data_p, selection)
-        clicks2 = clicks2 + 1}
-    else{
-        update_imagechart(data_i, data_p, selection)
-    }
     updateVisualization(data_i, data_p, selection);
 
 
@@ -298,7 +289,20 @@ function barchart2(selected_ingredient,this_color) {
                 .attr("width","100")
                 .attr("vspace","100px")
 
+            //var g2 = svg2.append("g");
+            //
+            //var imgs = g2.append("svg:image")
+            //	.attr("xlink:href", "./images/onion.jpg")
+            //	.attr("x", "20")
+            //	.attr("y", "-80")
+            //	.attr("width", "70")
+            //	.attr("height", "70")
+            //	.attr("z-index", "-1")
 
+            //d3.select("#ingredient-image")
+            //	.text('src="/images/onion.jpg"')
+
+            //.data(dataset.map(function(d) { return +d; }))
             varXdomain2 = data.map(function (d) {
                 return d.Country.replace("_", " ")
             });
@@ -334,12 +338,7 @@ function barchart2(selected_ingredient,this_color) {
                 .on("click", function(d,i) {
                     d3.select("#ranking-type")
                         .property({value: varXdomain2[i].replace(" ","_")})
-                    if (clicks2>0){
-                        update_imagechart(data_i, data_p, varXdomain2[i].replace(" ","_"))}
-                    else{
-                        imagechart(data_i, data_p, varXdomain2[i].replace(" ","_"))
-                        clicks2 = clicks2 + 1
-                    }
+
                     updateVisualization(data_i, data_p,varXdomain2[i].replace(" ","_"))
 
                 })
@@ -384,6 +383,8 @@ function barchart2(selected_ingredient,this_color) {
 }
 
 function updateVisualization2(selected_ingredient,this_color) {
+
+    console.log("HERE")
 
     //We set the domain of the scales
     d3.select("#show-ingredient")
@@ -456,91 +457,4 @@ function updateVisualization2(selected_ingredient,this_color) {
         .duration(800)
         .remove();
 
-}
-
-
-
-function imagechart(data_i, data_p, selection) {
-
-    svg3 = d3.select("#image-chart").append("svg")
-        .attr("width", width + 700 + margin.left + margin.right)
-        .attr("height", height + 500 + margin.top + margin.bottom)
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    Xdomain = data_i.map(function (d) {
-        return d[selection]
-    });
-
-    //var g2 = svg3.append("g");
-
-    var imgs = svg3.selectAll("image").data(data_i);
-
-    imgs.enter()
-        .append("svg:image")
-        .attr("xlink:href", function (d, i) {
-            return "./images/" + Xdomain[i] + ".jpg"
-        })
-        .attr("width", function (d, i) {
-            return 5 * (data_p[i][selection])
-        })
-        .attr("height", function (d, i) {
-            return 3 * (data_p[i][selection])
-        })
-        .attr("x", function (d, i) {
-            if (i < 5) {
-                return i * 250
-            }
-            else if (i > 4 & i < 10) {
-                return (i - 4) * 180
-            }
-            else {
-                return (i - 9) * 110
-            }
-        })
-        .attr("y", function (d, i) {
-            if (i < 5) {
-                return 40
-            }
-            else if (i > 4 & i < 10) {
-                return 300
-            }
-            else {
-                return 500
-            }
-        })
-}
-
-function update_imagechart(data_i, data_p, selection) {
-
-    console.log("hereee")
-
-    Xdomain = data_i.map(function (d) {
-        return d[selection]
-    });
-
-
-    var imgs = svg3.selectAll("image")
-        .data(data_i)
-
-    imgs.enter()
-        .append("svg:image")
-
-    imgs
-        .transition()
-        .duration(800)
-        .attr("xlink:href", function (d, i) {
-            return "./images/" + Xdomain[i] + ".jpg"
-        })
-        .attr("width", function (d, i) {
-            return 4 * (data_p[i][selection])
-        })
-        .attr("height", function (d, i) {
-            return 3 * (data_p[i][selection])
-        })
-
-
-    imgs.exit()
-        .transition()
-        .duration(800)
-        .remove();
 }
