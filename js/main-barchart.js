@@ -490,24 +490,32 @@ function imagechart(data_i, data_p, selection) {
             if (i < 5) {
                 return i * 250
             }
-            else if (i > 4 & i < 10) {
-                return (i - 4) * 180
+            else if (i > 4 & i < 11) {
+                return (i - 4) * 160
             }
             else {
-                return (i - 9) * 110
+                return (i - 10) * 90
             }
         })
         .attr("y", function (d, i) {
             if (i < 5) {
                 return 40
             }
-            else if (i > 4 & i < 10) {
+            else if (i > 4 & i < 11) {
                 return 300
             }
             else {
                 return 500
             }
         })
+        .on("click", function(d,i) {
+            updateVisualization2(Xdomain[i].replace(" ", "_"), ing_colors[i]);
+        })
+        .on("mouseover", function(){
+            d3.select(this)
+                .style({"cursor": "pointer"})
+        });
+
 }
 
 function update_imagechart(data_i, data_p, selection) {
