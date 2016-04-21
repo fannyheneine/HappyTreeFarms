@@ -2,6 +2,65 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="217e5e64-48fe-4fff-bc02-5126296ac389" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/almond.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/apple.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/apricot.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/bacon.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/beef.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/bell_pepper.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/black_pepper.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/butter.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/cabbage.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/cane_molasses.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/cardamom.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/carrot.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/cayenne.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/celery.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/cheddar_cheese.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/chicken.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/cilantro.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/cocoa.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/coconut.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/coriander.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/corn.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/cream.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/cucumber.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/cumin.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/dill.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/egg.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/fenugreek.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/feta_cheese.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/fish.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/garlic.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/ginger.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/lard.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/lemongrass.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/milk.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/mushroom.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/nutmeg.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/olive.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/olive_oil.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/onion.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/parmesan_cheese.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/pasta.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/pig.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/pork_sausage.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/potato.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/raisin.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/rice.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/scallion.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/shallot.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/soy_sauce.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/soybean.gif" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/sweet_potato.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/thyme.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/tomato.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/turmeric.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/vanilla.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/vegetable_oil.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/wheat.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/images/cayenne.jpg" afterPath="$PROJECT_DIR$/images/cayenne.jpg" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/main-barchart.js" afterPath="$PROJECT_DIR$/js/main-barchart.js" />
     </list>
     <ignored path="HappyTreeFarms.iws" />
@@ -36,8 +95,8 @@
       <file leaf-file-name="main-barchart.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/main-barchart.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.92561984">
-              <caret line="517" column="0" selection-start-line="510" selection-start-column="8" selection-end-line="517" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.8512397">
+              <caret line="591" column="1" selection-start-line="591" selection-start-column="1" selection-end-line="591" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -296,9 +355,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="20" y="24" width="1260" height="729" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -429,8 +488,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/main-barchart.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.92561984">
-          <caret line="517" column="0" selection-start-line="510" selection-start-column="8" selection-end-line="517" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.8512397">
+          <caret line="591" column="1" selection-start-line="591" selection-start-column="1" selection-end-line="591" selection-end-column="1" />
           <folding />
         </state>
       </provider>

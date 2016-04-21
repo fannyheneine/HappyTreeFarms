@@ -294,7 +294,7 @@ function barchart2(selected_ingredient,this_color) {
                 .text(selected_ingredient)
 
             d3.select("#ingredient-image")
-                .attr("src", "./images/" + selected_ingredient.replace(" ","_") + ".jpg")
+                .attr("src", "./images/" + selected_ingredient.replace(" ","_") + ".png")
                 .attr("width","100")
                 .attr("vspace","100px")
 
@@ -390,7 +390,7 @@ function updateVisualization2(selected_ingredient,this_color) {
         .text(selected_ingredient)
 
     d3.select("#ingredient-image")
-        .attr("src", "./images/" + selected_ingredient.replace(" ","_") + ".jpg")
+        .attr("src", "./images/" + selected_ingredient.replace(" ","_") + ".png")
         .attr("width","100")
         .attr("top","150px")
 
@@ -478,7 +478,7 @@ function imagechart(data_i, data_p, selection) {
     imgs.enter()
         .append("svg:image")
         .attr("xlink:href", function (d, i) {
-            return "./images/" + Xdomain[i] + ".jpg"
+            return "./images/" + Xdomain[i] + ".png"
         })
         .attr("width", function (d, i) {
             return 5 * (data_p[i][selection])
@@ -488,7 +488,7 @@ function imagechart(data_i, data_p, selection) {
         })
         .attr("x", function (d, i) {
             if (i < 5) {
-                return i * 250
+                return i * 210
             }
             else if (i > 4 & i < 11) {
                 return (i - 4) * 160
@@ -511,11 +511,49 @@ function imagechart(data_i, data_p, selection) {
         .on("click", function(d,i) {
             updateVisualization2(Xdomain[i].replace(" ", "_"), ing_colors[i]);
         })
-        .on("mouseover", function(){
+        .on("mouseover", function(d,i){
             d3.select(this)
                 .style({"cursor": "pointer"})
-        });
+                .attr("data-we", this.getAttribute("width"))
+                .attr("data-hi", this.getAttribute("height"))
+                .attr("data-x", this.getAttribute("x"))
+                .attr("data-y", this.getAttribute("y"))
+                .attr("width", 300)
+                .attr("height", 300)
+                .attr("x", function(){
+                    if (i < 5) {
+                        return this.getAttribute("x")-20
+                    }
+                    else {
+                        return this.getAttribute("x")-100
+                    }
 
+                } )
+                .attr("y", function(){
+                    if (i < 5) {
+                        return this.getAttribute("y")
+                    }
+                    else if (i > 4 & i < 11) {
+                        return this.getAttribute("y") - 90
+                    }
+                    else {
+                        return this.getAttribute("y") - 120
+                    }
+
+                } )
+        })
+
+
+
+        .on("mouseout", function(){
+            d3.select(this)
+                .attr("width",this.getAttribute("data-we"))
+                .attr("height",this.getAttribute("data-hi"))
+                .attr("x",this.getAttribute("data-x"))
+                .attr("y",this.getAttribute("data-y"))
+
+
+        })
 }
 
 function update_imagechart(data_i, data_p, selection) {
@@ -537,7 +575,7 @@ function update_imagechart(data_i, data_p, selection) {
         .transition()
         .duration(800)
         .attr("xlink:href", function (d, i) {
-            return "./images/" + Xdomain[i] + ".jpg"
+            return "./images/" + Xdomain[i] + ".png"
         })
         .attr("width", function (d, i) {
             return 4 * (data_p[i][selection])
