@@ -509,7 +509,12 @@ function imagechart(data_i, data_p, selection) {
             }
         })
         .on("click", function(d,i) {
-            updateVisualization2(Xdomain[i].replace(" ", "_"), ing_colors[i]);
+            if (clicks>0){
+                updateVisualization2(Xdomain[i].replace(" ", "_"), ing_colors[i]);}
+            else{
+                barchart2(Xdomain[i].replace(" ", "_"), ing_colors[i]);
+                clicks = clicks + 1;
+            }
         })
         .on("mouseover", function(d,i){
             d3.select(this)
