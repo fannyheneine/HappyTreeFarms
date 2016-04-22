@@ -15,11 +15,11 @@ var forceplot;
 
 // Start application by loading the dataForceLayout
 //loadData();
-loadDataRunOnce2();
+//loadDataRunOnce();
 //
-//queue().defer(d3.json,"data/dataNodesLinks_Ingredients.json")
-//    .defer(d3.json,"data/dataNodesLinks_Recipes.json")
-//    .await(createVis);
+queue().defer(d3.json,"data/dataNodesLinks_Ingredients.json")
+    .defer(d3.json,"data/dataNodesLinks_Recipes.json")
+    .await(createVis);
 
 
 
@@ -154,12 +154,12 @@ function loadDataRunOnce2() {
     d3.csv("data/recipes_sampled.csv", function (error, fullData) {
         if (!error) {
 
-            d3.json("data/categories.txt", function (error, json) {
+            d3.json("data/categories.json", function (error, jsonImport) {
                 if (!error) {
 
                     allData = fullData;
-                    categories_ingredients = json;
-                    console.log(categories_ingredients)
+                    categories_ingredients = jsonImport;
+
 
 
                     var sampledData1000 = _.sample(allData, 100);
@@ -197,6 +197,17 @@ function loadDataRunOnce2() {
                         });
                     });
 
+                    var categoriesByIngredients={};
+                    for (var category in categories_ingredients) {
+                        categories_ingredients[category].forEach(function (d, i) {
+
+                            categoriesByIngredients[d] = category;
+
+
+                        });
+                    }
+
+
 
                     var linksNodesData = {};
                     linksNodesData.Nodes = [];
@@ -208,6 +219,7 @@ function loadDataRunOnce2() {
                         var ingredientNode = {};
                         ingredientNode.id = ingredient;
                         ingredientNode.recipes = tableByIngredients[ingredient];
+                        ingredientNode.category= categoriesByIngredients[ingredient];
                         ingredientNode.index = index_count;
                         tableByIngredients[ingredient].index = index_count;
                         ingredientNode.x = 500;
@@ -278,7 +290,7 @@ function loadDataRunOnce2() {
                     var link = document.getElementById('download');
                     link.href = makeTextFile(JSON.stringify(linksNodesData));
                     link.style.display = 'block';
-
+                    console.log(linksNodesData)
                     console.log('finished')
 
                 }
@@ -293,6 +305,7 @@ function createVis(error,data1,data2) {
     // Create an object instance
     data_recipes=data2;
     data_ingredients=data1;
+    //console.log(data_ingredients)
     forceplot = new ForceDiagram("force-layout", data_recipes,data_ingredients);
 
 }

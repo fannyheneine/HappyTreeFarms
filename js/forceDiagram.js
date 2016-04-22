@@ -1,11 +1,5 @@
 
 
-/*
- * StackedAreaChart - Object constructor function
- * @param _parentElement 	-- the HTML element in which to draw the visualization
- * @param _data						-- the
- */
-
 ForceDiagram = function(_parentElement, _data1, _data2){
     this.parentElement = _parentElement;
     this.data_recipes = _data1;
@@ -57,9 +51,7 @@ ForceDiagram.prototype.initVis = function(){
 
     vis.svg.append("g")
         .attr("class", "legend")
-        .attr("transform", "translate(110,300)");
-
-
+        .attr("transform", "translate(110,200)");
 
     vis.wrangleData();
 };
@@ -76,17 +68,17 @@ ForceDiagram.prototype.wrangleData = function(){
     vis.selectedVal=d3.select('input[name="graph-type"]:checked').property("value");
     if (vis.selectedVal=="recipe") {
         vis.displayData = vis.data_recipes;
-        vis.CuisineKeys = _.uniq(vis.displayData.Nodes.map(function (recipe) {
+        vis.categoryKeys = _.uniq(vis.displayData.Nodes.map(function (recipe) {
             return recipe.Cuisine;
         }));
-        colorScale.domain(vis.CuisineKeys);
     } else if (vis.selectedVal=="ingredient") {
         vis.displayData = vis.data_ingredients;
-        vis.CuisineKeys = _.uniq(vis.displayData.Nodes.map(function (recipe) {
-            return recipe.Cuisine;
+        vis.categoryKeys = _.uniq(vis.displayData.Nodes.map(function (ingredient) {
+            return ingredient.category;
         }));
-        colorScale.domain(vis.CuisineKeys);
     }
+
+    colorScale.domain(vis.categoryKeys);
 
 
     // Update the visualization
@@ -144,7 +136,11 @@ ForceDiagram.prototype.updateVis = function(){
         .attr("class","node")
         .attr("r",4)
         .attr("fill",function(d,i){
-            return colorScale(d.Cuisine);
+            if (vis.selectedVal=="recipe"){
+            return colorScale(d.Cuisine)}
+            else if (vis.selectedVal=="ingredient"){
+                return colorScale(d.category)
+            };
         });
 
 
