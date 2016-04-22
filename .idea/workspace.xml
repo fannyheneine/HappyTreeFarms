@@ -2,7 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="217e5e64-48fe-4fff-bc02-5126296ac389" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/.ipynb_checkpoints/preprocessing_map-checkpoint.ipynb" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/categories.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/country_cuisine.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/cuisine_ingredient.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/dataNodesLinks_Ingredients.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/dataNodesLinks_Recipes.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/preprocessing_map.ipynb" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/recipes_processed.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/recipes_sampled.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/world-110m.json" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/images/wheat.png" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/all_cuisines_all_ing.csv" afterPath="$PROJECT_DIR$/data/all_cuisines_all_ing.csv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/all_cuisines_ing.csv" afterPath="$PROJECT_DIR$/data/all_cuisines_ing.csv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/all_cuisines_percentages.csv" afterPath="$PROJECT_DIR$/data/all_cuisines_percentages.csv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/main-barchart.js" afterPath="$PROJECT_DIR$/js/main-barchart.js" />
     </list>
     <ignored path="HappyTreeFarms.iws" />
@@ -24,21 +38,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-8.125">
-              <caret line="28" column="28" selection-start-line="28" selection-start-column="28" selection-end-line="28" selection-end-column="28" />
+            <state vertical-scroll-proportion="0.77922076">
+              <caret line="77" column="0" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main-barchart.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main-barchart.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/main-barchart.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.95319813">
-              <caret line="596" column="1" selection-start-line="596" selection-start-column="1" selection-end-line="596" selection-end-column="1" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="598" column="1" selection-start-line="598" selection-start-column="1" selection-end-line="598" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -92,9 +106,9 @@
         <option value="$PROJECT_DIR$/js/main-barchart2.js" />
         <option value="$PROJECT_DIR$/js/map.js" />
         <option value="$PROJECT_DIR$/css/style.css" />
-        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/js/cuisine_map.js" />
         <option value="$PROJECT_DIR$/js/main-barchart.js" />
+        <option value="$PROJECT_DIR$/index.html" />
       </list>
     </option>
   </component>
@@ -104,9 +118,10 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
+    <option name="x" value="78" />
     <option name="y" value="23" />
     <option name="width" value="1280" />
-    <option name="height" value="738" />
+    <option name="height" value="737" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -290,7 +305,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1280" height="738" extended-state="6" />
+    <frame x="78" y="23" width="1280" height="737" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -547,18 +562,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
+    <entry file="file://$PROJECT_DIR$/js/main-barchart.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.125">
-          <caret line="28" column="28" selection-start-line="28" selection-start-column="28" selection-end-line="28" selection-end-column="28" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="598" column="1" selection-start-line="598" selection-start-column="1" selection-end-line="598" selection-end-column="1" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/main-barchart.js">
+    <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.95319813">
-          <caret line="596" column="1" selection-start-line="596" selection-start-column="1" selection-end-line="596" selection-end-column="1" />
+        <state vertical-scroll-proportion="0.77922076">
+          <caret line="77" column="0" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
           <folding />
         </state>
       </provider>

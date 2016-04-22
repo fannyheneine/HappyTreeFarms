@@ -59,29 +59,29 @@ queue()
 
             // Convert numeric values to 'numbers'
             d.American = +d.American;
-            d.Canada = +d.Canada;
+            d.Canadian = +d.Canadian;
             d.Caribbeans = +d.Caribbeans;
-            d.China = +d.China;
+            d.Chinese = +d.Chinese;
             d.East_African = +d.East_African;
             d.Eastern_European = +d.Eastern_European;
-            d.France = +d.France;
-            d.Great_Britain = +d.Great_Britain;
-            d.India = +d.India;
-            d.Italy = +d.Italy;
-            d.Japan = +d.Japan;
+            d.French = +d.French;
+            d.British = +d.British;
+            d.Indian = +d.Indian;
+            d.Italian = +d.Italian;
+            d.Japanese = +d.Japanese;
             d.Korean = +d.Korean;
             d.Mediterranean = +d.Mediterranean;
             d.Mexican = +d.Mexican;
-            d.Middle_East = +d.Middle_East;
+            d.Middle_Eastern = +d.Middle_Eastern;
             d.North_African = +d.North_African;
             d.Portuguese_Spanish = +d.Portuguese_Spanish;
-            d.Scandinavia = +d.Scandinavia;
+            d.Scandinavian = +d.Scandinavian;
             d.South_African = +d.South_African;
             d.South_American = +d.South_American;
             d.South_Asian = +d.South_Asian;
             d.Southeast_Asian = +d.Southeast_Asian;
             d.West_African = +d.West_African;
-            d.Western_Europeean = +d.Western_Europeean;
+            d.Western_European = +d.Western_European;
 
         });
 
@@ -289,6 +289,8 @@ function barchart2(selected_ingredient,this_color) {
         d3.csv("data/all_cuisines_all_ing.csv", function (error, data) {
 
             data_viz2 = data;
+
+            console.log(data_viz2)
 
             d3.select("#show-ingredient")
                 .text(selected_ingredient)
