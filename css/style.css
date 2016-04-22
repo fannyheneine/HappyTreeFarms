@@ -47,7 +47,7 @@ h1{
   shape-rendering: crispEdges;
 }
 
-#chart-area{
+#map-map{
   fill: none;
 }
 
@@ -56,7 +56,7 @@ h1{
   stroke-width: 2px;
 
 }
-#chart-area text {
+#map-map text {
   font-size: 11px;
   fill:#666666;
 }

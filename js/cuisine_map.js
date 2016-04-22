@@ -1,105 +1,104 @@
-var width_1 = 1000,
-    height_1 = 1000,
-    width_2 = 200,
-    height_2 = 500;
+var map_map_width_1 = 800,
+    map_map_height_1 = 500,
+    map_bar_width_1 = 400,
+    map_bar_height_1 = 150,
+    map_bar_width_2 = 400,
+    map_bar_height_2 = 350;
 
-var svg_map = d3.select("#chart-area").append("svg")
-    .attr("width", width_1)
-    .attr("height", height_1);
+var svg_map_map = d3.select("#map-map").append("svg")
+    .attr("width", map_map_width_1)
+    .attr("height", map_map_height_1);
 
-// CREATE World Map Variables
-var projection = d3.geo.mercator()
-    //.translate([(width_1/2 +400), (height_1/2 +500)])
-    .center([0,50])
-    .scale( width_1 /2/  Math.PI);
+// INITIATE MAP
+var map_projection = d3.geo.mercator()
+    .center([10,25])
+    .scale( map_map_width_1 /2/ Math.PI);
 
-var path = d3.geo.path()
-    .projection(projection);
+var map_path = d3.geo.path()
+    .projection(map_projection);
 
-var colorScale_country = d3.scale.category20();
-var colorScale_ingredient = d3.scale.category10();
+var map_colorScale_country = d3.scale.category20();
+var map_colorScale_ingredient = d3.scale.category10();
 
 
-var label = svg_map.append("g")
+var map_label = svg_map_map.append("g")
     .style("display", "none");
 
-var world_global, country_global, cuisine_global;
+var map_world_global, map_country_global, map_cuisine_global;
 
-// CREATE Ingredient Bar Variables
 
-// Set up svg for bar chart
+//INITIATE BARS
 
-//var svg_bar = svg.append("g");
-var svg_bar = d3.select("#bar-area").append("svg")
-    .attr("width", width_2)
-    .attr("height", height_2)
+var svg_map_bar1 = d3.select("#map-bar").append("svg")
+    .attr("width", map_bar_width_1)
+    .attr("height", map_bar_height_1)
+    .append("g");
+
+var svg_map_bar2 = d3.select("#map-bar").append("svg")
+    .attr("width", map_bar_width_2)
+    .attr("height", map_bar_height_2)
     .append("g");
 
 
-var x = d3.scale.ordinal().rangeRoundBands([0, height_2], 0);
-var y = d3.scale.linear().domain([0, 1]).range([width_2,0]);
-
+var map_bar1_x = d3.scale.ordinal().rangeRoundBands([0, map_bar_width_1], 0);
+var map_bar1_y = d3.scale.linear().domain([0, 1]).range([map_bar_height_1,0]);
+var map_bar2_x = d3.scale.linear().domain([0, 1]).range([map_bar_width_2,0]);
+var map_bar2_y = d3.scale.ordinal().rangeRoundBands([0, map_bar_height_2], 0);
 
 // LOAD Data and CALL Function
 queue()
     .defer(d3.json, "data/world-110m.json")
     .defer(d3.json, "data/country_cuisine.json")
     .defer(d3.json, "data/cuisine_ingredient.json")
-    .await(createCuisineMap);
+    .await(createMap);
 
 
 // DEFINE Function to Create World Map
-function createCuisineMap(error, world, country, cuisine) {
+function createMap(error, world, country, cuisine) {
 
-    world_global = world;
-    country_global = country;
-    cuisine_global = cuisine;
+    map_world_global = world;
+    map_country_global = country;
+    map_cuisine_global = cuisine;
 
     //
     // PART I: World Map
     //
 
     // SET UP LABEL FOR CHOROPLETH
-    label.append("text")
+    map_label.append("text")
         .attr("class", "label country")
         .style("font-size", 24)
         .attr("x", 0)
         .attr("y", 300);
 
-    label.append("text")
+    map_label.append("text")
         .attr("x", 0)
         .attr("y", 310)
         .attr("class", "label detail");
-    label.select(".detail")
+    map_label.select(".detail")
         .append("tspan")
         .attr("x", 0)
         .attr("dy", 20)
         .attr("class", "label detail Cuisine");
-    label.select(".detail")
+    map_label.select(".detail")
         .append("tspan")
         .attr("x", 0)
         .attr("dy", 20)
         .attr("class", "label detail Recipe_Count");
-    //country.forEach()
-    // MAP
-    //console.log(world);
-    //console.log(country);
-    //console.log(cuisine);
 
-    colorScale_country.domain(Object.keys(cuisine));
+    map_colorScale_country.domain(Object.keys(map_cuisine_global));
 
-    var countries = topojson.feature(world, world.objects.countries).features;
+    var map_countries = topojson.feature(map_world_global, map_world_global.objects.countries).features;
 
-    svg_map.selectAll("countries")
-        .data(countries)
+    svg_map_map.selectAll("countries")
+        .data(map_countries)
         .enter().insert("path", ".graticule")
         .attr("class", "countries")
-        .attr("d", path)
+        .attr("d", map_path)
         .attr("fill", function(d) {
-            var country_key = d.id;
-            if (country[country_key]==undefined || country[country_key].cuisine==undefined) {return "#eeeeee"}
-            //else {return "red"}
-            else {return colorScale_country(country[country_key].cuisine)}
+            var map_country_key = d.id;
+            if (map_country_global[map_country_key]==undefined || map_country_global[map_country_key].cuisine==undefined) {return "#eeeeee"}
+            else {return map_colorScale_country(map_country_global[map_country_key].cuisine)}
         })
         .on('mouseover', function(d, i) {
             var currentState = this;
@@ -112,29 +111,29 @@ function createCuisineMap(error, world, country, cuisine) {
                     'fill-opacity':1
                 });
         });
-    svg_map.insert("path", ".graticule")
-        .datum(topojson.mesh(world, world.objects.countries, function (a, b) {
+    svg_map_map.insert("path", ".graticule")
+        .datum(topojson.mesh(map_world_global, map_world_global.objects.countries, function (a, b) {
             return a !== b;
         }))
         .attr("class", "boundary")
-        .attr("d", path);
+        .attr("d", map_path);
 
 
 }
 
 function showInfo(d) {
-    var country_data = country_global[d.id],
+    var country_data = map_country_global[d.id],
         cuisine_key = country_data.cuisine,
-        cuisine_data = cuisine_global[cuisine_key];
+        cuisine_data = map_cuisine_global[cuisine_key];
 
     if (country_data != undefined && cuisine_key != undefined) {
-        label.style("display", null);
+        map_label.style("display", null);
 
-        label.select("text.country")
+        map_label.select("text.country")
             .text(cuisine_key);
-        label.select("tspan.Cuisine")
+        map_label.select("tspan.Cuisine")
             .text("Country: " +  country_data.name);
-        label.select("tspan.Recipe_Count")
+        map_label.select("tspan.Recipe_Count")
             .text("Available Recipes: " + commas(cuisine_data.n_recipes));
 
         //
@@ -149,19 +148,10 @@ function showInfo(d) {
         console.log(cuisine_data);
         console.log(ingredient_data);
 
-        x.domain(["salt", "olive oil", "garlic", "sugar", "butter", "pepper"]);
-        colorScale_ingredient.domain(["salt", "olive oil", "garlic", "sugar", "butter", "pepper"]);
+        map_bar2_y.domain(["salt", "olive oil", "garlic", "sugar", "butter", "pepper"]);
+        map_colorScale_ingredient.domain(["salt", "olive oil", "garlic", "sugar", "butter", "pepper"]);
 
-        //svg_bar.selectAll(".bar")
-        //    .data(ingredient_data)
-        //    .enter().append("rect")
-        //    .attr("class", "bar")
-        //    .attr("x", function(d) {return x(d.ingredient);})
-        //    .attr("width_1", x.rangeBand())
-        //    .attr("y", function(d) {return y(d.num/n_recipes/5)-250; })
-        //    .attr("height_1", function(d) {return (height_1 - y(d.num/n_recipes))/5; });
-
-        var bar_map = svg_bar.selectAll(".bar")
+        var bar_map = svg_map_bar2.selectAll(".bar")
             .data(ingredient_data);
 
         bar_map
@@ -169,16 +159,16 @@ function showInfo(d) {
 
         bar_map
             .attr("class", "bar")
-            .attr("y", function(d) {return x(d.ingredient);})
-            .attr("height", x.rangeBand())
+            .attr("y", function(d) {return map_bar2_y(d.ingredient);})
+            .attr("height", map_bar2_y.rangeBand())
             .attr("x", 0)
-            .attr("width", function(d) {return (y(d.num/n_recipes)); })
+            .attr("width", function(d) {return (map_bar2_x(d.num/n_recipes)); })
             .attr("fill", function(d) {
-                return colorScale_ingredient(d.ingredient);
+                return map_colorScale_ingredient(d.ingredient);
             });
 
 
-        svg_bar.selectAll("text.bar-label")
+        svg_map_bar2.selectAll("text.bar-label")
             .data(ingredient_data)
             .enter()
             .append("text")
@@ -187,7 +177,7 @@ function showInfo(d) {
                 return d.ingredient;
             })
             .attr("y", function(d, i) {
-                return 40+i*(height_2/6);
+                return 40+i*(map_bar_height_2/6);
             })
             .attr("x", 0)
             .attr("text-anchor", "start")
