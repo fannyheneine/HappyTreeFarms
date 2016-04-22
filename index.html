@@ -32,6 +32,9 @@
 	</div>
 
 		<h1 align="left">Force Diagram</h1>
+
+	<a download="data.json" id="download">Download</a>
+	<!--DON'T DELETE THIS ^-->
         <form>
             <input type="radio" name="graph-type" value="recipe" checked onchange="forceplot.wrangleData()"> Recipes<br>
             <input type="radio" name="graph-type" value="ingredient" onchange="forceplot.wrangleData()"> Ingredients<br>
@@ -119,7 +122,7 @@
 
 	<!-- Visualization objects -->
 	<script src="js/cuisine_map.js"></script>
-	<script src="js/main.js"></script>
+	<script src="js/main-force.js"></script>
     <script src="js/forceDiagram.js"></script>
 	<script src="js/main-barchart.js"></script>
 	<!-- Load dataForceLayout, create visualizations -->
