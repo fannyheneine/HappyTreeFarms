@@ -142,9 +142,9 @@ function createMapVisualization() {
                     .style('fill-opacity', 1);
             })
             .on('click',function(d){
-                console.log(country_cuisine[d.id].cuisine)
                 d3.select("#ranking-type")
                     .property({value: country_cuisine[d.id].cuisine})
+
                 update_imagechart(data_i, data_p, country_cuisine[d.id].cuisine)
                 updateVisualization(data_i, data_p, country_cuisine[d.id].cuisine)
 
@@ -217,9 +217,9 @@ function createMapVisualization() {
                 d3.selectAll('.slice')
                     .style('fill-opacity', 1);
             })
-            .on('click',function(){
-                console.log(this.Country)
-            })
+            //.on('click',function(){
+            //    console.log(this.Country)
+            //})
 
 
         pie_slice.exit()
@@ -399,9 +399,7 @@ function createMapVisualization() {
                     .attr("height", 45);;
             })
             .on('click', function(d){
-                console.log(this_color)
-                console.log(d.ingredient)
-                updateVisualization2(d.ingredient,this_color)
+                updateVisualization2(d.ingredient,colorbrewer.Set4[12][ingredients.indexOf(d.ingredient.replace("_"," "))])
             })
 
         hbar.exit().remove();

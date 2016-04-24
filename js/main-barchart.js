@@ -168,6 +168,9 @@ queue()
         data_i = data_ing
         data_p = data_percentages
 
+        imagechart(data_i, data_p, selection)
+
+
     });
 
 function updateVisualization(data_ing, data_percentages, selection) {
@@ -286,12 +289,11 @@ function barchart2(selected_ingredient,this_color) {
 
     loadData()
 
+
     function loadData() {
         d3.csv("data/all_cuisines_all_ing.csv", function (error, data) {
 
             data_viz2 = data;
-
-            console.log(data_viz2)
 
             d3.select("#show-ingredient")
                 .text(selected_ingredient)
@@ -335,6 +337,7 @@ function barchart2(selected_ingredient,this_color) {
                 })
                 .attr("fill", this_color)
                 .on("click", function(d,i) {
+
                     d3.select("#ranking-type")
                         .property({value: varXdomain2[i].replace(" ","_")})
                     if (clicks2>0){
@@ -379,6 +382,9 @@ function barchart2(selected_ingredient,this_color) {
                 .attr("dy", ".71em")
                 .style("text-anchor", "left")
                 .text("% of appearance in recipes");
+
+
+
 
         })
 
@@ -566,7 +572,6 @@ function imagechart(data_i, data_p, selection) {
 
 function update_imagechart(data_i, data_p, selection) {
 
-    console.log("hereee")
 
     Xdomain = data_i.map(function (d) {
         return d[selection]
