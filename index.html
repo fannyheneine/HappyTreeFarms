@@ -34,6 +34,23 @@
 
 	</div>
 
+	<div class="container-fluid">
+
+		<div class="row">
+			<div class="col-md-12">
+
+				<h1>Food Supply Quantity as per UN data</h1>
+				<h2>Detailed annual statistics in grams per capita per day</h2>
+
+				<!-- Visualization placeholders -->
+				<div id="stacked-area-chart"></div>
+				<div id="timeline"></div>
+
+			</div>
+		</div>
+
+	</div>
+
 		<h1 align="left">Force Diagram</h1>
 
 	<!--<a download="data.json" id="download">Download</a>-->
@@ -129,9 +146,14 @@
 	<script src="js/main-force.js"></script>
     <script src="js/forceDiagram.js"></script>
 	<script src="js/main-barchart.js"></script>
+
 	<!-- Load dataForceLayout, create visualizations -->
+	<!-- Visualization objects -->
+	<script src="js/stackedAreaChart.js"></script>
+	<script src="js/timeline.js"></script>
 
-
+	<!-- Load data, create visualizations -->
+	<script src="js/main_stacked.js"></script>
 
 
 </body>

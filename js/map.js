@@ -385,7 +385,11 @@ function createMapVisualization() {
                     .style('opacity', 1)
                     .attr("width", 45)
                     .attr("height", 45);;
-            });
+            })
+            .//.on('click', function (d, i) {
+            //var country_chosen2 = world_map;
+            //console.log(country_chosen2);
+            //loadData_stacked(country_chosen2);
 
         hbar.exit().remove();
         hbar_label.exit().remove();
