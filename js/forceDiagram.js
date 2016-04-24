@@ -110,7 +110,7 @@ ForceDiagram.prototype.updateVis = function(){
 
     vis.tip.html(function(d) {
         if (vis.selectedVal=="recipe"){
-            return "Recipe ID:"+d.id;}
+            return d.Cuisine;}
         else if (vis.selectedVal=="ingredient") {
             return d.id;
         } });
