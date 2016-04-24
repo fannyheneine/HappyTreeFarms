@@ -53,6 +53,11 @@ ForceDiagram.prototype.initVis = function(){
         .attr("class", "legend")
         .attr("transform", "translate(110,200)");
 
+
+    vis.tip = d3.tip()
+        .attr('class', 'd3-tip');
+
+
     vis.wrangleData();
 };
 
@@ -101,6 +106,17 @@ ForceDiagram.prototype.updateVis = function(){
     vis.svg.select(".legend")
         .call(vis.legend);
 
+    //call the tool tip
+
+    vis.tip.html(function(d) {
+        if (vis.selectedVal=="recipe"){
+            return "Recipe ID:"+d.id;}
+        else if (vis.selectedVal=="ingredient") {
+            return d.id;
+        } });
+    vis.svg.call(vis.tip);
+
+
 
     // 2a) DEFINE 'NODES' AND 'EDGES'
     vis.force
@@ -140,8 +156,11 @@ ForceDiagram.prototype.updateVis = function(){
             return colorScale(d.Cuisine)}
             else if (vis.selectedVal=="ingredient"){
                 return colorScale(d.category)
-            };
-        });
+            }
+        })
+        .on("mouseover",vis.tip.show)
+        .on("mouseout",vis.tip.hide)
+    ;
 
 
 
@@ -164,6 +183,7 @@ ForceDiagram.prototype.updateVis = function(){
 
 
     vis.node.call(vis.force.drag);
+
 
 
     //
