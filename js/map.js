@@ -2,12 +2,12 @@ createMapVisualization();
 
 function createMapVisualization() {
     var margin = { top: 10, right: 10, bottom: 10, left: 10 };
-    var map_width = 900,
+    var map_width = 850,
         map_height = 600,
-        pie_width = 300,
-        pie_height = 250,
-        hbar_width = 400,
-        hbar_height = 350;
+        pie_width = 400,
+        pie_height = 300,
+        hbar_width = 450,
+        hbar_height = 300;
 
 
     // INITIATE MAP
@@ -17,7 +17,7 @@ function createMapVisualization() {
         .attr("height", map_height + margin.top + margin.bottom);
 
     var map_projection = d3.geo.mercator()
-        .center([10, 40])
+        .center([10, 50])
         .scale(map_width / 2 / Math.PI);
 
     var map_path = d3.geo.path()
@@ -27,49 +27,46 @@ function createMapVisualization() {
     var pie_colorScale = d3.scale.category10();
     var hbar_colorScale = d3.scale.category10();
 
-    var map_label = svg_map.append("g")
-        .style("display", "none");
 
     var hover_yet = false;
     //
 
 
     //INITIATE PIE
-    var radius = Math.min(pie_width, pie_height)/2;
+    var radius = Math.min(pie_width, pie_height)/2.5;
 
     var pie_arc = d3.svg.arc()
-        .outerRadius(radius - 20)
+        .outerRadius(radius * 0.7)
         .innerRadius(0);
 
     var pie_arc_big = d3.svg.arc()
-        .outerRadius(radius)
+        .outerRadius(radius * 0.85)
         .innerRadius(0);
 
-    var pie_label = d3.svg.arc()
-        .outerRadius(radius - 40)
-        .innerRadius(radius - 40);
+    var pie_arc_outer = d3.svg.arc()
+        .innerRadius(radius * 0.9)
+        .outerRadius(radius * 0.9);
 
     var pie_layout = d3.layout.pie()
         .sort(null)
         .value(function(d) { return d.percent; });
-
-    var pie_key = function(d){ return d.category; };
 
     var svg_pie = d3.select("#map-bar").append("svg")
         .attr("width", pie_width + margin.left + margin.right)
         .attr("height", pie_height + margin.top + margin.bottom)
         .append("g");
 
-
+    var map_label = svg_pie.append("g")
+        .style("display", "none");
 
     svg_pie.append('g')
-        .attr("class", "slices")
+        .attr("class", "pie-slices")
     svg_pie.append("g")
-        .attr("class", "labels");
+        .attr("class", "pie-labels");
     svg_pie.append("g")
-        .attr("class", "lines");
+        .attr("class", "pie-lines");
     svg_pie
-        .attr("transform", "translate(" + pie_width / 2 + "," + pie_height / 2 + ")");
+        .attr("transform", "translate(" + (pie_width / 2 + 15) + "," + (pie_height / 2 + 20) + ")");
 
     var curr_category;
 
@@ -80,10 +77,10 @@ function createMapVisualization() {
         .attr("height", hbar_height + margin.top + margin.bottom)
         .append("g");
 
-    var hbar_y = d3.scale.ordinal().rangeRoundBands([0, hbar_height], 0, 0);
-    var hlabel_y = d3.scale.ordinal().rangeRoundBands([0, hbar_height], 1, 0.4);
+    var hbar_y = d3.scale.ordinal().rangeRoundBands([0, hbar_height], 0.9, 0.4);
+    var hlabel_y = d3.scale.ordinal().rangeRoundBands([0, hbar_height], 1, 0.5);
     var himage_y = d3.scale.ordinal().rangeRoundBands([0, hbar_height], 0.25, 0.1);
-    var hbar_x = d3.scale.linear().domain([0, 100]).range([100, hbar_width]);
+    var hbar_x = d3.scale.linear().domain([0, 100]).range([0, hbar_width * 0.9]);
     //
 
 
@@ -102,18 +99,18 @@ function createMapVisualization() {
         // SET UP LABEL
         map_label.append("text")
             .attr("class", "map-label cuisine")
-            .style("font-size", 24)
+            .style("font-size", 20)
             .attr("x", 0)
-            .attr("y", 350);
+            .attr("y", -145);
 
         map_label.append("text")
             .attr("x", 0)
-            .attr("y", 360)
+            .attr("y", -145)
             .attr("class", "detail");
         map_label.select(".detail")
             .append("tspan")
             .attr("x", 0)
-            .attr("dy", 20)
+            .attr("dy", 25)
             .attr("class", "map-label detail country");
 
         // DRAW MAP
@@ -132,7 +129,8 @@ function createMapVisualization() {
             })
             .on('mouseover', function (d, i) {
                 var currentState = this;
-                d3.select(this).style('fill-opacity', 0.6);
+                d3.select(this).style('fill-opacity', 0.6)
+                    .style({"cursor": "pointer"});
                 var map_unavailable = (country_cuisine[d.id] == undefined || country_cuisine[d.id].cuisine == undefined)
                 if (map_unavailable==false) {
                     showCuisine(d, world_map, country_cuisine, cuisine_ingredient);
@@ -140,10 +138,8 @@ function createMapVisualization() {
 
             })
             .on('mouseout', function (d, i) {
-                d3.selectAll('path')
-                    .style({
-                        'fill-opacity': 1
-                    });
+                d3.selectAll('.countries')
+                    .style('fill-opacity', 1);
             });
 
         svg_map.insert("path", ".graticule")
@@ -168,50 +164,17 @@ function createMapVisualization() {
         map_label.style("display", null);
 
         map_label.select("text.cuisine")
-            .text(underscore(cuisine_key))
-            .attr("font-size", 24);
+            .text(underscore(cuisine_key) + " Food")
+            .attr("font-size", 20);
         map_label.select("tspan.country")
             .text("Country: " +  country_data.name)
-            .attr("font-size", 20);
+            .attr("font-size", 16);
         //
 
-
-        //UPDATE PIE
-        //
-
-        //var pie_path = pie_group.datum(category_data).selectAll("path")
-        //    .data(pie_layout);
-        //
-        //pie_path
-        //    .enter().append("path");
-        //
-        //
         if (hover_yet) {showIngredient(country, curr_category, cuisine_data);}
-        //
-        //pie_path
-        //    .attr("class","pie")
-        //    .attr("fill", function(d,i){ return pie_colorScale(i); })
-        //    //.attr("fill", "transparent")
-        //    //.attr("d", function(d) {
-        //    //    if (d.data.category == curr_category) {return pie_arc_big}
-        //    //    else {return pie_arc}
-        //    //})
-        //    .attr("d", pie_arc)
-        //    .on('mouseover', function (d, i) {
-        //        //console.log(d.data.category)
-        //        //console.log(curr_category)
-        //        d3.selectAll(".pie")
-        //            .attr("d", pie_arc);
-        //        d3.select(this)
-        //            .attr("d", pie_arc_big);
-        //        showIngredient(d, d.data.category, cuisine_data);
-        //        });
 
 
-        console.log(category_data)
-        //pie_path.exit().remove();
-
-        var pie_slice = svg_pie.select(".slices").selectAll("path.slice")
+        var pie_slice = svg_pie.select(".pie-slices").selectAll("path.slice")
             .data(pie_layout(category_data));
 
         pie_slice.enter()
@@ -220,7 +183,7 @@ function createMapVisualization() {
             .attr("class", "slice");
 
         pie_slice
-            .transition().duration(1000)
+            .transition().duration(800)
             .attrTween("d", function(d) {
                 //console.log(d)
                 this._current = this._current || d;
@@ -230,27 +193,106 @@ function createMapVisualization() {
                     if (d.data.category == curr_category) {return pie_arc_big(interpolate(t));}
                     else {return pie_arc(interpolate(t));}
                 };
-            })
+            });
 
         pie_slice
             .on('mouseover', function (d, i) {
-                //console.log(d.data.category)
-                //console.log(curr_category)
-                d3.selectAll(".pie")
+                d3.selectAll(".slice")
                     .attr("d", pie_arc);
                 d3.select(this)
-                    .attr("d", pie_arc_big);
+                    .attr("d", pie_arc_big)
+                    .style({"cursor": "pointer"})
+                    .style('fill-opacity', 0.6);
                 showIngredient(d, d.data.category, cuisine_data);
-            });
+            })
+            .on('mouseout', function (d, i) {
+                d3.selectAll('.slice')
+                    .style('fill-opacity', 1);
+            })
 
         pie_slice.exit()
             .remove();
 
+        /* ------- TEXT LABELS -------*/
+
+        var pie_text = svg_pie.select(".pie-labels").selectAll("text")
+            .data(pie_layout(category_data));
+
+        pie_text.enter()
+            .append("text");
+
+        pie_text
+            .attr("class", "pie-labels")
+            .attr("dy", ".35em")
+            .text(function(d) {
+                return (d.data.category);
+            })
+            .append("tspan")
+            .attr("x", 0)
+            .attr("dy", 20)
+            .attr("class", "pie-labels percentage")
+            .text(function(d) {
+                return ("(" + percents(d.data.percent) + ")");
+            });
+
+
+        function midAngle(d){
+            return d.startAngle + (d.endAngle - d.startAngle)/2;
+        }
+
+        pie_text.transition().duration(800)
+            .attrTween("transform", function(d) {
+                this._current = this._current || d;
+                var interpolate = d3.interpolate(this._current, d);
+                this._current = interpolate(0);
+                return function(t) {
+                    var d2 = interpolate(t);
+                    //console.log(d2)
+                    var pos = pie_arc_outer.centroid(d2);
+                    pos[0] = radius * 0.9 * (midAngle(d2) < Math.PI ? 1 : -1);
+                    return "translate("+ pos +")";
+                };
+            })
+            .styleTween("text-anchor", function(d){
+                this._current = this._current || d;
+                var interpolate = d3.interpolate(this._current, d);
+                this._current = interpolate(0);
+                return function(t) {
+                    var d2 = interpolate(t);
+                    return midAngle(d2) < Math.PI ? "start":"end";
+                };
+            });
+
+        pie_text.exit()
+            .remove();
+
+        /* ------- SLICE TO TEXT POLYLINES -------*/
+
+        var pie_polyline = svg_pie.select(".pie-lines").selectAll("polyline")
+            .data(pie_layout(category_data));
+
+        pie_polyline.enter()
+            .append("polyline");
+
+        pie_polyline.transition().duration(800)
+            .attrTween("points", function(d){
+                this._current = this._current || d;
+                var interpolate = d3.interpolate(this._current, d);
+                this._current = interpolate(0);
+                return function(t) {
+                    var d2 = interpolate(t);
+                    var pos = pie_arc_outer.centroid(d2);
+                    pos[0] = radius * 0.85 * (midAngle(d2) < Math.PI ? 1 : -1);
+                    return [pie_arc_big.centroid(d2), pie_arc_outer.centroid(d2), pos];
+                };
+            });
+
+        pie_polyline.exit()
+            .remove();
     }
 
 
     function showIngredient(data, category, cuisine_data) {
-        //console.log(cuisine_data);
         curr_category = category;
         var ingredient_data = cuisine_data[curr_category],
             ingredient_keys = Object.keys(ingredient_data);
@@ -274,8 +316,18 @@ function createMapVisualization() {
             .attr("fill", function(d, i) {return hbar_colorScale(i);})
             .attr("y", function(d, i) {return hbar_y(i);})
             .attr("height", hbar_y.rangeBand())
-            .attr("x", 105)
-            .attr("width", function(d) {return (hbar_x(d.num)); })
+            .attr("x", 145)
+            .attr("width", function(d) {return (hbar_x(d.num)); });
+        hbar
+            .on('mouseover', function (d, i) {
+            var currentState = this;
+            d3.select(this).style('fill-opacity', 0.6)
+                .style({"cursor": "pointer"});
+            })
+            .on('mouseout', function (d, i) {
+                d3.selectAll('.hbar')
+                    .style('fill-opacity', 1);
+            });
 
 
         var hbar_label = svg_hbar.selectAll("text.hbar-label")
@@ -287,13 +339,23 @@ function createMapVisualization() {
             .duration(800)
             .attr("class", "hbar-label")
             .text(function(d) {
-                return underscore(d.ingredient);
+                return underscore(d.ingredient) + " (" + percents(d.num/100) + ")";
             })
             .attr("y", function(d, i) {return hlabel_y(i);})
-            .attr("x", 100)
+            .attr("x", 140)
             .attr("text-anchor", "end")
             .attr("alignment-baseline", "middle")
             .style("font-size", 16);
+        hbar_label
+            .on('mouseover', function (d, i) {
+                var currentState = this;
+                d3.select(this).style('fill-opacity', 0.6)
+                    .style({"cursor": "pointer"});
+            })
+            .on('mouseout', function (d, i) {
+                d3.selectAll('.hbar-label')
+                    .style('fill-opacity', 1);
+            });
 
 
         var hbar_img = svg_hbar.selectAll("image.hbar-image")
@@ -306,28 +368,36 @@ function createMapVisualization() {
             .attr("class", "hbar-image")
             .attr("xlink:href", function(d) {return "images/"+ d.ingredient +".png";})
             .attr("y", function(d, i) {return himage_y(i);})
-            .attr("x", function(d) {return hbar_x(d.num)+55;})
+            .attr("x", function(d) {return hbar_x(d.num)+150;})
             //.attr("align", "xMinYMid")
             .attr("width", 45)
             .attr("height", 45);
-
-        //d3.select("#ingredient-image")
-        //    .attr("src", "./images/" + selected_ingredient.replace(" ","_") + ".png")
-        //    .attr("width","100")
-        //    .attr("vspace","100px")
-
+        hbar_img
+            .on('mouseover', function (d, i) {
+                var currentState = this;
+                d3.select(this).style('fill-opacity', 0.6)
+                    .style({"cursor": "pointer"});
+            })
+            .on('mouseout', function (d, i) {
+                d3.selectAll('.hbar-image')
+                    .style('fill-opacity', 1);
+            });
 
         hbar.exit().remove();
         hbar_label.exit().remove();
         hbar_img.exit().remove();
 
         hover_yet = true;
-}
+    }
 
 }
 
 function commas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function percents(x) {
+    return (x*100).toFixed(0) + "%";
 }
 
 function underscore(x) {
