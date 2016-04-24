@@ -29,6 +29,10 @@ h1{
   fill: #327972;
 }
 
+.label{
+    color:#000;
+}
+
 .axis {
   font-size: 11px;
   stroke-width: 2px;

@@ -6,7 +6,7 @@ ForceDiagram = function(_parentElement, _data1, _data2){
     this.data_ingredients = _data2;
     this.displayData = []; // see dataForceLayout wrangling
 
-
+    this.colorScale = d3.scale.category20();
     this.initVis();
 };
 
@@ -47,7 +47,7 @@ ForceDiagram.prototype.initVis = function(){
     //make legend function
 
     vis.legend = d3.legend.color()
-        .scale(colorScale);
+        .scale(vis.colorScale);
 
     vis.svg.append("g")
         .attr("class", "legend")
@@ -83,7 +83,7 @@ ForceDiagram.prototype.wrangleData = function(){
         }));
     }
 
-    colorScale.domain(vis.categoryKeys);
+    vis.colorScale.domain(vis.categoryKeys);
 
 
     // Update the visualization
@@ -153,9 +153,9 @@ ForceDiagram.prototype.updateVis = function(){
         .attr("r",4)
         .attr("fill",function(d,i){
             if (vis.selectedVal=="recipe"){
-            return colorScale(d.Cuisine)}
+            return vis.colorScale(d.Cuisine)}
             else if (vis.selectedVal=="ingredient"){
-                return colorScale(d.category)
+                return vis.colorScale(d.category)
             }
         })
         .on("mouseover",vis.tip.show)
@@ -167,19 +167,20 @@ ForceDiagram.prototype.updateVis = function(){
 
     // 5) LISTEN TO THE 'TICK' EVENT AND UPDATE THE X/Y COORDINATES FOR ALL ELEMENTS
 
-    vis.force.on("tick",function(){
-        //update node coordinates
-        vis.node
-            .attr("cx",function(d){ return d.x; })
-            .attr("cy",function(d){ return d.y; });
 
-        //update edge coordinates
-        vis.link
-            .attr("x1", function(d) { return d.source.x; })
-            .attr("y1", function(d) { return d.source.y; })
-            .attr("x2", function(d) { return d.target.x; })
-            .attr("y2", function(d) { return d.target.y; });
-    });
+    //vis.force.on("tick",function(){
+    //    //update node coordinates
+    //    vis.node
+    //        .attr("cx",function(d){ return d.x; })
+    //        .attr("cy",function(d){ return d.y; });
+    //
+    //    //update edge coordinates
+    //    vis.link
+    //        .attr("x1", function(d) { return d.source.x; })
+    //        .attr("y1", function(d) { return d.source.y; })
+    //        .attr("x2", function(d) { return d.target.x; })
+    //        .attr("y2", function(d) { return d.target.y; });
+    //});
 
 
     vis.node.call(vis.force.drag);

@@ -4,8 +4,7 @@ var allData = [];
 var data_recipes;
 var data_ingredients;
 
-// Set ordinal color scale
-var colorScale = d3.scale.category20();
+
 
 // Variables for the visualization instances
 var forceplot;
