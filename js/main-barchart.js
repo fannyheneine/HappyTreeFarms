@@ -33,6 +33,7 @@ var clicks = 0;
 var clicks2 = 0;
 
 
+
 //Intiate scales
 var xScale_ing = d3.scale.ordinal()
     .rangeRoundBands([0, width], .1)

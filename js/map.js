@@ -140,7 +140,11 @@ function createMapVisualization() {
             .on('mouseout', function (d, i) {
                 d3.selectAll('.countries')
                     .style('fill-opacity', 1);
-            });
+            })
+            .on('click',function(d){
+                console.log(country_cuisine[d.id].cuisine)
+                updateVisualization(data_i, data_p, country_cuisine[d.id].cuisine)
+            })
 
         svg_map.insert("path", ".graticule")
             .datum(topojson.mesh(world_map, world_map.objects.countries, function (a, b) {
@@ -209,6 +213,10 @@ function createMapVisualization() {
                 d3.selectAll('.slice')
                     .style('fill-opacity', 1);
             })
+            .on('click',function(){
+                console.log(this.Country)
+            })
+
 
         pie_slice.exit()
             .remove();
@@ -385,7 +393,12 @@ function createMapVisualization() {
                     .style('opacity', 1)
                     .attr("width", 45)
                     .attr("height", 45);;
-            });
+            })
+            .on('click', function(d){
+                console.log(this_color)
+                console.log(d.ingredient)
+                updateVisualization2(d.ingredient,this_color)
+            })
 
         hbar.exit().remove();
         hbar_label.exit().remove();
