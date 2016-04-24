@@ -375,12 +375,16 @@ function createMapVisualization() {
         hbar_img
             .on('mouseover', function (d, i) {
                 var currentState = this;
-                d3.select(this).style('fill-opacity', 0.6)
-                    .style({"cursor": "pointer"});
+                d3.select(this).style('opacity', 0.6)
+                    .style({"cursor": "pointer"})
+                    .attr("width", 55)
+                    .attr("height", 55);;
             })
             .on('mouseout', function (d, i) {
                 d3.selectAll('.hbar-image')
-                    .style('fill-opacity', 1);
+                    .style('opacity', 1)
+                    .attr("width", 45)
+                    .attr("height", 45);;
             });
 
         hbar.exit().remove();
