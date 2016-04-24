@@ -143,7 +143,11 @@ function createMapVisualization() {
             })
             .on('click',function(d){
                 console.log(country_cuisine[d.id].cuisine)
+                d3.select("#ranking-type")
+                    .property({value: country_cuisine[d.id].cuisine})
+                update_imagechart(data_i, data_p, country_cuisine[d.id].cuisine)
                 updateVisualization(data_i, data_p, country_cuisine[d.id].cuisine)
+
             })
 
         svg_map.insert("path", ".graticule")

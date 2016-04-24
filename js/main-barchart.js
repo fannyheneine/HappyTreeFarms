@@ -64,7 +64,7 @@ queue()
             d.Caribbeans = +d.Caribbeans;
             d.Chinese = +d.Chinese;
             d.East_African = +d.East_African;
-            d.Eastern_European = +d.Eastern_European;
+            d.East_European = +d.East_European;
             d.French = +d.French;
             d.British = +d.British;
             d.Indian = +d.Indian;
@@ -82,7 +82,7 @@ queue()
             d.South_Asian = +d.South_Asian;
             d.Southeast_Asian = +d.Southeast_Asian;
             d.West_African = +d.West_African;
-            d.Western_European = +d.Western_European;
+            d.West_European = +d.West_European;
 
         });
 
