@@ -168,19 +168,19 @@ ForceDiagram.prototype.updateVis = function(){
     // 5) LISTEN TO THE 'TICK' EVENT AND UPDATE THE X/Y COORDINATES FOR ALL ELEMENTS
 
 
-    //vis.force.on("tick",function(){
-    //    //update node coordinates
-    //    vis.node
-    //        .attr("cx",function(d){ return d.x; })
-    //        .attr("cy",function(d){ return d.y; });
-    //
-    //    //update edge coordinates
-    //    vis.link
-    //        .attr("x1", function(d) { return d.source.x; })
-    //        .attr("y1", function(d) { return d.source.y; })
-    //        .attr("x2", function(d) { return d.target.x; })
-    //        .attr("y2", function(d) { return d.target.y; });
-    //});
+    vis.force.on("tick",function(){
+        //update node coordinates
+        vis.node
+            .attr("cx",function(d){ return d.x; })
+            .attr("cy",function(d){ return d.y; });
+
+        //update edge coordinates
+        vis.link
+            .attr("x1", function(d) { return d.source.x; })
+            .attr("y1", function(d) { return d.source.y; })
+            .attr("x2", function(d) { return d.target.x; })
+            .attr("y2", function(d) { return d.target.y; });
+    });
 
 
     vis.node.call(vis.force.drag);
