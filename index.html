@@ -24,14 +24,17 @@
 		<h1 align="center">Cuisine: World Map</h1>
 
 		<div class="row">
-			<div id="map-bar" class="col-md-4" align="center"></div>
+			<div id="map-bar" class="col-md-3" align="center"></div>
 
-			<div id="map-map" class=" col-md-8" align="center"></div>
+			<div id="map-map" class=" col-md-9" align="center"></div>
         </div>
 
 	</div>
 
 		<h1 align="left">Force Diagram</h1>
+
+	<!--<a download="data.json" id="download">Download</a>-->
+	<!--DON'T DELETE THIS ^-->
         <form>
             <input type="radio" name="graph-type" value="recipe" checked onchange="forceplot.wrangleData()"> Recipes<br>
             <input type="radio" name="graph-type" value="ingredient" onchange="forceplot.wrangleData()"> Ingredients<br>
@@ -86,7 +89,7 @@
 
 	<!--<h2><span id="show-ingredient" class="back"></span></h2>-->
 	<row>
-		<div class="col-md-5"
+		<div class="col-md-5">
 		<div id="bar-chart"></div>
 		</div>
 		<div class="col-md-1">
@@ -118,8 +121,8 @@
 
 
 	<!-- Visualization objects -->
-	<script src="js/cuisine_map.js"></script>
-	<script src="js/main.js"></script>
+	<script src="js/map.js"></script>
+	<script src="js/main-force.js"></script>
     <script src="js/forceDiagram.js"></script>
 	<script src="js/main-barchart.js"></script>
 	<!-- Load dataForceLayout, create visualizations -->

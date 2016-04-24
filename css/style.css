@@ -51,14 +51,24 @@ h1{
   fill: none;
 }
 
+.boundary{
+    stroke:"black";
+    stroke-width:10;
+    fill:"none";
+}
+
 .area{
   stroke:#999967;
   stroke-width: 2px;
-
 }
-#map-map text {
-  font-size: 11px;
-  fill:#666666;
+
+.map-label{
+    font-family: Helvetica Neue, Helvetica,Arial, sans-serif;
+    fill: #666666;
+}
+.hbar-label{
+    font-family: Helvetica Neue, Helvetica,Arial, sans-serif;
+    fill: #666666;
 }
 
 .axis-label {

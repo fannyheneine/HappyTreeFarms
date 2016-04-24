@@ -1,12 +1,12 @@
-createMapVisualization()
+createMapVisualization();
 
 function createMapVisualization() {
     var map_map_width_1 = 800,
         map_map_height_1 = 500,
-        map_bar_width_1 = 400,
-        map_bar_height_1 = 150,
+        map_pie_width_1 = 400,
+        map_pie_height_1 = 250,
         map_bar_width_2 = 400,
-        map_bar_height_2 = 350;
+        map_bar_height_2 = 250;
 
     var svg_map_map = d3.select("#map-map").append("svg")
         .attr("width", map_map_width_1)
@@ -29,13 +29,20 @@ function createMapVisualization() {
 
     var map_world_global, map_country_global, map_cuisine_global;
 
+//INITIATE PIE
+    var svg_map_pie = d3.select("#map-bar").append("svg")
+        .attr("width", map_pie_width_1)
+        .attr("height", map_pie_height_1);
+
+    var map_pie = svg_map_pie.append("g")
+        .attr('transform', 'translate(' + map_pie_width_1 / 2 + ',' + map_pie_height_1 / 2 + ')');;
 
 //INITIATE BARS
 
-    var svg_map_bar1 = d3.select("#map-bar").append("svg")
-        .attr("width", map_bar_width_1)
-        .attr("height", map_bar_height_1)
-        .append("g");
+    //var svg_map_bar1 = d3.select("#map-bar").append("svg")
+    //    .attr("width", map_bar_width_1)
+    //    .attr("height", map_bar_height_1)
+    //    .append("g");
 
     var svg_map_bar2 = d3.select("#map-bar").append("svg")
         .attr("width", map_bar_width_2)
@@ -43,8 +50,8 @@ function createMapVisualization() {
         .append("g");
 
 
-    var map_bar1_x = d3.scale.ordinal().rangeRoundBands([0, map_bar_width_1], 0);
-    var map_bar1_y = d3.scale.linear().domain([0, 1]).range([map_bar_height_1,0]);
+    //var map_bar1_x = d3.scale.ordinal().rangeRoundBands([0, map_bar_width_1], 0);
+    //var map_bar1_y = d3.scale.linear().domain([0, 1]).range([map_bar_height_1,0]);
     var map_bar2_x = d3.scale.linear().domain([0, 1]).range([map_bar_width_2,0]);
     var map_bar2_y = d3.scale.ordinal().rangeRoundBands([0, map_bar_height_2], 0);
 
@@ -129,6 +136,8 @@ function createMapVisualization() {
             cuisine_key = country_data.cuisine,
             cuisine_data = map_cuisine_global[cuisine_key];
 
+
+
         if (country_data != undefined && cuisine_key != undefined) {
             map_label.style("display", null);
 
@@ -136,57 +145,83 @@ function createMapVisualization() {
                 .text(cuisine_key);
             map_label.select("tspan.Cuisine")
                 .text("Country: " +  country_data.name);
-            map_label.select("tspan.Recipe_Count")
-                .text("Available Recipes: " + commas(cuisine_data.n_recipes));
+            //map_label.select("tspan.Recipe_Count")
+            //    .text("Available Recipes: " + commas(cuisine_data.n_recipes));
 
             //
-            //PART II: Bars at the bottom
+            //PART II: Pie at the upper left
             //
-
-            var group = "condiment";
-            var ingredient_data = cuisine_data[group];
-            var n_recipes = cuisine_data.n_recipes;
-            //console.log(ingredient_data);
 
             console.log(cuisine_data);
-            console.log(ingredient_data);
-
-            map_bar2_y.domain(["salt", "olive oil", "garlic", "sugar", "butter", "pepper"]);
-            map_colorScale_ingredient.domain(["salt", "olive oil", "garlic", "sugar", "butter", "pepper"]);
-
-            var bar_map = svg_map_bar2.selectAll(".bar")
-                .data(ingredient_data);
-
-            bar_map
-                .enter().append("rect")
-
-            bar_map
-                .attr("class", "bar")
-                .attr("y", function(d) {return map_bar2_y(d.ingredient);})
-                .attr("height", map_bar2_y.rangeBand())
-                .attr("x", 0)
-                .attr("width", function(d) {return (map_bar2_x(d.num/n_recipes)); })
-                .attr("fill", function(d) {
-                    return map_colorScale_ingredient(d.ingredient);
-                });
+            var category_data = cuisine_data.category_pct;
 
 
-            svg_map_bar2.selectAll("text.bar-label")
-                .data(ingredient_data)
-                .enter()
-                .append("text")
-                .attr("class", "bar-label")
-                .text(function(d) {
-                    return d.ingredient;
-                })
-                .attr("y", function(d, i) {
-                    return 40+i*(map_bar_height_2/6);
-                })
-                .attr("x", 0)
-                .attr("text-anchor", "start")
-                .style("font-size", 16)
+            var map_colorScale_pie = d3.scale.category10();
+            var radius = Math.min(map_pie_width_1, map_pie_height_1);
+            var oRadius = radius / 2 * 0.9;
+            var iRadius = radius / 2 * 0.2;
 
-            bar_map.exit().remove();
+            var pie = d3.layout.pie().value(function(d){ return d; }).sort(null);
+
+            var pie_arc = d3.svg.arc()
+                .outerRadius(oRadius)
+                .innerRadius(iRadius);
+
+            var pie_path = map_pie.datum(category_data).selectAll("path")
+                .data(pie)
+                .enter().append("path")
+                .attr("class","piechart")
+                .attr("fill", function(d,i){ return map_colorScale_pie(i); })
+                .attr("d", pie_arc)
+                .each(function(d){ this._current = d; })
+            //
+            //PART III: Bars at the bottom right
+            //
+
+            //var group = "condiment";
+            //var ingredient_data = cuisine_data[group];
+            //var n_recipes = cuisine_data.n_recipes;
+            ////console.log(ingredient_data);
+            //
+            //console.log(cuisine_data);
+            //console.log(ingredient_data);
+            //
+            //map_bar2_y.domain(["salt", "olive oil", "garlic", "sugar", "butter", "pepper"]);
+            //map_colorScale_ingredient.domain(["salt", "olive oil", "garlic", "sugar", "butter", "pepper"]);
+            //
+            //var bar_map = svg_map_bar2.selectAll(".bar")
+            //    .data(ingredient_data);
+            //
+            //bar_map
+            //    .enter().append("rect")
+            //
+            //bar_map
+            //    .attr("class", "bar")
+            //    .attr("y", function(d) {return map_bar2_y(d.ingredient);})
+            //    .attr("height", map_bar2_y.rangeBand())
+            //    .attr("x", 0)
+            //    .attr("width", function(d) {return (map_bar2_x(d.num/n_recipes)); })
+            //    .attr("fill", function(d) {
+            //        return map_colorScale_ingredient(d.ingredient);
+            //    });
+            //
+            //
+            //svg_map_bar2.selectAll("text.bar-label")
+            //    .data(ingredient_data)
+            //    .enter()
+            //    .append("text")
+            //    .attr("class", "bar-label")
+            //    .text(function(d) {
+            //        return d.ingredient;
+            //    })
+            //    .attr("y", function(d, i) {
+            //        return 40+i*(map_bar_height_2/6);
+            //    })
+            //    .attr("x", 0)
+            //    .attr("text-anchor", "start")
+            //    .style("font-size", 16)
+            //
+            //bar_map.exit().remove();
         }
     }
 
