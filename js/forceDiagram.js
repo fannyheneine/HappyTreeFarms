@@ -1,9 +1,9 @@
 
 
-ForceDiagram = function(_parentElement, _data1, _data2){
+ForceDiagram = function(_parentElement, _data1,_data2){
     this.parentElement = _parentElement;
-    this.data_recipes = _data1;
-    this.data_ingredients = _data2;
+    this.allData = _data1;
+    this.categories_ingredients=_data2;
     this.displayData = []; // see dataForceLayout wrangling
 
     this.colorScale = d3.scale.category20();
@@ -70,14 +70,186 @@ ForceDiagram.prototype.initVis = function(){
 ForceDiagram.prototype.wrangleData = function(){
     var vis = this;
 
+    // THIS IS WHERE THE FILTERING FUNCTIONS WILL GO
+    var filtered=0;
+    if (filtered==1){
+        vis.allDatafiltered=vis.allData.filter(function(d){return d.Cuisine=="Mexican";})}
+    else {
+        vis.allDatafiltered=vis.allData;
+    }
+
+    //PRE-PROCESSING FOR LINKS-NODES FORMAT
+    vis.sampledData=_.sample(vis.allDatafiltered,100);
+    vis.jsonData=[];
+
+    vis.sampledData.forEach(function(d,i){
+        var dnew={};
+        dnew.id= d[""];
+        dnew.Country= d.Country;
+        dnew.Cuisine= d.Cuisine;
+        dnew.Ingredients=[];
+
+        for(var j=1;;j++){
+            var ing_i=d["Unnamed: "+j];
+            if(ing_i==""){ break;}
+            dnew.Ingredients.push(ing_i);
+
+        }
+
+        vis.jsonData.push(dnew);
+
+    });
+
+    var tableByIngredients=[];
+    vis.jsonData.forEach(function(d,i){
+        d.Ingredients.forEach(function(di,ii){
+            if(!(di in tableByIngredients)){
+                tableByIngredients[di]=[];
+                tableByIngredients[di].push(d.id);
+            } else {
+                tableByIngredients[di].push(d.id);
+            }
+        });
+    });
+
+    var categoriesByIngredients={};
+    for (var category in vis.categories_ingredients) {
+        vis.categories_ingredients[category].forEach(function (d, i) {
+
+            categoriesByIngredients[d] = category;
+        });
+    }
+
+// FOR RECIPES AS NODES
+    vis.linksNodesData_Recipes={};
+    vis.linksNodesData_Recipes.Nodes=[];
+    vis.linksNodesData_Recipes.Links={};
+
+    vis.jsonData.forEach(function(d,i){
+        var recipeNode={};
+        recipeNode.id= d.id;
+        recipeNode.Cuisine= d.Cuisine;
+        recipeNode.index=i;
+        recipeNode.x=500;
+        recipeNode.y=400;
+        recipeNode.Ingredients= d.Ingredients;
+        vis.linksNodesData_Recipes.Nodes.push(recipeNode);
+    });
+
+
+    var tableByRecipeID ={};
+    vis.linksNodesData_Recipes.Nodes.forEach(function(d,i){
+        tableByRecipeID[d.id]=d;
+    });
+
+
+    for(var ingredientname in tableByIngredients){
+        var ingredient=tableByIngredients[ingredientname];
+        ingredient.forEach(function(recipe1id,ii) {
+            //create a link btw each recipe with a particular ingredient and every other recipe with that ingredient
+            ingredient.forEach(function (recipe2id, jj) {
+                if(recipe1id != recipe2id) {
+                    var recipe1 = tableByRecipeID[recipe1id];
+                    var recipe2 = tableByRecipeID[recipe2id];
+                    var linkname = [recipe1id, recipe2id].sort().join('-');
+
+
+                    if (linkname in vis.linksNodesData_Recipes.Links) {
+                        vis.linksNodesData_Recipes.Links[linkname].strength++
+                    }
+                    else {
+                        var linkObject = {};
+                        linkObject.source = recipe1.index;
+                        linkObject.target = recipe2.index;
+                        linkObject.strength = 1;
+                        linkObject.name=linkname;
+                        vis.linksNodesData_Recipes.Links[linkname] = linkObject;
+
+                    }
+                }
+
+
+            });
+
+
+        })
+    }
+
+    var LinksList=[];
+    for (var linkn in vis.linksNodesData_Recipes.Links){
+        LinksList.push(vis.linksNodesData_Recipes.Links[linkn]);
+    }
+    vis.linksNodesData_Recipes.Links=LinksList;
+
+//FOR INGREDIENTS AS NODES
+    vis.linksNodesData_Ingredients = {};
+    vis.linksNodesData_Ingredients.Nodes = [];
+    vis.linksNodesData_Ingredients.Links = {};
+
+    var index_count = 0;
+    for (var ingredient in tableByIngredients) {
+
+        var ingredientNode = {};
+        ingredientNode.id = ingredient;
+        ingredientNode.recipes = tableByIngredients[ingredient];
+        ingredientNode.category= categoriesByIngredients[ingredient];
+        ingredientNode.index = index_count;
+        tableByIngredients[ingredient].index = index_count;
+        ingredientNode.x = 500;
+        ingredientNode.y = 400;
+        vis.linksNodesData_Ingredients.Nodes.push(ingredientNode);
+        index_count++
+    }
+
+    for (var recipe in tableByRecipeID) {
+        var ingredients = tableByRecipeID[recipe].Ingredients;
+        ingredients.forEach(function (ing_name1, ii) {
+            //create a link btw each ingredient within a particular recipe with every other
+            ingredients.forEach(function (ing_name2, jj) {
+                if (ing_name1 != ing_name2) {
+                    var ing1 = tableByIngredients[ing_name1];
+                    var ing2 = tableByIngredients[ing_name2];
+                    var linkname = [ing_name1, ing_name2].sort().join('-');
+
+
+                    if (linkname in vis.linksNodesData_Ingredients.Links) {
+                        vis.linksNodesData_Ingredients.Links[linkname].strength++
+                    }
+                    else {
+                        var linkObject = {};
+                        linkObject.source = ing1.index;
+                        linkObject.target = ing2.index;
+                        linkObject.strength = 1;
+                        linkObject.name = linkname;
+                        vis.linksNodesData_Ingredients.Links[linkname] = linkObject;
+
+                    }
+                }
+
+
+            });
+
+
+        })
+    }
+
+    var LinksList2 = [];
+    for (var linkn in vis.linksNodesData_Ingredients.Links) {
+        LinksList2.push(vis.linksNodesData_Ingredients.Links[linkn]);
+    }
+    vis.linksNodesData_Ingredients.Links = LinksList2;
+
+
+//radio button responsiveness
+
     vis.selectedVal=d3.select('input[name="graph-type"]:checked').property("value");
     if (vis.selectedVal=="recipe") {
-        vis.displayData = vis.data_recipes;
+        vis.displayData = vis.linksNodesData_Recipes;
         vis.categoryKeys = _.uniq(vis.displayData.Nodes.map(function (recipe) {
             return recipe.Cuisine;
         }));
     } else if (vis.selectedVal=="ingredient") {
-        vis.displayData = vis.data_ingredients;
+        vis.displayData = vis.linksNodesData_Ingredients;
         vis.categoryKeys = _.uniq(vis.displayData.Nodes.map(function (ingredient) {
             return ingredient.category;
         }));
