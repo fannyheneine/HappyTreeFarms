@@ -54,9 +54,10 @@ ForceDiagram.prototype.initVis = function(){
         .attr("class", "legend")
         .attr("transform", "translate("+vis.width*.05+","+vis.height *.3+")");
 
-    vis.svg.append("rect")
-        .attr("x",vis.width *.85)
-        .attr("y",vis.height *.40)
+    vis.rect=vis.svg.append("g")
+        .attr("transform", "translate("+vis.width*.85+","+vis.height *.4+")");
+
+    vis.rect.append("rect")
         .attr("width",vis.width *.15)
         .attr("height",vis.height *.20)
         .attr("class","force-textbox")
@@ -162,6 +163,8 @@ ForceDiagram.prototype.wrangleData = function(){
                     var commonValues = _.intersection(ingredients_1, ingredients_2);
                     linkObject.source = d1.index;
                     linkObject.target = d2.index;
+                    linkObject.sourceid=d1.index;
+                    linkObject.targetid=d2.index;
                     linkObject.strength = commonValues.length;
                     linkObject.name = linkname;
                     linkObject.intersection=commonValues;
@@ -227,6 +230,8 @@ ForceDiagram.prototype.wrangleData = function(){
                     var commonValues = _.intersection(recipes_1, recipes_2);
                     linkObject.source = d1.index;
                     linkObject.target = d2.index;
+                    linkObject.sourceid=d1.index;
+                    linkObject.targetid=d2.index;
                     linkObject.strength = commonValues.length;
                     linkObject.name = linkname;
                     var commonCuisines=[];
@@ -241,7 +246,7 @@ ForceDiagram.prototype.wrangleData = function(){
 
     });
 
-    console.log(vis.linksNodesData_Ingredients)
+
     var LinksList2 = [];
     for (var linkn in vis.linksNodesData_Ingredients.Links) {
         LinksList2.push(vis.linksNodesData_Ingredients.Links[linkn]);
@@ -289,18 +294,22 @@ ForceDiagram.prototype.updateVis = function(){
     vis.threshold=5;
 
     vis.nodesLinkedByIndex = {};
+
+
     vis.displayData.Links.forEach(function(d) {
         if (d.strength > vis.threshold){
-            vis.nodesLinkedByIndex[d.source + "," + d.target] = 1;
-            vis.nodesLinkedByIndex[d.target + "," + d.source] = 1;
+            vis.nodesLinkedByIndex[d.sourceid + "," + d.targetid] = 1;
+            vis.nodesLinkedByIndex[d.targetid + "," + d.sourceid] = 1;
         }
-        else {vis.nodesLinkedByIndex[d.source + "," + d.target] = 0;
-            vis.nodesLinkedByIndex[d.target + "," + d.source] = 0}
+        else {vis.nodesLinkedByIndex[d.sourceid + "," + d.targetid] = 0;
+            vis.nodesLinkedByIndex[d.targetid + "," + d.sourceid] = 0}
 
     });
     vis.displayData.Nodes.forEach(function(d){
         vis.nodesLinkedByIndex[d.index + "," + d.index] = 1
     });
+
+
 
 
     // define neighboring function
@@ -377,9 +386,22 @@ ForceDiagram.prototype.updateVis = function(){
         .on("mouseover", function(d) {
             d3.select(this).attr("r",8).style("stroke-width", 2);
             vis.tip.show(d);
+            var linktext=[];
+            var ind=0;
             vis.link.style('stroke-opacity', function(l) {
-                if ((d === l.source || d === l.target) && (l.strength > vis.threshold))
-                    return 1;
+                if ((d === l.source || d === l.target) && (l.strength > vis.threshold)){
+                    l.intersection.forEach(function(text1,i) {
+                        if (linktext.indexOf(text1) == -1) {
+                        ind += 1;
+                        linktext.push(text1);
+                        vis.rect.append("text")
+                            .text(text1)
+                            .attr("y", ind * 15)
+                            .style("fill", "#000")
+                            .attr("class", "force-hover-label");
+                        }
+                    });
+                    return 1;}
                 else
                     return .2;
             });
@@ -400,6 +422,8 @@ ForceDiagram.prototype.updateVis = function(){
         })
         .on("mouseout",function(d) {
             vis.node.attr("r", 4).style("stroke-width", 1);
+
+            vis.rect.selectAll("text").remove();
             vis.tip.hide(d);
             vis.link.style('stroke', "#bbb");
             vis.link.style('stroke-opacity',function(d){return (d.strength-1)/10;})

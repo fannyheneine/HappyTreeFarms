@@ -31,10 +31,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="style.css" pinned="false" current-in-tab="true">
+      <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/css/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3888889">
+            <state vertical-scroll-proportion="-5.677419">
               <caret line="128" column="30" selection-start-line="128" selection-start-column="30" selection-end-line="128" selection-end-column="30" />
               <folding />
             </state>
@@ -44,18 +44,18 @@
       <file leaf-file-name="main-force.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/main-force.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-56.833332">
+            <state vertical-scroll-proportion="-49.5">
               <caret line="93" column="0" selection-start-line="93" selection-start-column="0" selection-end-line="96" selection-end-column="17" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="forceDiagram.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="forceDiagram.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/forceDiagram.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.9444447">
-              <caret line="61" column="36" selection-start-line="61" selection-start-column="23" selection-end-line="61" selection-end-column="36" />
+            <state vertical-scroll-proportion="0.30495554">
+              <caret line="304" column="45" selection-start-line="304" selection-start-column="45" selection-end-line="304" selection-end-column="45" />
               <folding />
             </state>
           </provider>
@@ -85,8 +85,8 @@
         <option value="$PROJECT_DIR$/js/map.js" />
         <option value="$PROJECT_DIR$/js/main-force.js" />
         <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/js/forceDiagram.js" />
         <option value="$PROJECT_DIR$/css/style.css" />
+        <option value="$PROJECT_DIR$/js/forceDiagram.js" />
       </list>
     </option>
   </component>
@@ -96,8 +96,8 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="862" />
-    <option name="y" value="228" />
+    <option name="x" value="-8" />
+    <option name="y" value="83" />
     <option name="width" value="1469" />
     <option name="height" value="989" />
   </component>
@@ -304,7 +304,7 @@
     <option name="totallyTimeSpent" value="907000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="862" y="228" width="1469" height="989" extended-state="0" />
+    <frame x="-8" y="83" width="1469" height="989" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14128187" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -682,6 +682,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.677419">
+          <caret line="128" column="30" selection-start-line="128" selection-start-column="30" selection-end-line="128" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-12.193548">
@@ -690,26 +698,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/forceDiagram.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.9444447">
-          <caret line="61" column="36" selection-start-line="61" selection-start-column="23" selection-end-line="61" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/main-force.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-56.833332">
+        <state vertical-scroll-proportion="-49.5">
           <caret line="93" column="0" selection-start-line="93" selection-start-column="0" selection-end-line="96" selection-end-column="17" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/style.css">
+    <entry file="file://$PROJECT_DIR$/js/forceDiagram.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3888889">
-          <caret line="128" column="30" selection-start-line="128" selection-start-column="30" selection-end-line="128" selection-end-column="30" />
+        <state vertical-scroll-proportion="0.30495554">
+          <caret line="304" column="45" selection-start-line="304" selection-start-column="45" selection-end-line="304" selection-end-column="45" />
           <folding />
         </state>
       </provider>
