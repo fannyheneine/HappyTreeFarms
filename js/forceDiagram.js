@@ -40,8 +40,9 @@ ForceDiagram.prototype.initVis = function(){
     vis.force=d3.layout.force()
         .size([vis.width, vis.height])
         .charge(10)
-        .chargeDistance(500)
-        .gravity(0.03);
+        .chargeDistance(50)
+        .friction(.1)
+        .gravity(.01);
 
 
     //make legend function
@@ -51,7 +52,15 @@ ForceDiagram.prototype.initVis = function(){
 
     vis.svg.append("g")
         .attr("class", "legend")
-        .attr("transform", "translate(110,200)");
+        .attr("transform", "translate("+vis.width*.05+","+vis.height *.3+")");
+
+    vis.svg.append("rect")
+        .attr("x",vis.width *.85)
+        .attr("y",vis.height *.40)
+        .attr("width",vis.width *.15)
+        .attr("height",vis.height *.20)
+        .attr("class","force-textbox")
+        .style("fill-opacity",0.2);
 
 
     vis.tip = d3.tip()
@@ -130,11 +139,48 @@ ForceDiagram.prototype.wrangleData = function(){
         recipeNode.id= d.id;
         recipeNode.Cuisine= d.Cuisine;
         recipeNode.index=i;
-        recipeNode.x=500;
-        recipeNode.y=400;
+        recipeNode.x=Math.random()*vis.width;
+        recipeNode.y=Math.random()*vis.height;
         recipeNode.Ingredients= d.Ingredients;
         vis.linksNodesData_Recipes.Nodes.push(recipeNode);
     });
+
+
+    vis.linksNodesData_Recipes.Nodes.forEach(function(d1,i1){
+        vis.linksNodesData_Recipes.Nodes.forEach(function(d2,i2){
+            var recipe1id=d1.id;
+            var recipe2id=d2.id;
+            if(recipe1id != recipe2id) {
+                var linkname = [recipe1id, recipe2id].sort().join('-');
+
+                if (linkname in vis.linksNodesData_Recipes.Links) {
+                    //nothing
+                } else {
+                    var linkObject = {};
+                    var ingredients_1 = d1.Ingredients;
+                    var ingredients_2 = d2.Ingredients;
+                    var commonValues = _.intersection(ingredients_1, ingredients_2);
+                    linkObject.source = d1.index;
+                    linkObject.target = d2.index;
+                    linkObject.strength = commonValues.length;
+                    linkObject.name = linkname;
+                    linkObject.intersection=commonValues;
+                    vis.linksNodesData_Recipes.Links[linkname] = linkObject;
+                }
+            }
+        })
+
+    });
+
+
+
+    var LinksList=[];
+    for (var linkn in vis.linksNodesData_Recipes.Links){
+            LinksList.push(vis.linksNodesData_Recipes.Links[linkn]);
+
+    }
+    vis.linksNodesData_Recipes.Links=LinksList;
+
 
 
     var tableByRecipeID ={};
@@ -142,44 +188,6 @@ ForceDiagram.prototype.wrangleData = function(){
         tableByRecipeID[d.id]=d;
     });
 
-
-    for(var ingredientname in tableByIngredients){
-        var ingredient=tableByIngredients[ingredientname];
-        ingredient.forEach(function(recipe1id,ii) {
-            //create a link btw each recipe with a particular ingredient and every other recipe with that ingredient
-            ingredient.forEach(function (recipe2id, jj) {
-                if(recipe1id != recipe2id) {
-                    var recipe1 = tableByRecipeID[recipe1id];
-                    var recipe2 = tableByRecipeID[recipe2id];
-                    var linkname = [recipe1id, recipe2id].sort().join('-');
-
-
-                    if (linkname in vis.linksNodesData_Recipes.Links) {
-                        vis.linksNodesData_Recipes.Links[linkname].strength++
-                    }
-                    else {
-                        var linkObject = {};
-                        linkObject.source = recipe1.index;
-                        linkObject.target = recipe2.index;
-                        linkObject.strength = 1;
-                        linkObject.name=linkname;
-                        vis.linksNodesData_Recipes.Links[linkname] = linkObject;
-
-                    }
-                }
-
-
-            });
-
-
-        })
-    }
-
-    var LinksList=[];
-    for (var linkn in vis.linksNodesData_Recipes.Links){
-        LinksList.push(vis.linksNodesData_Recipes.Links[linkn]);
-    }
-    vis.linksNodesData_Recipes.Links=LinksList;
 
 //FOR INGREDIENTS AS NODES
     vis.linksNodesData_Ingredients = {};
@@ -195,51 +203,69 @@ ForceDiagram.prototype.wrangleData = function(){
         ingredientNode.category= categoriesByIngredients[ingredient];
         ingredientNode.index = index_count;
         tableByIngredients[ingredient].index = index_count;
-        ingredientNode.x = 500;
-        ingredientNode.y = 400;
+        ingredientNode.x = Math.random()*vis.width;
+        ingredientNode.y = Math.random()*vis.height;
         vis.linksNodesData_Ingredients.Nodes.push(ingredientNode);
         index_count++
     }
 
-    for (var recipe in tableByRecipeID) {
-        var ingredients = tableByRecipeID[recipe].Ingredients;
-        ingredients.forEach(function (ing_name1, ii) {
-            //create a link btw each ingredient within a particular recipe with every other
-            ingredients.forEach(function (ing_name2, jj) {
-                if (ing_name1 != ing_name2) {
-                    var ing1 = tableByIngredients[ing_name1];
-                    var ing2 = tableByIngredients[ing_name2];
-                    var linkname = [ing_name1, ing_name2].sort().join('-');
 
 
-                    if (linkname in vis.linksNodesData_Ingredients.Links) {
-                        vis.linksNodesData_Ingredients.Links[linkname].strength++
-                    }
-                    else {
-                        var linkObject = {};
-                        linkObject.source = ing1.index;
-                        linkObject.target = ing2.index;
-                        linkObject.strength = 1;
-                        linkObject.name = linkname;
-                        vis.linksNodesData_Ingredients.Links[linkname] = linkObject;
+    vis.linksNodesData_Ingredients.Nodes.forEach(function(d1,i1){
+        vis.linksNodesData_Ingredients.Nodes.forEach(function(d2,i2){
+            var ing1id=d1.id;
+            var ing2id=d2.id;
+            if(ing1id != ing2id) {
+                var linkname = [ing1id, ing2id].sort().join('-');
 
-                    }
+                if (linkname in vis.linksNodesData_Ingredients.Links) {
+                    //nothing
+                } else {
+                    var linkObject = {};
+                    var recipes_1 = d1.recipes;
+                    var recipes_2 = d2.recipes;
+                    var commonValues = _.intersection(recipes_1, recipes_2);
+                    linkObject.source = d1.index;
+                    linkObject.target = d2.index;
+                    linkObject.strength = commonValues.length;
+                    linkObject.name = linkname;
+                    var commonCuisines=[];
+                    commonValues.forEach(function(d,i){
+                        commonCuisines.push(tableByRecipeID[d].Cuisine);
+                    });
+                    linkObject.intersection=commonCuisines;
+                    vis.linksNodesData_Ingredients.Links[linkname] = linkObject;
                 }
-
-
-            });
-
-
+            }
         })
-    }
 
+    });
+
+    console.log(vis.linksNodesData_Ingredients)
     var LinksList2 = [];
     for (var linkn in vis.linksNodesData_Ingredients.Links) {
         LinksList2.push(vis.linksNodesData_Ingredients.Links[linkn]);
     }
+
     vis.linksNodesData_Ingredients.Links = LinksList2;
 
 
+
+    // Update the visualization
+    vis.updateVis();
+
+};
+
+
+
+/*
+ * The drawing function - should use the D3 update sequence (enter, update, exit)
+ * Function parameters only needed if different kinds of updates are needed
+ */
+//
+ForceDiagram.prototype.updateVis = function(){
+
+    var vis = this;
 //radio button responsiveness
 
     vis.selectedVal=d3.select('input[name="graph-type"]:checked').property("value");
@@ -258,21 +284,29 @@ ForceDiagram.prototype.wrangleData = function(){
     vis.colorScale.domain(vis.categoryKeys);
 
 
-    // Update the visualization
-    vis.updateVis();
+    //figure out neighboring nodes via links
 
-};
+    vis.threshold=5;
+
+    vis.nodesLinkedByIndex = {};
+    vis.displayData.Links.forEach(function(d) {
+        if (d.strength > vis.threshold){
+            vis.nodesLinkedByIndex[d.source + "," + d.target] = 1;
+            vis.nodesLinkedByIndex[d.target + "," + d.source] = 1;
+        }
+        else {vis.nodesLinkedByIndex[d.source + "," + d.target] = 0;
+            vis.nodesLinkedByIndex[d.target + "," + d.source] = 0}
+
+    });
+    vis.displayData.Nodes.forEach(function(d){
+        vis.nodesLinkedByIndex[d.index + "," + d.index] = 1
+    });
 
 
-
-/*
- * The drawing function - should use the D3 update sequence (enter, update, exit)
- * Function parameters only needed if different kinds of updates are needed
- */
-//
-ForceDiagram.prototype.updateVis = function(){
-
-    var vis = this;
+    // define neighboring function
+    function neighboring(a, b) {
+        return vis.nodesLinkedByIndex[a.index + "," + b.index];
+    }
 
     //call the legend
     vis.svg.select(".legend")
@@ -294,8 +328,8 @@ ForceDiagram.prototype.updateVis = function(){
     vis.force
         .nodes(vis.displayData.Nodes,function(d){return d.id;})
         .links(vis.displayData.Links,function(d){return d.name;})
-        .linkDistance(function(link){return 300/Math.pow(link.strength/2,3);})
-        .linkStrength(function(link){return link.strength*.1;});
+        .linkDistance(function(link){return 500/Math.pow((link.strength+1),2);})
+        .linkStrength(function(link){return .4+.1*link.strength});
 
     // 2b) START RUNNING THE SIMULATION
     vis.force.start();
@@ -311,8 +345,16 @@ ForceDiagram.prototype.updateVis = function(){
     vis.link.enter().append("line")
         .attr("class","link")
         .attr("stroke","#bbb")
-        .attr("stroke-opacity",function(d){return 0.2+ d.strength/10;})
-        .attr("stroke-width",function(d){return d.strength/30;});
+        .attr("display",function(d){
+            if (d.strength > vis.threshold) {
+                return "null"
+            } else {
+                return "none"
+            }
+        })
+        .attr("stroke-opacity",function(d){return (d.strength-1)/10;})
+        .attr("stroke-width",function(d){return (d.strength-1)/10;});
+
 
     // 4) DRAW THE NODES (SVG CIRCLE)
     vis.node = vis.svg.selectAll(".node")
@@ -330,11 +372,41 @@ ForceDiagram.prototype.updateVis = function(){
                 return vis.colorScale(d.category)
             }
         })
-        .on("mouseover",vis.tip.show)
-        .on("mouseout",vis.tip.hide)
+        .attr("stroke","#ccc")
+        .attr("stroke-width",1)
+        .on("mouseover", function(d) {
+            d3.select(this).attr("r",8).style("stroke-width", 2);
+            vis.tip.show(d);
+            vis.link.style('stroke-opacity', function(l) {
+                if ((d === l.source || d === l.target) && (l.strength > vis.threshold))
+                    return 1;
+                else
+                    return .2;
+            });
+            vis.link.style('stroke', function(l) {
+                if ((d === l.source || d === l.target) && (l.strength > vis.threshold))
+                    return "#000";
+                else
+                    return "#bbb";
+            });
+
+            vis.node.style("fill-opacity", function(o) {
+                return neighboring(d, o) ? 1 : .02;
+            });
+            vis.node.attr("r", function(o) {
+                return neighboring(d, o) ? 6 : 4;
+            });
+
+        })
+        .on("mouseout",function(d) {
+            vis.node.attr("r", 4).style("stroke-width", 1);
+            vis.tip.hide(d);
+            vis.link.style('stroke', "#bbb");
+            vis.link.style('stroke-opacity',function(d){return (d.strength-1)/10;})
+            vis.node.style("fill-opacity", 1);
+
+        })
     ;
-
-
 
 
     // 5) LISTEN TO THE 'TICK' EVENT AND UPDATE THE X/Y COORDINATES FOR ALL ELEMENTS
@@ -355,7 +427,6 @@ ForceDiagram.prototype.updateVis = function(){
     });
 
 
-    vis.node.call(vis.force.drag);
 
 
 

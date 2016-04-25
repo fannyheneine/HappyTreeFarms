@@ -119,7 +119,10 @@ polyline{
 /****************/
 /*   STACK-CHART  */
 /****************/
-
+#force-textbox {
+    fill:#f7f7f7;
+    /*to match bg color*/
+}
 
 body {
     font-family: 'Roboto', sans-serif;

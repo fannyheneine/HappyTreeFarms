@@ -56,8 +56,8 @@
 	<!--<a download="data.json" id="download">Download</a>-->
 	<!--DON'T DELETE THIS ^-->
         <form>
-            <input type="radio" name="graph-type" value="recipe" checked onchange="forceplot.wrangleData()"> Recipes<br>
-            <input type="radio" name="graph-type" value="ingredient" onchange="forceplot.wrangleData()"> Ingredients<br>
+            <input type="radio" name="graph-type" value="recipe" checked onchange="forceplot.updateVis()"> Recipes<br>
+            <input type="radio" name="graph-type" value="ingredient" onchange="forceplot.updateVis()"> Ingredients<br>
         </form>
         <div id="force-layout"></div>
 
