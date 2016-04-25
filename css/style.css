@@ -10,10 +10,6 @@
 body{
   margin-left: 20px;
 }
-.row{
-  /*font-family: Gill Sans, Verdana;*/
-  font-family: cursive;
-}
 
 h1{
   font-size: 24px;
@@ -85,7 +81,7 @@ polyline{
 
 .area{
   stroke:#999967;
-  stroke-width: 2px;
+  stroke-width: 0px;
 }
 
 .map-label{
@@ -162,8 +158,9 @@ h2 {
 }
 
 .brush .extent {
-    stroke: #666;
-    fill-opacity: 2;
+    stroke: #fff;
+    fill: #808080;
+    fill-opacity: 0.8;
     shape-rendering: crispEdges;
 }
 

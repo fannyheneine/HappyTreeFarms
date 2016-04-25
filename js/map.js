@@ -117,6 +117,10 @@ function createMapVisualization() {
         map_colorScale.domain(Object.keys(cuisine_ingredient));
         var map_countries = topojson.feature(world_map, world_map.objects.countries).features;
 
+        var div = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+
         svg_map.selectAll("countries")
             .data(map_countries)
             .enter().insert("path", ".graticule")
@@ -135,20 +139,34 @@ function createMapVisualization() {
                 if (map_unavailable==false) {
                     showCuisine(d, world_map, country_cuisine, cuisine_ingredient);
                 }
+                div.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                div.html(country_cuisine[d.id].name)
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
 
             })
             .on('mouseout', function (d, i) {
                 d3.selectAll('.countries')
                     .style('fill-opacity', 1);
+                div.transition()
+                    .duration(500)
+                    .style("opacity", 0);
             })
             .on('click',function(d){
+                console.log(country_cuisine[d.id].cuisine)
                 d3.select("#ranking-type")
                     .property({value: country_cuisine[d.id].cuisine})
-
                 update_imagechart(data_i, data_p, country_cuisine[d.id].cuisine)
                 updateVisualization(data_i, data_p, country_cuisine[d.id].cuisine)
 
             })
+            .on('click',function(d){
+                next_country=country_cuisine[d.id].name
+                console.log(next_country)
+                areachart.wrangleData(next_country)
+            });
 
         svg_map.insert("path", ".graticule")
             .datum(topojson.mesh(world_map, world_map.objects.countries, function (a, b) {

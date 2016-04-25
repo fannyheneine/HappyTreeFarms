@@ -19,16 +19,22 @@ StackedAreaChart = function(_parentElement, _data) {
 
 
 
-    this.initVis();
+    this.initVis(country_chosen);
 }
 
-
+// Set ordinal color scale
+var colorScale = d3.scale.category20();
+var dataCategories;
 
 /*
  * Initialize visualization (static content, e.g. SVG area or axes)
  */
 
-StackedAreaChart.prototype.initVis = function() {
+var data_chosen;
+var data_all_stacked;
+var stackedData;
+
+StackedAreaChart.prototype.initVis = function(country_chosen) {
     var vis = this;
     // vis.area = d3.svg.area()
     // 	 .interpolate("cardinal")
@@ -36,6 +42,29 @@ StackedAreaChart.prototype.initVis = function() {
     // 	 .y0(function(d) { return vis.y(d.y0); })
     // 	 .y1(function(d) { return vis.y(d.y0 + d.y); });
 
+    console.log(vis.data)
+    data_all_stacked=vis.data;
+
+    for (i = 0; i < vis.data.length; i++){
+        if (vis.data[i].country == country_chosen) {
+            data_chosen = vis.data[i];
+        }
+    }
+
+    console.log(data_chosen.years)
+    // Better to do it in main_stacked using a for loop
+    /*data2.layers.forEach(function (d) {
+     for (var column in d) {
+     if (d.hasOwnProperty(column) && column == "Year") {
+     d[column] = parseDate(d[column].toString());
+     }
+     }
+     });*/
+
+
+// Update color scale (all column headers except "Year")
+// We will use the color scale for the stacked area chart
+    colorScale.domain(d3.keys(data_chosen.layers[0]).filter(function(d){ return d != "Year"; }))
 
     vis.margin = {
         top: 40,
@@ -55,18 +84,18 @@ StackedAreaChart.prototype.initVis = function() {
         .append("g")
         .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
-    // TO-DO: Overlay with path clipping
+    // Overlay with path clipping
     vis.svg_stacked.append("defs").append("clipPath")
-         .attr("id", "clip")
-         .append("rect")
-         .attr("width", vis.width)
-         .attr("height", vis.height);
+        .attr("id", "clip")
+        .append("rect")
+        .attr("width", vis.width)
+        .attr("height", vis.height);
 
 
     // Scales and axes
     vis.x = d3.time.scale()
         .range([0, vis.width])
-        .domain(d3.extent(vis.data, function(d) {
+        .domain(d3.extent(data_chosen.layers, function(d) {
             return d.Year;
         }));
 
@@ -86,7 +115,12 @@ StackedAreaChart.prototype.initVis = function() {
         .attr("transform", "translate(0," + vis.height + ")");
 
     vis.svg_stacked.append("g")
-        .attr("class", "y-axis axis");
+        .attr("class", "y-axis axis")
+        .append("text")
+        .attr("y", -20)
+        .attr("dy", ".71em")
+        .style("text-anchor", "left")
+        .text("Food Supply Quantity in gr/capita/day ");;
 
     vis.area_stacked = d3.svg.area()
         .interpolate("cardinal")
@@ -101,12 +135,12 @@ StackedAreaChart.prototype.initVis = function() {
         });
 
 
-    var dataCategories = colorScale.domain();
+    dataCategories = colorScale.domain();
 
     var transposedData = dataCategories.map(function(name) {
         return {
             name: name,
-            values: vis.data.map(function(d) {
+            values: data_chosen.layers.map(function(d) {
                 return {
                     Year: d.Year,
                     y: d[name]
@@ -115,33 +149,21 @@ StackedAreaChart.prototype.initVis = function() {
         };
     });
 
-    var stack = d3.layout.stack()
+    stack = d3.layout.stack()
         .values(function(d) {
             return d.values;
         });
 
-    var stackedData = stack(transposedData);
+    stackedData = stack(transposedData);
     vis.stackedData = stackedData;
 
     console.log(stackedData);
 
 
+    vis.displayData = vis.stackedData;
 
 
-    // TO-DO: Initialize stack layout
-
-
-
-    // TO-DO: Stacked area layout
-    // vis.area = d3.svg.area()
-    //	...
-
-
-    // TO-DO: Tooltip placeholder
-
-
-    // TO-DO: (Filter, aggregate, modify data)
-    vis.wrangleData();
+    vis.updateVis();
 }
 
 
@@ -149,22 +171,71 @@ StackedAreaChart.prototype.initVis = function() {
 /*
  * Data wrangling
  */
+var next_country;
 
-StackedAreaChart.prototype.wrangleData = function() {
+StackedAreaChart.prototype.wrangleData = function(next_country) {
     var vis = this;
+    console.log(next_country)
 
-    // In the first step no data wrangling/filtering needed
-    vis.displayData = vis.stackedData;
-
-
-    if (filtered == true) {
-        var filterDomain = areachart.x.domain();
-        for (i = 0; i < vis.stackedData.length; i++) {
-            vis.stackedData[i].values.filter(function(d) {
-                return ((d.Year >= filterDomain[0]) && (d.Year <= filterDomain[1]));
-            })
-        }
+    if(next_country==country_chosen) {
+        vis.displayData = stackedData
     }
+    else {
+
+        for (i = 0; i < data_all_stacked.length; i++) {
+            if (data_all_stacked[i].country == next_country) {
+                data_chosen = data_all_stacked[i];
+            }
+            else if (data_all_stacked[i].country != next_country) {
+                vis.displayData = 0;
+            }
+        }
+        console.log(data_chosen.years)
+
+// Better to do it in main_stacked using a for loop
+        /* data_chosen.layers.forEach(function (d) {
+         for (var column in d) {
+         if (d.hasOwnProperty(column) && column == "Year") {
+         d[column] = parseDate(d[column].toString());
+         }
+         }
+         });*/
+
+
+        colorScale.domain(d3.keys(data_chosen.layers[0]).filter(function (d) {
+            return d != "Year";
+        }))
+
+        dataCategories = colorScale.domain();
+
+        var transposedData = dataCategories.map(function (name) {
+            return {
+                name: name,
+                values: data_chosen.layers.map(function (d) {
+                    return {
+                        Year: d.Year,
+                        y: d[name]
+                    };
+                })
+            };
+        });
+
+        stack = d3.layout.stack()
+            .values(function (d) {
+                return d.values;
+            });
+
+        stackedData = stack(transposedData);
+        vis.stackedData = stackedData;
+
+        vis.displayData = vis.stackedData;
+        country_chosen=next_country;
+
+
+        // In the first step no data wrangling/filtering needed
+    }
+
+
     // Wrangle data *****
     // console.log(vis.displayData);
 
@@ -187,6 +258,7 @@ StackedAreaChart.prototype.wrangleData = function() {
 
 
 
+
 /*
  * The drawing function - should use the D3 update sequence (enter, update, exit)
  * Function parameters only needed if different kinds of updates are needed
@@ -194,6 +266,15 @@ StackedAreaChart.prototype.wrangleData = function() {
 
 StackedAreaChart.prototype.updateVis = function() {
     var vis = this;
+
+    if (filtered == true) {
+        var filterDomain = areachart.x.domain();
+        for (i = 0; i < vis.stackedData.length; i++) {
+            vis.stackedData[i].values.filter(function(d) {
+                return ((d.Year >= filterDomain[0]) && (d.Year <= filterDomain[1]));
+            })
+        }
+    }
 
 
     // Update domain
@@ -224,7 +305,7 @@ StackedAreaChart.prototype.updateVis = function() {
             return vis.area_stacked(d.values);
         })
 
-    .on("mouseover", function(d) {
+        .on("mouseover", function(d) {
             div.transition()
                 .duration(200)
                 .style("opacity", .9);
@@ -243,7 +324,8 @@ StackedAreaChart.prototype.updateVis = function() {
     categories.exit().remove();
 
 
-    // Call axis functions with the new domain 
+    // Call axis functions with the new domain
     vis.svg_stacked.select(".x-axis").call(vis.xAxis);
     vis.svg_stacked.select(".y-axis").call(vis.yAxis);
+
 }
