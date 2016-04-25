@@ -41,8 +41,8 @@ ForceDiagram.prototype.initVis = function(){
         .size([vis.width, vis.height])
         .charge(10)
         .chargeDistance(50)
-        .friction(.1)
-        .gravity(.01);
+        .friction(.05)
+        .gravity(.02);
 
 
     //make legend function
@@ -89,8 +89,11 @@ ForceDiagram.prototype.wrangleData = function(){
     }
 
     //PRE-PROCESSING FOR LINKS-NODES FORMAT
-    vis.sampledData=_.sample(vis.allDatafiltered,100);
+    vis.sampledData=_.sample(vis.allDatafiltered,150);
     vis.jsonData=[];
+
+    vis.threshold=5;
+
 
     vis.sampledData.forEach(function(d,i){
         var dnew={};
@@ -165,7 +168,7 @@ ForceDiagram.prototype.wrangleData = function(){
                     linkObject.target = d2.index;
                     linkObject.sourceid=d1.index;
                     linkObject.targetid=d2.index;
-                    linkObject.strength = commonValues.length;
+                    linkObject.strength = 13*commonValues.length/((ingredients_1.length + ingredients_2.length)/2);
                     linkObject.name = linkname;
                     linkObject.intersection=commonValues;
                     vis.linksNodesData_Recipes.Links[linkname] = linkObject;
@@ -232,7 +235,8 @@ ForceDiagram.prototype.wrangleData = function(){
                     linkObject.target = d2.index;
                     linkObject.sourceid=d1.index;
                     linkObject.targetid=d2.index;
-                    linkObject.strength = commonValues.length;
+                    //normalize interactions by number of recipes
+                    linkObject.strength = 25*commonValues.length/((recipes_1.length + recipes_2.length)/2);
                     linkObject.name = linkname;
                     var commonCuisines=[];
                     commonValues.forEach(function(d,i){
@@ -268,18 +272,18 @@ ForceDiagram.prototype.wrangleData = function(){
  * Function parameters only needed if different kinds of updates are needed
  */
 //
-ForceDiagram.prototype.updateVis = function(){
+ForceDiagram.prototype.updateVis = function() {
 
     var vis = this;
 //radio button responsiveness
 
-    vis.selectedVal=d3.select('input[name="graph-type"]:checked').property("value");
-    if (vis.selectedVal=="recipe") {
+    vis.selectedVal = d3.select('input[name="graph-type"]:checked').property("value");
+    if (vis.selectedVal == "recipe") {
         vis.displayData = vis.linksNodesData_Recipes;
         vis.categoryKeys = _.uniq(vis.displayData.Nodes.map(function (recipe) {
             return recipe.Cuisine;
         }));
-    } else if (vis.selectedVal=="ingredient") {
+    } else if (vis.selectedVal == "ingredient") {
         vis.displayData = vis.linksNodesData_Ingredients;
         vis.categoryKeys = _.uniq(vis.displayData.Nodes.map(function (ingredient) {
             return ingredient.category;
@@ -291,25 +295,24 @@ ForceDiagram.prototype.updateVis = function(){
 
     //figure out neighboring nodes via links
 
-    vis.threshold=5;
 
     vis.nodesLinkedByIndex = {};
 
 
-    vis.displayData.Links.forEach(function(d) {
-        if (d.strength > vis.threshold){
+    vis.displayData.Links.forEach(function (d) {
+        if (d.strength > vis.threshold) {
             vis.nodesLinkedByIndex[d.sourceid + "," + d.targetid] = 1;
             vis.nodesLinkedByIndex[d.targetid + "," + d.sourceid] = 1;
         }
-        else {vis.nodesLinkedByIndex[d.sourceid + "," + d.targetid] = 0;
-            vis.nodesLinkedByIndex[d.targetid + "," + d.sourceid] = 0}
+        else {
+            vis.nodesLinkedByIndex[d.sourceid + "," + d.targetid] = 0;
+            vis.nodesLinkedByIndex[d.targetid + "," + d.sourceid] = 0
+        }
 
     });
-    vis.displayData.Nodes.forEach(function(d){
+    vis.displayData.Nodes.forEach(function (d) {
         vis.nodesLinkedByIndex[d.index + "," + d.index] = 1
     });
-
-
 
 
     // define neighboring function
@@ -323,133 +326,188 @@ ForceDiagram.prototype.updateVis = function(){
 
     //call the tool tip
 
-    vis.tip.html(function(d) {
-        if (vis.selectedVal=="recipe"){
-            return d.Cuisine;}
-        else if (vis.selectedVal=="ingredient") {
+    vis.tip.html(function (d) {
+        if (vis.selectedVal == "recipe") {
+            return d.Cuisine;
+        }
+        else if (vis.selectedVal == "ingredient") {
             return d.id;
-        } });
+        }
+    });
     vis.svg.call(vis.tip);
-
 
 
     // 2a) DEFINE 'NODES' AND 'EDGES'
     vis.force
-        .nodes(vis.displayData.Nodes,function(d){return d.id;})
-        .links(vis.displayData.Links,function(d){return d.name;})
-        .linkDistance(function(link){return 500/Math.pow((link.strength+1),2);})
-        .linkStrength(function(link){return .4+.1*link.strength});
+        .nodes(vis.displayData.Nodes, function (d) {
+            return d.id;
+        })
+        .links(vis.displayData.Links, function (d) {
+            return d.name;
+        })
+        .linkDistance(function (link) {
+            return 500 / Math.pow((link.strength + 1), 2);
+        })
+        .linkStrength(function (link) {
+            return .4 + .1 * link.strength
+        });
 
     // 2b) START RUNNING THE SIMULATION
-    vis.force.start();
+
+        vis.force.start();
 
 
-    // 3) DRAW THE LINKS (SVG LINE) ... or don't?
+        // 3) DRAW THE LINKS (SVG LINE) ... or don't?
 
-    vis.link=vis.svg.selectAll(".link")
-        .data(vis.displayData.Links,function(d){return d.name;});
-
-    vis.link.exit().remove();
-
-    vis.link.enter().append("line")
-        .attr("class","link")
-        .attr("stroke","#bbb")
-        .attr("display",function(d){
-            if (d.strength > vis.threshold) {
-                return "null"
-            } else {
-                return "none"
-            }
-        })
-        .attr("stroke-opacity",function(d){return (d.strength-1)/10;})
-        .attr("stroke-width",function(d){return (d.strength-1)/10;});
-
-
-    // 4) DRAW THE NODES (SVG CIRCLE)
-    vis.node = vis.svg.selectAll(".node")
-        .data(vis.displayData.Nodes,function(d){return d.id;});
-
-    vis.node.exit().remove();
-
-    vis.node.enter().append("circle")
-        .attr("class","node")
-        .attr("r",4)
-        .attr("fill",function(d,i){
-            if (vis.selectedVal=="recipe"){
-            return vis.colorScale(d.Cuisine)}
-            else if (vis.selectedVal=="ingredient"){
-                return vis.colorScale(d.category)
-            }
-        })
-        .attr("stroke","#ccc")
-        .attr("stroke-width",1)
-        .on("mouseover", function(d) {
-            d3.select(this).attr("r",8).style("stroke-width", 2);
-            vis.tip.show(d);
-            var linktext=[];
-            var ind=0;
-            vis.link.style('stroke-opacity', function(l) {
-                if ((d === l.source || d === l.target) && (l.strength > vis.threshold)){
-                    l.intersection.forEach(function(text1,i) {
-                        if (linktext.indexOf(text1) == -1) {
-                        ind += 1;
-                        linktext.push(text1);
-                        vis.rect.append("text")
-                            .text(text1)
-                            .attr("y", ind * 15)
-                            .style("fill", "#000")
-                            .attr("class", "force-hover-label");
-                        }
-                    });
-                    return 1;}
-                else
-                    return .2;
-            });
-            vis.link.style('stroke', function(l) {
-                if ((d === l.source || d === l.target) && (l.strength > vis.threshold))
-                    return "#000";
-                else
-                    return "#bbb";
+        vis.link = vis.svg.selectAll(".link")
+            .data(vis.displayData.Links, function (d) {
+                return d.name;
             });
 
-            vis.node.style("fill-opacity", function(o) {
-                return neighboring(d, o) ? 1 : .02;
+        vis.link.exit().remove();
+
+        vis.link.enter().append("line")
+            .attr("class", "link")
+            .attr("stroke", "#bbb")
+            .attr("display", function (d) {
+                if (d.strength > vis.threshold) {
+                    return "null"
+                } else {
+                    return "none"
+                }
+            })
+            //assuming max # connections is around 10
+            .attr("stroke-opacity", function (d) {
+                return (d.strength - (vis.threshold - 1)) / (12 - vis.threshold);
+            })
+            .attr("stroke-width", function (d) {
+                return (d.strength - (vis.threshold - 1)) / (12 - vis.threshold);
             });
-            vis.node.attr("r", function(o) {
-                return neighboring(d, o) ? 6 : 4;
+
+
+        // 4) DRAW THE NODES (SVG CIRCLE)
+        vis.node = vis.svg.selectAll(".node")
+            .data(vis.displayData.Nodes, function (d) {
+                return d.id;
             });
 
-        })
-        .on("mouseout",function(d) {
-            vis.node.attr("r", 4).style("stroke-width", 1);
+        vis.node.exit().remove();
 
-            vis.rect.selectAll("text").remove();
-            vis.tip.hide(d);
-            vis.link.style('stroke', "#bbb");
-            vis.link.style('stroke-opacity',function(d){return (d.strength-1)/10;})
-            vis.node.style("fill-opacity", 1);
+        //vis.nodeEnter = vis.node.enter().append("g")
+        //    .attr("class", "node");
 
-        })
-    ;
+//
+//    if (vis.selectedVal == "ingredient") {
+//    vis.nodeEnter.append("text")
+//        .text(function (d) {
+//            if (d.recipes.length > vis.threshold*3) {
+//                return d.id;
+//            } else {
+//                return "";
+//            }
+//        })
+//        .attr("transform", "translate(-15,-5)")
+//        .attr("fill", "#000")
+//        .attr("class", "ingredients-label");
+//}
 
 
-    // 5) LISTEN TO THE 'TICK' EVENT AND UPDATE THE X/Y COORDINATES FOR ALL ELEMENTS
+        vis.node.enter().append("circle")
+            .attr("class", "node")
+            .attr("r", function (d) {
+                return 4;
+            })
+            .attr("fill", function (d, i) {
+                if (vis.selectedVal == "recipe") {
+                    return vis.colorScale(d.Cuisine)
+                }
+                else if (vis.selectedVal == "ingredient") {
+                    return vis.colorScale(d.category)
+                }
+            })
+            .attr("stroke", "#ccc")
+            .attr("stroke-width", 1)
+            .on("mouseover", function (d) {
+                d3.select(this).attr("r", 8).style("stroke-width", 2);
+                vis.tip.show(d);
+                var linktext = [];
+                var ind = 0;
+                vis.link.style('stroke-opacity', function (l) {
+                    if ((d === l.source || d === l.target) && (l.strength > vis.threshold)) {
+                        l.intersection.forEach(function (text1, i) {
+                            if (linktext.indexOf(text1) == -1) {
+                                ind += 1;
+                                linktext.push(text1);
+                                vis.rect.append("text")
+                                    .text(text1)
+                                    .attr("y", ind * 15)
+                                    .style("fill", "#000")
+                                    .attr("class", "force-hover-label");
+                            }
+                        });
+                        return 1;
+                    }
+                    else
+                        return .2;
+                });
+                vis.link.style('stroke', function (l) {
+                    if ((d === l.source || d === l.target) && (l.strength > vis.threshold))
+                        return "#000";
+                    else
+                        return "#bbb";
+                });
+
+                vis.node.style("fill-opacity", function (o) {
+                    return neighboring(d, o) ? 1 : .02;
+                });
+                vis.node.attr("r", function (o) {
+                    return neighboring(d, o) ? 6 : 4;
+                });
+
+            })
+            .on("mouseout", function (d) {
+                vis.node.attr("r", 4).style("stroke-width", 1);
+
+                vis.rect.selectAll("text").remove();
+                vis.tip.hide(d);
+                vis.link.style('stroke', "#bbb");
+                vis.link.style('stroke-opacity', function (d) {
+                    return (d.strength - (vis.threshold - 1)) / (8 - vis.threshold)
+                });
+                vis.link.style("stroke-width", function (d) {
+                    return (d.strength - (vis.threshold - 1)) / (12 - vis.threshold);
+                });
+                vis.node.style("fill-opacity", 1);
+
+            })
+        ;
 
 
-    vis.force.on("tick",function(){
-        //update node coordinates
-        vis.node
-            .attr("cx",function(d){ return d.x; })
-            .attr("cy",function(d){ return d.y; });
+        // 5) LISTEN TO THE 'TICK' EVENT AND UPDATE THE X/Y COORDINATES FOR ALL ELEMENTS
 
-        //update edge coordinates
-        vis.link
-            .attr("x1", function(d) { return d.source.x; })
-            .attr("y1", function(d) { return d.source.y; })
-            .attr("x2", function(d) { return d.target.x; })
-            .attr("y2", function(d) { return d.target.y; });
-    });
+        vis.force.on("tick", function () {
+            //update node coordinates
+            vis.node
+                .attr("transform", function (d) {
+                    return "translate(" + d.x + "," + d.y + ")";
+                });
 
+
+            //update edge coordinates
+            vis.link
+                .attr("x1", function (d) {
+                    return d.source.x;
+                })
+                .attr("y1", function (d) {
+                    return d.source.y;
+                })
+                .attr("x2", function (d) {
+                    return d.target.x;
+                })
+                .attr("y2", function (d) {
+                    return d.target.y;
+                });
+        });
 
 
 
