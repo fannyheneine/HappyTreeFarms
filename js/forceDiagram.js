@@ -438,11 +438,12 @@ ForceDiagram.prototype.updateVis = function() {
             .attr("stroke", "#ccc")
             .attr("stroke-width", 1)
             .on("mouseover", function (d) {
-                d3.select(this).attr("r", vis.width/125).style("stroke-width", 2);
+                var thisvar=d3.select(this);
                 vis.tip.show(d);
                 var linktext = [];
                 var ind = 0;
-
+                setIfDifferent_att(thisvar, d, 'r', vis.width/200);
+                setIfDifferent_att(thisvar, d, 'stroke-width', 2);
                 vis.link.each(function(l)
                 {
                     var el = d3.select(this);
@@ -476,27 +477,24 @@ ForceDiagram.prototype.updateVis = function() {
                         });
 
                     }
-                    setIfDifferent(el, 'stroke', strokeColor);
-                    setIfDifferent(el, 'stroke-opacity', strokeOpacity);
+                    setIfDifferent(el, l, 'stroke', strokeColor);
+                    setIfDifferent(el, l, 'stroke-opacity', strokeOpacity);
                 });
 
 
                 vis.node.each(function(dd){
                     var n=d3.select(this);
-                    var radius=vis.width/250;
                     var fillOpacity=.08;
                     var strokeColor="#ccc";
                     var strokeOpacity=.5;
                     if (neighboring(d,dd)) {
                         fillOpacity=1;
-                        radius=vis.width/200;
                         strokeColor="#777";
                         strokeOpacity=1;
                     }
-                    setIfDifferent(n, 'fill-opacity', fillOpacity);
-                    setIfDifferent(n, 'stroke', strokeColor);
-                    setIfDifferent_att(n, 'r', radius);
-                    setIfDifferent(n, 'stroke-opacity', strokeOpacity);
+                    setIfDifferent(n, dd, 'fill-opacity', fillOpacity);
+                    setIfDifferent(n, dd, 'stroke', strokeColor);
+                    setIfDifferent(n, dd, 'stroke-opacity', strokeOpacity);
                 });
 
 
@@ -505,16 +503,16 @@ ForceDiagram.prototype.updateVis = function() {
 
                 vis.node.each(function(dd){
                     var n=d3.select(this);
-                    setIfDifferent(n, 'fill-opacity', 1);
-                    setIfDifferent(n, 'stroke', "#ccc");
-                    setIfDifferent_att(n, 'r', vis.width/250);
+                    setIfDifferent(n, dd, 'fill-opacity', 1);
+                    setIfDifferent(n, dd, 'stroke', "#ccc");
+                    setIfDifferent_att(n, dd, 'r', vis.width/250);
                 });
 
                 vis.link.each(function(l){
                     var el = d3.select(this);
-                    setIfDifferent(el, 'stroke', "#bbb");
+                    setIfDifferent(el, l, 'stroke', "#bbb");
                     var strokeOpacity=(l.strength - (vis.threshold - 1)) / (8 - vis.threshold);
-                    setIfDifferent(el, 'stroke-opacity', strokeOpacity);
+                    setIfDifferent(el, l, 'stroke-opacity', strokeOpacity);
 
                 });
 
@@ -527,23 +525,26 @@ ForceDiagram.prototype.updateVis = function() {
             })
         ;
 
-    function setIfDifferent(el, attName, value)
+    function setIfDifferent(el, d, attName, value)
     {
-        if(!el[attName] || value !== el[attName])
+        if(!d[attName] || value != d[attName])
         {
             //console.log(el);
+            //console.log('not saving time right now', attName, d[attName] , value, !d[attName] || value != d[attName], value != d[attName] );
             el.style(attName, value);
-            el[attName] = value;
+            d[attName] = value;
+
         }
+
     }
 
-    function setIfDifferent_att(el, attName, value)
+    function setIfDifferent_att(el, d, attName, value)
     {
-        if(!el[attName] || value !== el[attName])
+        if(!d[attName] || value !== d[attName])
         {
             //console.log(el);
             el.attr(attName, value);
-            el[attName] = value;
+            d[attName] = value;
         }
     }
 
