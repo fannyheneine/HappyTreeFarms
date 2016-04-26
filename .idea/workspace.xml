@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="217e5e64-48fe-4fff-bc02-5126296ac389" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/main_stacked.js" afterPath="$PROJECT_DIR$/js/main_stacked.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/map.js" afterPath="$PROJECT_DIR$/js/map.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/stackedAreaChart.js" afterPath="$PROJECT_DIR$/js/stackedAreaChart.js" />
-    </list>
+    <list default="true" id="217e5e64-48fe-4fff-bc02-5126296ac389" name="Default" comment="" />
     <ignored path="HappyTreeFarms.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -49,8 +44,8 @@
       <file leaf-file-name="map.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/map.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="236">
-              <caret line="159" column="27" selection-start-line="159" selection-start-column="27" selection-end-line="159" selection-end-column="27" />
+            <state relative-caret-position="146">
+              <caret line="153" column="34" selection-start-line="153" selection-start-column="34" selection-end-line="153" selection-end-column="34" />
               <folding />
             </state>
           </provider>
@@ -336,12 +331,12 @@
       <workItem from="1461622813606" duration="440000" />
       <workItem from="1461623796449" duration="1040000" />
       <workItem from="1461624976345" duration="134000" />
-      <workItem from="1461625552794" duration="2619000" />
+      <workItem from="1461625552794" duration="2679000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5140000" />
+    <option name="totallyTimeSpent" value="5200000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="81" y="71" width="1250" height="738" extended-state="0" />
@@ -751,8 +746,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/map.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="236">
-          <caret line="159" column="27" selection-start-line="159" selection-start-column="27" selection-end-line="159" selection-end-column="27" />
+        <state relative-caret-position="146">
+          <caret line="153" column="34" selection-start-line="153" selection-start-column="34" selection-end-line="153" selection-end-column="34" />
           <folding />
         </state>
       </provider>
