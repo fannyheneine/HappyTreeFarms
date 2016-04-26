@@ -1,12 +1,13 @@
 
 
-ForceDiagram = function(_parentElement, _data1,_data2,_svgWidth){
+ForceDiagram = function(_parentElement, _data1,_data2,_svgWidth,_nDataPoints){
     this.parentElement = _parentElement;
     this.allData = _data1;
     this.categories_ingredients=_data2;
     this.displayData = []; // see dataForceLayout wrangling
     this.svgWidth=_svgWidth;
     this.colorScale = d3.scale.category20();
+    this.nDataPoints=_nDataPoints;
     this.initVis();
 };
 
@@ -96,10 +97,10 @@ ForceDiagram.prototype.wrangleData = function(filters){
 
 
     //PRE-PROCESSING FOR LINKS-NODES FORMAT
-    vis.sampledData=_.sample(vis.allDatafiltered,150);
+    vis.sampledData=_.sample(vis.allDatafiltered,vis.nDataPoints);
     vis.jsonData=[];
 
-    vis.threshold=5;
+
 
 
     vis.sampledData.forEach(function(d,i){
@@ -193,6 +194,15 @@ ForceDiagram.prototype.wrangleData = function(filters){
 
     }
     vis.linksNodesData_Recipes.Links=LinksList;
+
+    var LinkStrengths=[];
+    LinksList.forEach(function(d){LinkStrengths.push(d.strength);});
+    var sum = LinkStrengths.reduce(function (a, b) {
+        return a + b;
+    }, 0);
+
+    var average=sum/LinkStrengths.length;
+    vis.threshold=5;
 
 
 
