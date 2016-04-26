@@ -442,8 +442,19 @@ ForceDiagram.prototype.updateVis = function() {
                 vis.tip.show(d);
                 var linktext = [];
                 var ind = 0;
-                vis.link.style('stroke-opacity', function (l) {
-                    if ((d === l.source || d === l.target) && (l.strength > vis.threshold)) {
+
+                vis.link.each(function(l)
+                {
+                    var el = d3.select(this);
+
+                    var strokeColor="#bbb";
+                    var strokeOpacity=.2;
+                    var strokeWidth;
+
+                    if ((d === l.source || d === l.target) && (l.strength > vis.threshold)){
+                        strokeColor = "#000";
+                        strokeOpacity = 1;
+
                         l.intersection.forEach(function (text1, i) {
                             if (linktext.indexOf(text1) == -1) {
                                 ind += 1;
@@ -463,43 +474,78 @@ ForceDiagram.prototype.updateVis = function() {
                                     .attr("class", "force-hover-label");
                             }
                         });
-                        return 1;
+
                     }
-                    else
-                        return .2;
-                });
-                vis.link.style('stroke', function (l) {
-                    if ((d === l.source || d === l.target) && (l.strength > vis.threshold))
-                        return "#000";
-                    else
-                        return "#bbb";
+                    setIfDifferent(el, 'stroke', strokeColor);
+                    setIfDifferent(el, 'stroke-opacity', strokeOpacity);
                 });
 
-                vis.node.style("fill-opacity", function (o) {
-                    return neighboring(d, o) ? 1 : .02;
+
+                vis.node.each(function(dd){
+                    var n=d3.select(this);
+                    var radius=vis.width/250;
+                    var fillOpacity=.08;
+                    var strokeColor="#ccc";
+                    var strokeOpacity=.5;
+                    if (neighboring(d,dd)) {
+                        fillOpacity=1;
+                        radius=vis.width/200;
+                        strokeColor="#777";
+                        strokeOpacity=1;
+                    }
+                    setIfDifferent(n, 'fill-opacity', fillOpacity);
+                    setIfDifferent(n, 'stroke', strokeColor);
+                    setIfDifferent_att(n, 'r', radius);
+                    setIfDifferent(n, 'stroke-opacity', strokeOpacity);
                 });
-                vis.node.attr("r", function (o) {
-                    return neighboring(d, o) ? vis.width/200 : vis.width/250;
-                });
+
 
             })
             .on("mouseout", function (d) {
-                vis.node.attr("r", vis.width/250).style("stroke-width", 1);
+
+                vis.node.each(function(dd){
+                    var n=d3.select(this);
+                    setIfDifferent(n, 'fill-opacity', 1);
+                    setIfDifferent(n, 'stroke', "#ccc");
+                    setIfDifferent_att(n, 'r', vis.width/250);
+                });
+
+                vis.link.each(function(l){
+                    var el = d3.select(this);
+                    setIfDifferent(el, 'stroke', "#bbb");
+                    var strokeOpacity=(l.strength - (vis.threshold - 1)) / (8 - vis.threshold);
+                    setIfDifferent(el, 'stroke-opacity', strokeOpacity);
+
+                });
 
                 vis.rect.selectAll("text").remove();
                 vis.rect.selectAll("rect").remove();
                 vis.tip.hide(d);
-                vis.link.style('stroke', "#bbb");
-                vis.link.style('stroke-opacity', function (d) {
-                    return (d.strength - (vis.threshold - 1)) / (8 - vis.threshold)
-                });
-                vis.link.style("stroke-width", function (d) {
-                    return (d.strength - (vis.threshold - 1)) / (12 - vis.threshold);
-                });
-                vis.node.style("fill-opacity", 1);
+
+
 
             })
         ;
+
+    function setIfDifferent(el, attName, value)
+    {
+        if(!el[attName] || value !== el[attName])
+        {
+            //console.log(el);
+            el.style(attName, value);
+            el[attName] = value;
+        }
+    }
+
+    function setIfDifferent_att(el, attName, value)
+    {
+        if(!el[attName] || value !== el[attName])
+        {
+            //console.log(el);
+            el.attr(attName, value);
+            el[attName] = value;
+        }
+    }
 
 
         // 5) LISTEN TO THE 'TICK' EVENT AND UPDATE THE X/Y COORDINATES FOR ALL ELEMENTS
@@ -528,8 +574,11 @@ ForceDiagram.prototype.updateVis = function() {
                 });
         });
 
-
-
+//STOP FORCE LAYOUT AFTER 10 SECONDS
+window.setTimeout(function()
+{
+    vis.force.stop();
+}, 10000);
 
     //
     //// Update domain
