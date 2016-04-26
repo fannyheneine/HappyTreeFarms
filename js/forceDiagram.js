@@ -81,6 +81,7 @@ ForceDiagram.prototype.initVis = function(){
 
 ForceDiagram.prototype.wrangleData = function(filters){
     var vis = this;
+    console.log(filters)
     vis.filters=filters;
     // THIS IS WHERE THE FILTERING FUNCTIONS WILL GO
     if (filters=="all"){

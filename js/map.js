@@ -155,17 +155,19 @@ function createMapVisualization() {
                     .style("opacity", 0);
             })
             .on('click',function(d){
-                next_country=country_cuisine[d.id].name
-                console.log(next_country)
-                areachart.wrangleData(next_country)
-                console.log(country_cuisine[d.id].cuisine)
+                next_country=country_cuisine[d.id].name;
+                areachart.wrangleData(next_country);
+
                 d3.select("#ranking-type")
-                    .property({value: country_cuisine[d.id].cuisine})
-                update_imagechart(data_i, data_p, country_cuisine[d.id].cuisine)
-                updateVisualization(data_i, data_p, country_cuisine[d.id].cuisine)
+                    .property({value: country_cuisine[d.id].cuisine});
 
+                var filterobject={};
+                filterobject["Cuisine"]=country_cuisine[d.id].cuisine;
+                forceplot.wrangleData(filterobject);
 
-            })
+                //update_imagechart(data_i, data_p, country_cuisine[d.id].cuisine);
+                //updateVisualization(data_i, data_p, country_cuisine[d.id].cuisine);
+            });
             /*.on('click',function(d){
                 next_country=country_cuisine[d.id].name
                 console.log(next_country)
