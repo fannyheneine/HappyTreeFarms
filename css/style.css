@@ -120,13 +120,27 @@ polyline{
   z-index: -1;
 }
 
+
 /****************/
-/*   STACK-CHART  */
+/*   FORCE-CHART  */
 /****************/
+
 #force-textbox {
     fill:#f7f7f7;
     /*to match bg color*/
 }
+
+.force-hover-label-rectangle {
+    fill:lightsteelblue;
+    fill-opacity: 0.2;
+    stroke: #91a1b8;
+    stroke-width: 1px;
+}
+
+/****************/
+/*   STACK-CHART  */
+/****************/
+
 
 body {
     font-family: 'Roboto', sans-serif;
