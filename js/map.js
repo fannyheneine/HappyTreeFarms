@@ -165,8 +165,8 @@ function createMapVisualization() {
                 filterobject["Cuisine"]=country_cuisine[d.id].cuisine;
                 forceplot.wrangleData(filterobject);
 
-                //update_imagechart(data_i, data_p, country_cuisine[d.id].cuisine);
-                //updateVisualization(data_i, data_p, country_cuisine[d.id].cuisine);
+                update_imagechart(data_i, data_p, country_cuisine[d.id].cuisine);
+                updateVisualization(data_i, data_p, country_cuisine[d.id].cuisine);
             });
             /*.on('click',function(d){
                 next_country=country_cuisine[d.id].name
