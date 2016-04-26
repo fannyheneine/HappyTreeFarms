@@ -70,7 +70,7 @@ ForceDiagram.prototype.initVis = function(){
         .attr('class', 'd3-tip');
 
 
-    vis.wrangleData();
+    vis.wrangleData("all");
 };
 
 
@@ -79,16 +79,20 @@ ForceDiagram.prototype.initVis = function(){
  * Data wrangling
  */
 
-ForceDiagram.prototype.wrangleData = function(){
+ForceDiagram.prototype.wrangleData = function(filters){
     var vis = this;
-
+    vis.filters=filters;
     // THIS IS WHERE THE FILTERING FUNCTIONS WILL GO
-    var filtered=0;
-    if (filtered==1){
-        vis.allDatafiltered=vis.allData.filter(function(d){return d.Cuisine=="Mexican";})}
-    else {
+    if (filters=="all"){
         vis.allDatafiltered=vis.allData;
+    } else {
+        for( var type in vis.filters) {
+            if (type=="Cuisine"){
+                vis.allDatafiltered=vis.allData.filter(function(d){return d.Cuisine==vis.filters[type];})
+            }
+        }
     }
+
 
     //PRE-PROCESSING FOR LINKS-NODES FORMAT
     vis.sampledData=_.sample(vis.allDatafiltered,150);
