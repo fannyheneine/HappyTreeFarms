@@ -1,11 +1,11 @@
 
 
-ForceDiagram = function(_parentElement, _data1,_data2){
+ForceDiagram = function(_parentElement, _data1,_data2,_svgWidth){
     this.parentElement = _parentElement;
     this.allData = _data1;
     this.categories_ingredients=_data2;
     this.displayData = []; // see dataForceLayout wrangling
-
+    this.svgWidth=_svgWidth;
     this.colorScale = d3.scale.category20();
     this.initVis();
 };
@@ -25,8 +25,8 @@ ForceDiagram.prototype.initVis = function(){
 
     //LEGEND WILL DISAPPEAR FOR VIS.WIDTH < 500 px
 
-    vis.width = 1000 - vis.margin.left - vis.margin.right;
-    vis.height = 600 - vis.margin.top - vis.margin.bottom;
+    vis.width = vis.svgWidth - vis.margin.left - vis.margin.right;
+    vis.height = 0.6*vis.svgWidth - vis.margin.top - vis.margin.bottom;
 
 
     // SVG drawing area
