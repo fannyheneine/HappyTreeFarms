@@ -20,8 +20,10 @@ ForceDiagram.prototype.initVis = function(){
 
     var vis = this;
 
-
     vis.margin = { top: 10, right: 10, bottom: 10, left: 10 };
+
+
+    //LEGEND WILL DISAPPEAR FOR VIS.WIDTH < 500 px
 
     vis.width = 1000 - vis.margin.left - vis.margin.right;
     vis.height = 600 - vis.margin.top - vis.margin.bottom;
@@ -321,8 +323,11 @@ ForceDiagram.prototype.updateVis = function() {
     }
 
     //call the legend
+    if (vis.width < 500) {}
+    else{
     vis.svg.select(".legend")
         .call(vis.legend);
+    }
 
     //call the tool tip
 
@@ -346,7 +351,7 @@ ForceDiagram.prototype.updateVis = function() {
             return d.name;
         })
         .linkDistance(function (link) {
-            return 500 / Math.pow((link.strength + 1), 2);
+            return (vis.width/2)/ Math.pow((link.strength + 1), 2);
         })
         .linkStrength(function (link) {
             return .4 + .1 * link.strength
@@ -415,7 +420,7 @@ ForceDiagram.prototype.updateVis = function() {
         vis.node.enter().append("circle")
             .attr("class", "node")
             .attr("r", function (d) {
-                return 4;
+                return vis.width/250;
             })
             .attr("fill", function (d, i) {
                 if (vis.selectedVal == "recipe") {
@@ -428,7 +433,7 @@ ForceDiagram.prototype.updateVis = function() {
             .attr("stroke", "#ccc")
             .attr("stroke-width", 1)
             .on("mouseover", function (d) {
-                d3.select(this).attr("r", 8).style("stroke-width", 2);
+                d3.select(this).attr("r", vis.width/125).style("stroke-width", 2);
                 vis.tip.show(d);
                 var linktext = [];
                 var ind = 0;
@@ -461,12 +466,12 @@ ForceDiagram.prototype.updateVis = function() {
                     return neighboring(d, o) ? 1 : .02;
                 });
                 vis.node.attr("r", function (o) {
-                    return neighboring(d, o) ? 6 : 4;
+                    return neighboring(d, o) ? vis.width/200 : vis.width/250;
                 });
 
             })
             .on("mouseout", function (d) {
-                vis.node.attr("r", 4).style("stroke-width", 1);
+                vis.node.attr("r", vis.width/250).style("stroke-width", 1);
 
                 vis.rect.selectAll("text").remove();
                 vis.tip.hide(d);
