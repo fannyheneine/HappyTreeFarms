@@ -19,7 +19,7 @@ StackedAreaChart = function(_parentElement, _data) {
 
 
 
-    this.initVis(country_chosen);
+    this.initVis(country_chosen_st);
 }
 
 // Set ordinal color scale
@@ -34,7 +34,7 @@ var data_chosen;
 var data_all_stacked;
 var stackedData;
 
-StackedAreaChart.prototype.initVis = function(country_chosen) {
+StackedAreaChart.prototype.initVis = function(country_chosen_st) {
     var vis = this;
     // vis.area = d3.svg.area()
     // 	 .interpolate("cardinal")
@@ -46,7 +46,7 @@ StackedAreaChart.prototype.initVis = function(country_chosen) {
     data_all_stacked=vis.data;
 
     for (i = 0; i < vis.data.length; i++){
-        if (vis.data[i].country == country_chosen) {
+        if (vis.data[i].country == country_chosen_st) {
             data_chosen = vis.data[i];
         }
     }
@@ -177,7 +177,7 @@ StackedAreaChart.prototype.wrangleData = function(next_country) {
     var vis = this;
     console.log(next_country)
 
-    if(next_country==country_chosen) {
+    if(next_country==country_chosen_st) {
         vis.displayData = stackedData
     }
     else {
@@ -187,6 +187,7 @@ StackedAreaChart.prototype.wrangleData = function(next_country) {
                 data_chosen = data_all_stacked[i];
             }
             else if (data_all_stacked[i].country != next_country) {
+                console.log("NO DATA!")
                 vis.displayData = 0;
             }
         }
@@ -229,7 +230,7 @@ StackedAreaChart.prototype.wrangleData = function(next_country) {
         vis.stackedData = stackedData;
 
         vis.displayData = vis.stackedData;
-        country_chosen=next_country;
+        country_chosen_st=next_country;
 
 
         // In the first step no data wrangling/filtering needed

@@ -155,18 +155,22 @@ function createMapVisualization() {
                     .style("opacity", 0);
             })
             .on('click',function(d){
+                next_country=country_cuisine[d.id].name
+                console.log(next_country)
+                areachart.wrangleData(next_country)
                 console.log(country_cuisine[d.id].cuisine)
                 d3.select("#ranking-type")
                     .property({value: country_cuisine[d.id].cuisine})
                 update_imagechart(data_i, data_p, country_cuisine[d.id].cuisine)
                 updateVisualization(data_i, data_p, country_cuisine[d.id].cuisine)
 
+
             })
-            .on('click',function(d){
+            /*.on('click',function(d){
                 next_country=country_cuisine[d.id].name
                 console.log(next_country)
                 areachart.wrangleData(next_country)
-            });
+            });*/
 
         svg_map.insert("path", ".graticule")
             .datum(topojson.mesh(world_map, world_map.objects.countries, function (a, b) {
