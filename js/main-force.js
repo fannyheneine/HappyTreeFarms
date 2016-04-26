@@ -2,8 +2,7 @@
 // Will be used to the save the loaded JSON dataForceLayout
 var allData = [];
 var categories_ingredients={};
-var data_recipes;
-var data_ingredients;
+
 
 
 
@@ -33,10 +32,7 @@ function createVis(error,data1,data2) {
     allData=data1;
     categories_ingredients=data2;
     //console.log(data_ingredients)
-
-
     forceplot = new ForceDiagram("force-layout", allData,categories_ingredients,1000);
-
 }
 
 
