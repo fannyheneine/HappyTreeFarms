@@ -1,11 +1,11 @@
 
 
-ForceDiagram = function(_parentElement, _data1,_data2){
+ForceDiagram = function(_parentElement, _data1,_data2,_svgWidth){
     this.parentElement = _parentElement;
     this.allData = _data1;
     this.categories_ingredients=_data2;
     this.displayData = []; // see dataForceLayout wrangling
-
+    this.svgWidth=_svgWidth;
     this.colorScale = d3.scale.category20();
     this.initVis();
 };
@@ -25,8 +25,8 @@ ForceDiagram.prototype.initVis = function(){
 
     //LEGEND WILL DISAPPEAR FOR VIS.WIDTH < 500 px
 
-    vis.width = 1000 - vis.margin.left - vis.margin.right;
-    vis.height = 600 - vis.margin.top - vis.margin.bottom;
+    vis.width = vis.svgWidth - vis.margin.left - vis.margin.right;
+    vis.height = 0.6*vis.svgWidth - vis.margin.top - vis.margin.bottom;
 
 
     // SVG drawing area
@@ -70,7 +70,7 @@ ForceDiagram.prototype.initVis = function(){
         .attr('class', 'd3-tip');
 
 
-    vis.wrangleData();
+    vis.wrangleData("all");
 };
 
 
@@ -79,16 +79,21 @@ ForceDiagram.prototype.initVis = function(){
  * Data wrangling
  */
 
-ForceDiagram.prototype.wrangleData = function(){
+ForceDiagram.prototype.wrangleData = function(filters){
     var vis = this;
-
+    console.log(filters)
+    vis.filters=filters;
     // THIS IS WHERE THE FILTERING FUNCTIONS WILL GO
-    var filtered=0;
-    if (filtered==1){
-        vis.allDatafiltered=vis.allData.filter(function(d){return d.Cuisine=="Mexican";})}
-    else {
+    if (filters=="all"){
         vis.allDatafiltered=vis.allData;
+    } else {
+        for( var type in vis.filters) {
+            if (type=="Cuisine"){
+                vis.allDatafiltered=vis.allData.filter(function(d){return d.Cuisine==vis.filters[type];})
+            }
+        }
     }
+
 
     //PRE-PROCESSING FOR LINKS-NODES FORMAT
     vis.sampledData=_.sample(vis.allDatafiltered,150);
