@@ -448,9 +448,17 @@ ForceDiagram.prototype.updateVis = function() {
                             if (linktext.indexOf(text1) == -1) {
                                 ind += 1;
                                 linktext.push(text1);
+                                vis.rect.append("rect")
+                                    .attr("class","force-hover-label-rectangle")
+                                    .attr("x",-5)
+                                    .attr("y",ind*25-15)
+                                    .attr("rx",7)
+                                    .attr("ry",7)
+                                    .attr("width",140)
+                                    .attr("height",20);
                                 vis.rect.append("text")
                                     .text(text1)
-                                    .attr("y", ind * 15)
+                                    .attr("y", ind * 25)
                                     .style("fill", "#000")
                                     .attr("class", "force-hover-label");
                             }
@@ -479,6 +487,7 @@ ForceDiagram.prototype.updateVis = function() {
                 vis.node.attr("r", vis.width/250).style("stroke-width", 1);
 
                 vis.rect.selectAll("text").remove();
+                vis.rect.selectAll("rect").remove();
                 vis.tip.hide(d);
                 vis.link.style('stroke', "#bbb");
                 vis.link.style('stroke-opacity', function (d) {
