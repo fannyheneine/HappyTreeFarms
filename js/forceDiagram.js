@@ -37,6 +37,11 @@ ForceDiagram.prototype.initVis = function(){
         .append("g")
         .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
+    vis.bigRectangle=vis.svg.append("rect")
+        .attr("width",vis.width + vis.margin.left + vis.margin.right)
+        .attr("height",vis.height + vis.margin.top + vis.margin.bottom)
+        .attr("fill-opacity",0);
+
 
     // 1) INITIALIZE FORCE-LAYOUT
 
@@ -71,6 +76,7 @@ ForceDiagram.prototype.initVis = function(){
         .attr('class', 'd3-tip');
 
 
+
     vis.wrangleData("all");
 };
 
@@ -82,7 +88,6 @@ ForceDiagram.prototype.initVis = function(){
 
 ForceDiagram.prototype.wrangleData = function(filters){
     var vis = this;
-    console.log(filters)
     vis.filters=filters;
     // THIS IS WHERE THE FILTERING FUNCTIONS WILL GO
     if (filters=="all"){
@@ -202,7 +207,8 @@ ForceDiagram.prototype.wrangleData = function(filters){
     }, 0);
 
     var average=sum/LinkStrengths.length;
-    vis.threshold=5;
+    console.log(average)
+    vis.threshold=3.5*average;
 
 
 
@@ -357,6 +363,7 @@ ForceDiagram.prototype.updateVis = function() {
     vis.svg.call(vis.tip);
 
 
+
     // 2a) DEFINE 'NODES' AND 'EDGES'
     vis.force
         .nodes(vis.displayData.Nodes, function (d) {
@@ -432,6 +439,18 @@ ForceDiagram.prototype.updateVis = function() {
 //}
 
 
+    vis.toggleNode=0;
+    vis.selectedNode;
+
+
+    vis.svg.on("click",function(d){
+        console.log('called')
+        if (vis.toggleNode){
+            vis.toggleNode=0;
+            clearAllFunction()
+            console.log('clear')
+        }
+    });
         vis.node.enter().append("circle")
             .attr("class", "node")
             .attr("r", function (d) {
@@ -447,93 +466,174 @@ ForceDiagram.prototype.updateVis = function() {
             })
             .attr("stroke", "#ccc")
             .attr("stroke-width", 1)
-            .on("mouseover", function (d) {
-                var thisvar=d3.select(this);
-                vis.tip.show(d);
-                var linktext = [];
-                var ind = 0;
-                setIfDifferent_att(thisvar, d, 'r', vis.width/200);
-                setIfDifferent_att(thisvar, d, 'stroke-width', 2);
-                vis.link.each(function(l)
-                {
-                    var el = d3.select(this);
-
-                    var strokeColor="#bbb";
-                    var strokeOpacity=.2;
-                    var strokeWidth;
-
-                    if ((d === l.source || d === l.target) && (l.strength > vis.threshold)){
-                        strokeColor = "#000";
-                        strokeOpacity = 1;
-
-                        l.intersection.forEach(function (text1, i) {
-                            if (linktext.indexOf(text1) == -1) {
-                                ind += 1;
-                                linktext.push(text1);
-                                vis.rect.append("rect")
-                                    .attr("class","force-hover-label-rectangle")
-                                    .attr("x",-5)
-                                    .attr("y",ind*25-15)
-                                    .attr("rx",7)
-                                    .attr("ry",7)
-                                    .attr("width",140)
-                                    .attr("height",20);
-                                vis.rect.append("text")
-                                    .text(text1)
-                                    .attr("y", ind * 25)
-                                    .style("fill", "#000")
-                                    .attr("class", "force-hover-label");
-                            }
-                        });
-
-                    }
-                    setIfDifferent(el, l, 'stroke', strokeColor);
-                    setIfDifferent(el, l, 'stroke-opacity', strokeOpacity);
-                });
-
-
-                vis.node.each(function(dd){
-                    var n=d3.select(this);
-                    var fillOpacity=.08;
-                    var strokeColor="#ccc";
-                    var strokeOpacity=.5;
-                    if (neighboring(d,dd)) {
-                        fillOpacity=1;
-                        strokeColor="#777";
-                        strokeOpacity=1;
-                    }
-                    setIfDifferent(n, dd, 'fill-opacity', fillOpacity);
-                    setIfDifferent(n, dd, 'stroke', strokeColor);
-                    setIfDifferent(n, dd, 'stroke-opacity', strokeOpacity);
-                });
-
-
+            .on("mouseover", function(d){
+                var thisVar=d3.select(this);
+                mouseOverFunction(d,thisVar)
             })
-            .on("mouseout", function (d) {
-
-                vis.node.each(function(dd){
-                    var n=d3.select(this);
-                    setIfDifferent(n, dd, 'fill-opacity', 1);
-                    setIfDifferent(n, dd, 'stroke', "#ccc");
-                    setIfDifferent_att(n, dd, 'r', vis.width/250);
-                });
-
-                vis.link.each(function(l){
-                    var el = d3.select(this);
-                    setIfDifferent(el, l, 'stroke', "#bbb");
-                    var strokeOpacity=(l.strength - (vis.threshold - 1)) / (8 - vis.threshold);
-                    setIfDifferent(el, l, 'stroke-opacity', strokeOpacity);
-
-                });
-
-                vis.rect.selectAll("text").remove();
-                vis.rect.selectAll("rect").remove();
-                vis.tip.hide(d);
-
-
+            .on("mouseout", function(d){
+                var thisVar=d3.select(this);
+                mouseOutFunction(d,thisVar)
+            })
+            .on("click",function(d){
+                var thisVar=d3.select(this);
+                mouseOverFunction(d,thisVar);
+                vis.toggleNode=!vis.toggleNode;
+                if(vis.toggleNode){
+                    vis.selectedNode=d;
+                }
+                setIfDifferent_att(thisVar, d, 'r', vis.width / 150);
+                setIfDifferent(thisVar, d, 'stroke-width', 2);
+                //d3.event.stopPropagation();
 
             })
         ;
+
+
+    function mouseOutFunction(d,thisvar) {
+        vis.rect.selectAll("text").remove();
+        vis.rect.selectAll("rect").remove();
+        if (!vis.toggleNode) {
+            clearAllFunction();
+            vis.tip.hide(d);
+        } else if (vis.toggleNode) {
+            if (d === vis.selectedNode) {
+            } else {
+                var n = thisvar;
+                setIfDifferent_att(n, d, 'r', vis.width / 250);
+                setIfDifferent(n, d, 'stroke-width', 1);
+                vis.tip.hide(d);
+
+            }
+        }
+
+    }
+
+    function clearAllFunction() {
+        vis.node.each(function (dd) {
+            var n = d3.select(this);
+            setIfDifferent(n, dd, 'fill-opacity', 1);
+            setIfDifferent(n, dd, 'stroke', "#ccc");
+            setIfDifferent(n, dd, 'stroke-width', 1);
+            setIfDifferent_att(n, dd, 'r', vis.width / 250);
+        });
+        vis.link.each(function(l) {
+            var el = d3.select(this);
+            setIfDifferent(el, l, 'stroke', "#bbb");
+            var strokeOpacity = (l.strength - (vis.threshold - 1)) / (8 - vis.threshold);
+            setIfDifferent(el, l, 'stroke-opacity', strokeOpacity);
+        });
+    }
+
+    function mouseOverFunction(d,thisvar) {
+        if (!vis.toggleNode){
+        vis.tip.show(d);
+        var linktext = [];
+        var ind = 0;
+        setIfDifferent_att(thisvar, d, 'r', vis.width/200);
+        setIfDifferent_att(thisvar, d, 'stroke-width', 2);
+        vis.link.each(function(l)
+        {
+            var el = d3.select(this);
+
+            var strokeColor="#bbb";
+            var strokeOpacity=.2;
+            var strokeWidth;
+
+            if ((d === l.source || d === l.target) && (l.strength > vis.threshold)){
+                strokeColor = "#000";
+                strokeOpacity = 1;
+
+                l.intersection.forEach(function (text1, i) {
+                    if (linktext.indexOf(text1) == -1) {
+                        ind += 1;
+                        linktext.push(text1);
+                        vis.rect.append("rect")
+                            .attr("class","force-hover-label-rectangle")
+                            .attr("x",-5)
+                            .attr("y",ind*25-15)
+                            .attr("rx",7)
+                            .attr("ry",7)
+                            .attr("width",140)
+                            .attr("height",20);
+                        vis.rect.append("text")
+                            .text(text1)
+                            .attr("y", ind * 25)
+                            .style("fill", "#000")
+                            .attr("class", "force-hover-label");
+                    }
+                });
+
+            }
+            setIfDifferent(el, l, 'stroke', strokeColor);
+            setIfDifferent(el, l, 'stroke-opacity', strokeOpacity);
+        });
+
+
+        vis.node.each(function(dd){
+            var n=d3.select(this);
+            var fillOpacity=.08;
+            var strokeColor="#ccc";
+            var strokeOpacity=.5;
+            if (neighboring(d,dd)) {
+                fillOpacity=1;
+                strokeColor="#777";
+                strokeOpacity=1;
+            }
+            setIfDifferent(n, dd, 'fill-opacity', fillOpacity);
+            setIfDifferent(n, dd, 'stroke', strokeColor);
+            setIfDifferent(n, dd, 'stroke-opacity', strokeOpacity);
+        });
+
+
+    }
+    else if (vis.toggleNode==1){
+            if (d===vis.selectedNode){
+                vis.tip.show(d);
+                setIfDifferent_att(thisvar, d, 'r', vis.width/150);
+                setIfDifferent(thisvar, d, 'stroke-width', 2);
+
+            }
+            else if (neighboring(d,vis.selectedNode)) {
+                vis.tip.show(d);
+                setIfDifferent_att(thisvar, d, 'r', vis.width/200);
+                setIfDifferent(thisvar, d, 'stroke-width', 2);
+
+            }
+
+
+
+
+
+
+            vis.link.each(function(l)
+            {
+                var el = d3.select(this);
+
+
+                if (((d === l.source && vis.selectedNode=== l.target) || (d === l.target && vis.selectedNode=== l.source)) && (l.strength > vis.threshold)){
+
+                    l.intersection.forEach(function (text1, i) {
+                            vis.rect.append("rect")
+                                .attr("class","force-hover-label-rectangle")
+                                .attr("x",-5)
+                                .attr("y",i*25-15)
+                                .attr("rx",7)
+                                .attr("ry",7)
+                                .attr("width",140)
+                                .attr("height",20);
+                            vis.rect.append("text")
+                                .text(text1)
+                                .attr("y", i* 25)
+                                .style("fill", "#000")
+                                .attr("class", "force-hover-label");
+                    });
+
+                }
+
+            });
+        }
+    }
+
 
     function setIfDifferent(el, d, attName, value)
     {
