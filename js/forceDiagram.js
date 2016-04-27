@@ -31,16 +31,14 @@ ForceDiagram.prototype.initVis = function(){
 
 
     // SVG drawing area
-    vis.svg = d3.select("#" + vis.parentElement).append("svg")
+    vis.svgEl = d3.select("#" + vis.parentElement).append("svg")
         .attr("width", vis.width + vis.margin.left + vis.margin.right)
-        .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
+        .attr("height", vis.height + vis.margin.top + vis.margin.bottom);
+
+    vis.svg = vis.svgEl
         .append("g")
         .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
-    vis.bigRectangle=vis.svg.append("rect")
-        .attr("width",vis.width + vis.margin.left + vis.margin.right)
-        .attr("height",vis.height + vis.margin.top + vis.margin.bottom)
-        .attr("fill-opacity",0);
 
 
     // 1) INITIALIZE FORCE-LAYOUT
@@ -63,7 +61,7 @@ ForceDiagram.prototype.initVis = function(){
         .attr("transform", "translate("+vis.width*.05+","+vis.height *.3+")");
 
     vis.rect=vis.svg.append("g")
-        .attr("transform", "translate("+vis.width*.85+","+vis.height *.4+")");
+        .attr("transform", "translate("+vis.width*.65+","+vis.height *.2+")");
 
     vis.rect.append("rect")
         .attr("width",vis.width *.15)
@@ -212,9 +210,9 @@ ForceDiagram.prototype.wrangleData = function(filters){
 
 
 
-    var tableByRecipeID ={};
+    vis.tableByRecipeID ={};
     vis.linksNodesData_Recipes.Nodes.forEach(function(d,i){
-        tableByRecipeID[d.id]=d;
+        vis.tableByRecipeID[d.id]=d;
     });
 
 
@@ -263,7 +261,7 @@ ForceDiagram.prototype.wrangleData = function(filters){
                     linkObject.name = linkname;
                     var commonCuisines=[];
                     commonValues.forEach(function(d,i){
-                        commonCuisines.push(tableByRecipeID[d].Cuisine);
+                        commonCuisines.push(vis.tableByRecipeID[d].Cuisine);
                     });
                     linkObject.intersection=commonCuisines;
                     vis.linksNodesData_Ingredients.Links[linkname] = linkObject;
@@ -315,7 +313,8 @@ ForceDiagram.prototype.updateVis = function() {
 
     vis.colorScale.domain(vis.categoryKeys);
 
-
+    if (!vis.textToolTipFreeze){}
+    else {vis.textToolTipFreeze.remove()}
     //figure out neighboring nodes via links
 
 
@@ -443,12 +442,13 @@ ForceDiagram.prototype.updateVis = function() {
     vis.selectedNode;
 
 
-    vis.svg.on("click",function(d){
-        console.log('called')
+
+    vis.svgEl.on("click",function(d){
         if (vis.toggleNode){
             vis.toggleNode=0;
-            clearAllFunction()
-            console.log('clear')
+            clearAllFunction();
+            vis.tip.hide(vis.selectedNode);
+            vis.textToolTipFreeze.remove();
         }
     });
         vis.node.enter().append("circle")
@@ -476,14 +476,28 @@ ForceDiagram.prototype.updateVis = function() {
             })
             .on("click",function(d){
                 var thisVar=d3.select(this);
-                mouseOverFunction(d,thisVar);
-                vis.toggleNode=!vis.toggleNode;
-                if(vis.toggleNode){
-                    vis.selectedNode=d;
+                if (!vis.toggleNode) {
+                    mouseOutFunction(d,thisVar);
+                    mouseOverFunction(d, thisVar);
+                    vis.textToolTipFreeze = vis.svg.append("text").style("fill", "#000")
+                        .attr("class", "force-tooltip-freeze-label")
+                        .attr("x", d.x+8)
+                        .attr("y", d.y-8)
+                        .attr("font-size",18);
+                    if (vis.selectedVal == "recipe") {
+                        vis.textToolTipFreeze.text(d.Cuisine);
+                    }
+                    else if (vis.selectedVal == "ingredient") {
+                        vis.textToolTipFreeze.text(d.id);
+                    }
+                    vis.toggleNode = 1;
+                    vis.selectedNode = d;
+
+                    setIfDifferent_att(thisVar, d, 'r', vis.width / 150);
+                    setIfDifferent(thisVar, d, 'stroke-width', 2);
+                    vis.tip.hide(d);
+                    d3.event.stopPropagation();
                 }
-                setIfDifferent_att(thisVar, d, 'r', vis.width / 150);
-                setIfDifferent(thisVar, d, 'stroke-width', 2);
-                //d3.event.stopPropagation();
 
             })
         ;
@@ -495,13 +509,16 @@ ForceDiagram.prototype.updateVis = function() {
         if (!vis.toggleNode) {
             clearAllFunction();
             vis.tip.hide(d);
+
         } else if (vis.toggleNode) {
             if (d === vis.selectedNode) {
+                vis.tip.hide(d);
             } else {
                 var n = thisvar;
                 setIfDifferent_att(n, d, 'r', vis.width / 250);
                 setIfDifferent(n, d, 'stroke-width', 1);
                 vis.tip.hide(d);
+
 
             }
         }
@@ -526,13 +543,17 @@ ForceDiagram.prototype.updateVis = function() {
 
     function mouseOverFunction(d,thisvar) {
         if (!vis.toggleNode){
-        vis.tip.show(d);
-        var linktext = [];
-        var ind = 0;
-        setIfDifferent_att(thisvar, d, 'r', vis.width/200);
-        setIfDifferent_att(thisvar, d, 'stroke-width', 2);
-        vis.link.each(function(l)
-        {
+            vis.tip.show(d);
+            setIfDifferent_att(thisvar, d, 'r', vis.width/200);
+            setIfDifferent_att(thisvar, d, 'stroke-width', 2);
+
+            if (vis.selectedVal == "recipe"){
+                printIngredients(d);}
+            else if (vis.selectedVal == "ingredient"){
+                printRecipes(d)
+            }
+
+            vis.link.each(function(l) {
             var el = d3.select(this);
 
             var strokeColor="#bbb";
@@ -543,30 +564,15 @@ ForceDiagram.prototype.updateVis = function() {
                 strokeColor = "#000";
                 strokeOpacity = 1;
 
-                l.intersection.forEach(function (text1, i) {
-                    if (linktext.indexOf(text1) == -1) {
-                        ind += 1;
-                        linktext.push(text1);
-                        vis.rect.append("rect")
-                            .attr("class","force-hover-label-rectangle")
-                            .attr("x",-5)
-                            .attr("y",ind*25-15)
-                            .attr("rx",7)
-                            .attr("ry",7)
-                            .attr("width",140)
-                            .attr("height",20);
-                        vis.rect.append("text")
-                            .text(text1)
-                            .attr("y", ind * 25)
-                            .style("fill", "#000")
-                            .attr("class", "force-hover-label");
-                    }
-                });
-
+                setIfDifferent(el, l, 'stroke', strokeColor);
+                setIfDifferent(el, l, 'stroke-opacity', strokeOpacity);
             }
-            setIfDifferent(el, l, 'stroke', strokeColor);
-            setIfDifferent(el, l, 'stroke-opacity', strokeOpacity);
-        });
+                else {
+                setIfDifferent(el, l, 'stroke', strokeColor);
+                setIfDifferent(el, l, 'stroke-opacity', strokeOpacity);}
+        }
+        )
+        ;
 
 
         vis.node.each(function(dd){
@@ -588,9 +594,15 @@ ForceDiagram.prototype.updateVis = function() {
     }
     else if (vis.toggleNode==1){
             if (d===vis.selectedNode){
-                vis.tip.show(d);
                 setIfDifferent_att(thisvar, d, 'r', vis.width/150);
                 setIfDifferent(thisvar, d, 'stroke-width', 2);
+
+                if (vis.selectedVal == "recipe"){
+                    printIngredients(d);}
+                else if (vis.selectedVal == "ingredient"){
+                    printRecipes(d)
+                }
+
 
             }
             else if (neighboring(d,vis.selectedNode)) {
@@ -598,24 +610,25 @@ ForceDiagram.prototype.updateVis = function() {
                 setIfDifferent_att(thisvar, d, 'r', vis.width/200);
                 setIfDifferent(thisvar, d, 'stroke-width', 2);
 
-            }
+                if (vis.selectedVal == "recipe"){
+                    printIngredients(d);}
+                else if (vis.selectedVal == "ingredient"){
+                    printRecipes(d)
+                }
 
-
-
-
-
-
-            vis.link.each(function(l)
-            {
-                var el = d3.select(this);
-
-
-                if (((d === l.source && vis.selectedNode=== l.target) || (d === l.target && vis.selectedNode=== l.source)) && (l.strength > vis.threshold)){
-
-                    l.intersection.forEach(function (text1, i) {
+                vis.rect.append("text")
+                    .attr("class","force-hover-label-title")
+                    .attr("y",-30)
+                    .attr("x",145)
+                    .text("Intersection:")
+                    .attr("fill","#777");
+                vis.link.each(function(l)
+                {var el = d3.select(this);
+                    if (((d === l.source && vis.selectedNode=== l.target) || (d === l.target && vis.selectedNode=== l.source)) && (l.strength > vis.threshold)){
+                        l.intersection.forEach(function (text1, i) {
                             vis.rect.append("rect")
                                 .attr("class","force-hover-label-rectangle")
-                                .attr("x",-5)
+                                .attr("x",150)
                                 .attr("y",i*25-15)
                                 .attr("rx",7)
                                 .attr("ry",7)
@@ -623,17 +636,78 @@ ForceDiagram.prototype.updateVis = function() {
                                 .attr("height",20);
                             vis.rect.append("text")
                                 .text(text1)
+                                .attr("x",155)
                                 .attr("y", i* 25)
                                 .style("fill", "#000")
                                 .attr("class", "force-hover-label");
-                    });
+                        });
 
-                }
+                    }
 
-            });
+                });
+            }
+
         }
     }
 
+    function printIngredients(d){
+        vis.rect.append("text")
+            .attr("class","force-hover-label-title")
+            .attr("y",-30)
+            .attr("x",-10)
+            .text("Ingredients:")
+            .attr("fill","#777");
+        d.Ingredients.forEach(function (text1, i) {
+            vis.rect.append("rect")
+                .attr("class","force-hover-label-rectangle")
+                .attr("x",-5)
+                .attr("y",i*25-15)
+                .attr("rx",7)
+                .attr("ry",7)
+                .attr("width",140)
+                .attr("height",20);
+            vis.rect.append("text")
+                .text(text1)
+                .attr("y", i* 25)
+                .style("fill", "#000")
+                .attr("class", "force-hover-label");
+
+        });
+    }
+
+    function printRecipes(d){
+        vis.rect.append("text")
+            .attr("class","force-hover-label-title")
+            .attr("y",-30)
+            .attr("x",-10)
+            .text("Cuisines:")
+            .attr("fill","#777");
+
+        var Cuisines=[];
+        d.recipes.forEach(function(d,i){
+            Cuisines.push(vis.tableByRecipeID[d].Cuisine);
+        });
+        var uniqueCuisines = Cuisines.filter(function(item, pos) {
+            return Cuisines.indexOf(item) == pos;
+        });
+
+        uniqueCuisines.forEach(function (text1, i) {
+            vis.rect.append("rect")
+                .attr("class","force-hover-label-rectangle")
+                .attr("x",-5)
+                .attr("y",i*25-15)
+                .attr("rx",7)
+                .attr("ry",7)
+                .attr("width",140)
+                .attr("height",20);
+            vis.rect.append("text")
+                .text(text1)
+                .attr("y", i* 25)
+                .style("fill", "#000")
+                .attr("class", "force-hover-label");
+
+        });
+    }
 
     function setIfDifferent(el, d, attName, value)
     {
