@@ -33,7 +33,7 @@ function createVis(error,data1,data2) {
     categories_ingredients=data2;
     //console.log(data_ingredients)
     forceplot = new ForceDiagram("force-layout", allData,categories_ingredients,1000,150);
-    //forceplot_mini= new ForceDiagram("force-layout-mini", allData,categories_ingredients,300,10);
+    forceplot_mini= new ForceDiagram("force-layout-mini", allData,categories_ingredients,300,50);
 }
 
 
@@ -51,3 +51,4 @@ function createVis(error,data1,data2) {
 //    areachart.wrangleData();
 //
 //}
+

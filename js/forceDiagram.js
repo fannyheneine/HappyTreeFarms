@@ -25,11 +25,13 @@ ForceDiagram.prototype.initVis = function(){
 
 
     //LEGEND WILL DISAPPEAR FOR VIS.WIDTH < 500 px
-
+    vis.svgHeight=vis.svgWidth*.6;
     vis.width = vis.svgWidth - vis.margin.left - vis.margin.right;
-    vis.height = 0.6*vis.svgWidth - vis.margin.top - vis.margin.bottom;
+    vis.height = vis.svgHeight - vis.margin.top - vis.margin.bottom;
 
-
+    vis.nodeRadius_normal=vis.width/250;
+    vis.nodeRadius_highlight=vis.width/200;
+    vis.nodeRadius_selected=vis.width/150;
     // SVG drawing area
     vis.svgEl = d3.select("#" + vis.parentElement).append("svg")
         .attr("width", vis.width + vis.margin.left + vis.margin.right)
@@ -86,10 +88,12 @@ ForceDiagram.prototype.initVis = function(){
 
 ForceDiagram.prototype.wrangleData = function(filters){
     var vis = this;
+
     vis.filters=filters;
     // THIS IS WHERE THE FILTERING FUNCTIONS WILL GO
     if (filters=="all"){
         vis.allDatafiltered=vis.allData;
+
     } else {
         for( var type in vis.filters) {
             if (type=="Cuisine"){
@@ -123,6 +127,7 @@ ForceDiagram.prototype.wrangleData = function(filters){
         vis.jsonData.push(dnew);
 
     });
+
 
     var tableByIngredients=[];
     vis.jsonData.forEach(function(d,i){
@@ -454,7 +459,7 @@ ForceDiagram.prototype.updateVis = function() {
         vis.node.enter().append("circle")
             .attr("class", "node")
             .attr("r", function (d) {
-                return vis.width/250;
+                return vis.nodeRadius_normal;
             })
             .attr("fill", function (d, i) {
                 if (vis.selectedVal == "recipe") {
@@ -493,7 +498,7 @@ ForceDiagram.prototype.updateVis = function() {
                     vis.toggleNode = 1;
                     vis.selectedNode = d;
 
-                    setIfDifferent_att(thisVar, d, 'r', vis.width / 150);
+                    setIfDifferent_att(thisVar, d, 'r', vis.nodeRadius_selected);
                     setIfDifferent(thisVar, d, 'stroke-width', 2);
                     vis.tip.hide(d);
                     d3.event.stopPropagation();
@@ -515,7 +520,7 @@ ForceDiagram.prototype.updateVis = function() {
                 vis.tip.hide(d);
             } else {
                 var n = thisvar;
-                setIfDifferent_att(n, d, 'r', vis.width / 250);
+                setIfDifferent_att(n, d, 'r', vis.nodeRadius_normal);
                 setIfDifferent(n, d, 'stroke-width', 1);
                 vis.tip.hide(d);
 
@@ -531,7 +536,7 @@ ForceDiagram.prototype.updateVis = function() {
             setIfDifferent(n, dd, 'fill-opacity', 1);
             setIfDifferent(n, dd, 'stroke', "#ccc");
             setIfDifferent(n, dd, 'stroke-width', 1);
-            setIfDifferent_att(n, dd, 'r', vis.width / 250);
+            setIfDifferent_att(n, dd, 'r', vis.nodeRadius_normal);
         });
         vis.link.each(function(l) {
             var el = d3.select(this);
@@ -544,7 +549,7 @@ ForceDiagram.prototype.updateVis = function() {
     function mouseOverFunction(d,thisvar) {
         if (!vis.toggleNode){
             vis.tip.show(d);
-            setIfDifferent_att(thisvar, d, 'r', vis.width/200);
+            setIfDifferent_att(thisvar, d, 'r', vis.nodeRadius_highlight);
             setIfDifferent_att(thisvar, d, 'stroke-width', 2);
 
             if (vis.selectedVal == "recipe"){
@@ -594,7 +599,7 @@ ForceDiagram.prototype.updateVis = function() {
     }
     else if (vis.toggleNode==1){
             if (d===vis.selectedNode){
-                setIfDifferent_att(thisvar, d, 'r', vis.width/150);
+                setIfDifferent_att(thisvar, d, 'r', vis.nodeRadius_highlight);
                 setIfDifferent(thisvar, d, 'stroke-width', 2);
 
                 if (vis.selectedVal == "recipe"){
@@ -607,7 +612,7 @@ ForceDiagram.prototype.updateVis = function() {
             }
             else if (neighboring(d,vis.selectedNode)) {
                 vis.tip.show(d);
-                setIfDifferent_att(thisvar, d, 'r', vis.width/200);
+                setIfDifferent_att(thisvar, d, 'r', vis.nodeRadius_highlight);
                 setIfDifferent(thisvar, d, 'stroke-width', 2);
 
                 if (vis.selectedVal == "recipe"){
@@ -759,52 +764,24 @@ ForceDiagram.prototype.updateVis = function() {
                 });
         });
 
-//STOP FORCE LAYOUT AFTER 10 SECONDS
-window.setTimeout(function()
-{
-    vis.force.stop();
-}, 10000);
+    //STOP FORCE LAYOUT AFTER 10 SECONDS
+    window.setTimeout(function()
+    {
+        vis.force.stop();
+    }, 10000);
 
+    //IF WE NEED A CLICK RECTANGLE FOR THE MINI VERSION
+
+    //if (vis.width < 500) {
+    //    vis.clickRectangle=vis.svgEl.append("rect")
+    //        .attr("width",vis.svgWidth)
+    //        .attr("height",vis.svgHeight)
+    //        .attr("fill","#ccc")
+    //        .on("click",function(){
     //
-    //// Update domain
-    //// Get the maximum of the multi-dimensional array or in other words, get the highest peak of the uppermost layer
-    //vis.y.domain([0, d3.max(vis.displayData, function(d) {
-    //    return d3.max(d.values, function(e) {
-    //        return e.y0 + e.y;
-    //    });
-    //})
-    //]);
-    //
-    //
-    //// Draw the layers
-    //var categories = vis.svg.selectAll(".area")
-    //    .data(vis.displayData);
-    //
-    //categories.enter().append("path")
-    //    .attr("class", "area");
-    //
-    //categories
-    //    .style("fill", function(d) {
-    //        return colorScale(d.name);
-    //    })
-    //    .attr("d", function(d) {
-    //        return vis.area(d.values);
-    //    });
-    //
-    //// TO-DO: Update tooltip text
-    //categories
-    //    .on('mouseover', function(d,i){
-    //        vis.textbox.text(d.name); //on mouse over, display labels.  but i'm sorry i can't get the text to wrap
-    //    })
-    //    .on('mouseout', function(d,i){
-    //        vis.textbox.text(""); //on mouse out, remove labels
-    //    });
-    //
-    //categories.exit().remove();
-    //
-    //
-    //// Call axis functions with the new domain
-    //vis.svg.select(".x-axis").call(vis.xAxis);
-    //vis.svg.select(".y-axis").call(vis.yAxis);
+    //        });
+    //}
+
+
 };
 
