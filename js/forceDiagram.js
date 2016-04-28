@@ -60,7 +60,7 @@ ForceDiagram.prototype.initVis = function(){
 
     vis.svg.append("g")
         .attr("class", "legend")
-        .attr("transform", "translate("+vis.width*.05+","+vis.height *.3+")");
+        .attr("transform", "translate("+vis.width*.01+","+vis.height *.2+")");
 
     vis.rect=vis.svg.append("g");
 
@@ -659,12 +659,6 @@ ForceDiagram.prototype.updateVis = function() {
         var trans_x= d.x+70;
         var trans_y= d.y-40;
         vis.rectmoved=vis.rect.attr("transform", "translate("+ trans_x +","+trans_y+")");
-        vis.rectmoved.append("line")
-            .attr("x1", 0)
-            .attr("y1", 0)
-            .attr("x2",-d.x)
-            .attr("y2",-d.y)
-            .attr("stroke","#ccc");
         vis.rectmoved.append("text")
             .attr("class","force-hover-label-title")
             .attr("y",-30)

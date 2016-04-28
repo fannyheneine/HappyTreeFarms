@@ -54,12 +54,15 @@
 
 		<h2 align="left">Force Diagram</h2>
 
-	<!--<a download="data.json" id="download">Download</a>-->
-	<!--DON'T DELETE THIS ^-->
-        <form>
-            <input type="radio" name="graph-type" value="recipe" checked onchange="forceplot.updateVis()"> Recipes<br>
-            <input type="radio" name="graph-type" value="ingredient" onchange="forceplot.updateVis()"> Ingredients<br>
-        </form>
+		<div class="btn-group" data-toggle="buttons">
+			<label class="btn active">
+				<input type="radio" name="graph-type" value="recipe" checked onchange="forceplot.updateVis()"><i class="fa fa-circle-o fa-2x"></i><i class="fa fa-check-circle-o fa-2x"></i><span> Recipes</span>
+			</label>
+			<label class="btn">
+				<input type="radio" name="graph-type" value="ingredient" onchange="forceplot.updateVis()"><i class="fa fa-circle-o fa-2x"></i><i class="fa fa-check-circle-o fa-2x"></i><span> Ingredients</span>
+			</label>
+		</div>
+
         <div id="force-layout"></div>
 
 	</div>
