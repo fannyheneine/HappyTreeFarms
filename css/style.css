@@ -10,16 +10,12 @@
 body{
   margin-left: 20px;
 }
-
-h2{
-    font-size: 30px;
-    text-align: center;
-    color: #666666;
-    font-weight: 100;
-    margin-top: 50px;
+.row{
+  /*font-family: Gill Sans, Verdana;*/
+  font-family: cursive;
 }
 
-h2{
+h1{
   font-size: 24px;
   text-align: center;
   color: #666666;
@@ -72,6 +68,11 @@ h2{
 svg{
     fill: none;
     background-color: transparent;
+    /*viewBox: 0 0 1000 500;*/
+    /*preserveAspectRatio: xMinYMin meet;*/
+    /*position: absolute;*/
+    /*transform: scale(0.5);*/
+
 }
 
 .boundary{
@@ -89,7 +90,7 @@ polyline{
 
 .area{
   stroke:#999967;
-  stroke-width: 0px;
+  stroke-width: 2px;
 }
 
 .map-label{
@@ -120,23 +121,6 @@ polyline{
   z-index: -1;
 }
 
-
-/****************/
-/*   FORCE-CHART  */
-/****************/
-
-#force-textbox {
-    fill:#f7f7f7;
-    /*to match bg color*/
-}
-
-.force-hover-label-rectangle {
-    fill:lightsteelblue;
-    fill-opacity: 0.2;
-    stroke: #91a1b8;
-    stroke-width: 1px;
-}
-
 /****************/
 /*   STACK-CHART  */
 /****************/
@@ -149,7 +133,7 @@ body {
 }
 
 
-h3 {
+h2 {
     font-weight: 300;
     font-size: 18px;
     margin-bottom: 40px;
@@ -180,9 +164,8 @@ h3 {
 }
 
 .brush .extent {
-    stroke: #fff;
-    fill: #808080;
-    fill-opacity: 0.8;
+    stroke: #666;
+    fill-opacity: 2;
     shape-rendering: crispEdges;
 }
 
@@ -197,4 +180,42 @@ div.tooltip {
     border: 0px;
     border-radius: 8px;
     pointer-events: none;
+}
+
+/*.mini-svg{*/
+    /*margin-left: 100px;*/
+    /*transform: scale(0.5);*/
+/*}*/
+
+.row-height {
+    display: table;
+    table-layout: fixed;
+    height: 10px;
+    width: 100%;
+}
+
+.click-bar{
+    height: 10%;
+}
+
+.svg-container {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%; /* aspect ratio */
+    vertical-align: top;
+    overflow: hidden;
+}
+.svg-content-responsive {
+    display: inline-block;
+    position: absolute;
+    height:100%;
+    width:100%;
+    top: 0px;
+    left: 0;
+}
+
+
+#map-map{
+    margin-left: -50px;
 }

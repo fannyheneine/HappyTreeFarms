@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>CS171 - Project</title>
+	<title>CS171 - Lab 7</title>
 
 	<!-- Load Google Font -->
 	<link href='https://fonts.googleapis.com/css?family=Roboto:100,400,300,400italic,700' rel='stylesheet' type='text/css'>
@@ -19,11 +19,10 @@
 </head>
 <body>
 
-<h1 align="center">A discovery of the Cuisines of the World</h1>
 	<div class="container-fluid">
 
-		<h2 align="center">A World Map of the Cuisines</h2>
-		<h3>Based on the recipes of the different countries</h3>
+		<h1 align="center">Cuisine: World Map</h1>
+
         <br>
         <br>
 
@@ -40,8 +39,8 @@
 		<div class="row">
 			<div class="col-md-12">
 
-				<h2>Food Supply Quantity as per UN data</h2>
-				<h3>Detailed annual statistics in grams per capita per day</h3>
+				<h1>Food Supply Quantity as per UN data</h1>
+				<h2>Detailed annual statistics in grams per capita per day</h2>
 
 				<!-- Visualization placeholders -->
 				<div id="stacked-area-chart"></div>
@@ -52,22 +51,28 @@
 
 	</div>
 
-		<h2 align="left">Force Diagram</h2>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+
+		<h1 align="left">Force Diagram</h1>
 
 	<!--<a download="data.json" id="download">Download</a>-->
 	<!--DON'T DELETE THIS ^-->
         <form>
-            <input type="radio" name="graph-type" value="recipe" checked onchange="forceplot.updateVis()"> Recipes<br>
-            <input type="radio" name="graph-type" value="ingredient" onchange="forceplot.updateVis()"> Ingredients<br>
+            <input type="radio" name="graph-type" value="recipe" checked onchange="forceplot.wrangleData()"> Recipes<br>
+            <input type="radio" name="graph-type" value="ingredient" onchange="forceplot.wrangleData()"> Ingredients<br>
         </form>
         <div id="force-layout"></div>
 
+			</div>
+		</div>
 	</div>
 
 
 
-
-	<h2>Most popular ingredients in each cuisine</h2>
+	<h1>Popular ingredients per cuisine</h1>
 	<!-- Select box to choose the selection criteria -->
 	<form class="form-inline">
 		<div class="form-group">

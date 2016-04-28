@@ -4,7 +4,7 @@
  * @param _parentElement 	-- the HTML element in which to draw the visualization
  * @param _data						-- the  
  */
-StackedAreaChart = function(_parentElement, _data) {
+StackedAreaChart = function(_parentElement, _data, country_chosen_st, _svgWidth) {
 
     // var stack = d3.layout.stack()
     //     			.values(function(d) { return d.values; })
@@ -13,11 +13,9 @@ StackedAreaChart = function(_parentElement, _data) {
     // this.data = stack(_data);
     this.data = _data;
     this.displayData = []; // see data wrangling
+    this.svgWidth=_svgWidth;
 
     // DEBUG RAW DATA
-    console.log(this.data);
-
-
 
     this.initVis(country_chosen_st);
 }
@@ -42,7 +40,7 @@ StackedAreaChart.prototype.initVis = function(country_chosen_st) {
     // 	 .y0(function(d) { return vis.y(d.y0); })
     // 	 .y1(function(d) { return vis.y(d.y0 + d.y); });
 
-    console.log(vis.data)
+    //console.log(vis.data)
     data_all_stacked=vis.data;
 
     for (i = 0; i < vis.data.length; i++){
@@ -51,7 +49,7 @@ StackedAreaChart.prototype.initVis = function(country_chosen_st) {
         }
     }
 
-    console.log(data_chosen.years)
+    //console.log(data_chosen.years)
     // Better to do it in main_stacked using a for loop
     /*data2.layers.forEach(function (d) {
      for (var column in d) {
@@ -67,22 +65,46 @@ StackedAreaChart.prototype.initVis = function(country_chosen_st) {
     colorScale.domain(d3.keys(data_chosen.layers[0]).filter(function(d){ return d != "Year"; }))
 
     vis.margin = {
-        top: 40,
+        top: 20,
         right: 0,
-        bottom: 60,
-        left: 60
+        bottom: 20,
+        left: 40
     };
 
-    vis.width = 800 - vis.margin.left - vis.margin.right,
-        vis.height = 400 - vis.margin.top - vis.margin.bottom;
-
+    //vis.width = 800 - vis.margin.left - vis.margin.right;
+    //vis.height = 400 - vis.margin.top - vis.margin.bottom;
+    //
 
     // SVG drawing area
+    vis.width = vis.svgWidth - vis.margin.left - vis.margin.right;
+    vis.height = 0.6*vis.svgWidth - vis.margin.top - vis.margin.bottom;
+
+    console.log("aaaaa", vis.width)
+
+    //vis.width = vis.svg_stacked[0][0].parentElement.previousElementSibling.firstElementChild.clientWidth - vis.margin.left - vis.margin.right;
+    //vis.height = vis.svg_stacked[0][0].parentElement.previousElementSibling.firstElementChild.clientHeight - vis.margin.top - vis.margin.bottom;
+    //
+
+    //vis.svg_stacked.attr("width", vis.width + vis.margin.left + vis.margin.right)
+
+
+    //vis.svg_stacked = d3.selectAll(".stacked-area-chart2")
+    //    .append("div")
+    //    .classed("svg-container", true)
+    //    .append("svg")
+    //    //.attr("height", vis.height + vis.margin.top + vis.margin.bottom)
+    //    .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")")
+    //    .attr("viewbox", "0 0 1000 500")
+    //    .attr("preserveAspectRatio", "xMinYMin meet")
+    //    .classed("svg-content-responsive", true)
+    //    .append("g")
+
     vis.svg_stacked = d3.select("#" + vis.parentElement).append("svg")
         .attr("width", vis.width + vis.margin.left + vis.margin.right)
         .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
         .append("g")
         .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
+
 
     // Overlay with path clipping
     vis.svg_stacked.append("defs").append("clipPath")
@@ -157,7 +179,7 @@ StackedAreaChart.prototype.initVis = function(country_chosen_st) {
     stackedData = stack(transposedData);
     vis.stackedData = stackedData;
 
-    console.log(stackedData);
+    //console.log(stackedData);
 
 
     vis.displayData = vis.stackedData;
@@ -175,7 +197,7 @@ var next_country;
 
 StackedAreaChart.prototype.wrangleData = function(next_country) {
     var vis = this;
-    console.log(next_country)
+    //console.log(next_country)
 
     if(next_country==country_chosen_st) {
         vis.displayData = stackedData
@@ -187,11 +209,11 @@ StackedAreaChart.prototype.wrangleData = function(next_country) {
                 data_chosen = data_all_stacked[i];
             }
             else if (data_all_stacked[i].country != next_country) {
-                console.log("NO DATA!")
+                //console.log("NO DATA!")
                 vis.displayData = 0;
             }
         }
-        console.log(data_chosen.years)
+        //console.log(data_chosen.years)
 
 // Better to do it in main_stacked using a for loop
         /* data_chosen.layers.forEach(function (d) {

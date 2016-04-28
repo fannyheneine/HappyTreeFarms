@@ -1,9 +1,8 @@
-createMapVisualization();
 
-function createMapVisualization() {
-    var margin = { top: 10, right: 10, bottom: 10, left: 10 };
-    var map_width = 850,
-        map_height = 600,
+function createMapVisualization(scaling, id, size) {
+    var margin = { top: 10, right: 0, bottom: 10, left: 0 };
+    var map_width = 800/(scaling/2)
+        map_height = 0.6*map_width,
         pie_width = 400,
         pie_height = 300,
         hbar_width = 450,
@@ -12,13 +11,14 @@ function createMapVisualization() {
 
     // INITIATE MAP
     //
-    var svg_map = d3.select("#map-map").append("svg")
+    var svg_map = d3.select(id).append("svg")
         .attr("width", map_width + margin.left + margin.right)
-        .attr("height", map_height + margin.top + margin.bottom);
+        .attr("height", map_height + margin.top + margin.bottom)
 
     var map_projection = d3.geo.mercator()
         .center([10, 50])
-        .scale(map_width / 2 / Math.PI);
+        .scale(map_width / 2/ Math.PI)
+        .translate([map_width / 2, map_height / 2]);
 
     var map_path = d3.geo.path()
         .projection(map_projection);
@@ -33,56 +33,60 @@ function createMapVisualization() {
 
 
     //INITIATE PIE
-    var radius = Math.min(pie_width, pie_height)/2.5;
 
-    var pie_arc = d3.svg.arc()
-        .outerRadius(radius * 0.7)
-        .innerRadius(0);
+    if(size=="big") {
+        var radius = Math.min(pie_width, pie_height) / 2.5;
 
-    var pie_arc_big = d3.svg.arc()
-        .outerRadius(radius * 0.85)
-        .innerRadius(0);
+        var pie_arc = d3.svg.arc()
+            .outerRadius(radius * 0.7)
+            .innerRadius(0);
 
-    var pie_arc_outer = d3.svg.arc()
-        .innerRadius(radius * 0.9)
-        .outerRadius(radius * 0.9);
+        var pie_arc_big = d3.svg.arc()
+            .outerRadius(radius * 0.85)
+            .innerRadius(0);
 
-    var pie_layout = d3.layout.pie()
-        .sort(null)
-        .value(function(d) { return d.percent; });
+        var pie_arc_outer = d3.svg.arc()
+            .innerRadius(radius * 0.9)
+            .outerRadius(radius * 0.9);
 
-    var svg_pie = d3.select("#map-bar").append("svg")
-        .attr("width", pie_width + margin.left + margin.right)
-        .attr("height", pie_height + margin.top + margin.bottom)
-        .append("g");
+        var pie_layout = d3.layout.pie()
+            .sort(null)
+            .value(function (d) {
+                return d.percent;
+            });
 
-    var map_label = svg_pie.append("g")
-        .style("display", "none");
+        var svg_pie = d3.select("#map-bar").append("svg")
+            .attr("width", pie_width + margin.left + margin.right)
+            .attr("height", pie_height + margin.top + margin.bottom)
+            .append("g");
 
-    svg_pie.append('g')
-        .attr("class", "pie-slices")
-    svg_pie.append("g")
-        .attr("class", "pie-labels");
-    svg_pie.append("g")
-        .attr("class", "pie-lines");
-    svg_pie
-        .attr("transform", "translate(" + (pie_width / 2 + 15) + "," + (pie_height / 2 + 20) + ")");
+        var map_label = svg_pie.append("g")
+            .style("display", "none");
 
-    var curr_category;
+        svg_pie.append('g')
+            .attr("class", "pie-slices")
+        svg_pie.append("g")
+            .attr("class", "pie-labels");
+        svg_pie.append("g")
+            .attr("class", "pie-lines");
+        svg_pie
+            .attr("transform", "translate(" + (pie_width / 2 + 15) + "," + (pie_height / 2 + 20) + ")");
 
-    //INITIATE BARS
-    //
-    var svg_hbar = d3.select("#map-bar").append("svg")
-        .attr("width", hbar_width + margin.left + margin.right)
-        .attr("height", hbar_height + margin.top + margin.bottom)
-        .append("g");
+        var curr_category;
 
-    var hbar_y = d3.scale.ordinal().rangeRoundBands([0, hbar_height], 0.9, 0.4);
-    var hlabel_y = d3.scale.ordinal().rangeRoundBands([0, hbar_height], 1, 0.5);
-    var himage_y = d3.scale.ordinal().rangeRoundBands([0, hbar_height], 0.25, 0.1);
-    var hbar_x = d3.scale.linear().domain([0, 100]).range([0, hbar_width * 0.9]);
-    //
+        //INITIATE BARS
+        //
+        var svg_hbar = d3.select("#map-bar").append("svg")
+            .attr("width", hbar_width + margin.left + margin.right)
+            .attr("height", hbar_height + margin.top + margin.bottom)
+            .append("g");
 
+        var hbar_y = d3.scale.ordinal().rangeRoundBands([0, hbar_height], 0.9, 0.4);
+        var hlabel_y = d3.scale.ordinal().rangeRoundBands([0, hbar_height], 1, 0.5);
+        var himage_y = d3.scale.ordinal().rangeRoundBands([0, hbar_height], 0.25, 0.1);
+        var hbar_x = d3.scale.linear().domain([0, 100]).range([0, hbar_width * 0.9]);
+        //
+    }
 
     // LOAD DATA and CALL createMap
     queue()
@@ -97,21 +101,23 @@ function createMapVisualization() {
         // PART I: World Map
 
         // SET UP LABEL
-        map_label.append("text")
-            .attr("class", "map-label cuisine")
-            .style("font-size", 20)
-            .attr("x", 0)
-            .attr("y", -145);
+        if(size=="big") {
+            map_label.append("text")
+                .attr("class", "map-label cuisine")
+                .style("font-size", 20)
+                .attr("x", 0)
+                .attr("y", -145);
 
-        map_label.append("text")
-            .attr("x", 0)
-            .attr("y", -145)
-            .attr("class", "detail");
-        map_label.select(".detail")
-            .append("tspan")
-            .attr("x", 0)
-            .attr("dy", 25)
-            .attr("class", "map-label detail country");
+            map_label.append("text")
+                .attr("x", 0)
+                .attr("y", -145)
+                .attr("class", "detail");
+            map_label.select(".detail")
+                .append("tspan")
+                .attr("x", 0)
+                .attr("dy", 25)
+                .attr("class", "map-label detail country");
+        }
 
         // DRAW MAP
         map_colorScale.domain(Object.keys(cuisine_ingredient));
@@ -137,6 +143,7 @@ function createMapVisualization() {
                     .style({"cursor": "pointer"});
                 var map_unavailable = (country_cuisine[d.id] == undefined || country_cuisine[d.id].cuisine == undefined)
                 if (map_unavailable==false) {
+                    console.log("aquii")
                     showCuisine(d, world_map, country_cuisine, cuisine_ingredient);
                 }
                 div.transition()
@@ -155,19 +162,21 @@ function createMapVisualization() {
                     .style("opacity", 0);
             })
             .on('click',function(d){
-                next_country=country_cuisine[d.id].name;
-                areachart.wrangleData(next_country);
+                next_country=country_cuisine[d.id].name
+                //console.log(next_country)
+                areachart.wrangleData(next_country)
+                areachart2.wrangleData(next_country)
+                barchart.wrangleData(country_cuisine[d.id].cuisine)
+                barchart2.wrangleData(country_cuisine[d.id].cuisine)
 
-                d3.select("#ranking-type")
-                    .property({value: country_cuisine[d.id].cuisine});
+                //console.log(country_cuisine[d.id].cuisine)
+                //d3.select("#ranking-type")
+                //    .property({value: country_cuisine[d.id].cuisine})
+                //update_imagechart(data_i, data_p, country_cuisine[d.id].cuisine)
+                //updateVisualization(data_i, data_p, country_cuisine[d.id].cuisine)
 
-                var filterobject={};
-                filterobject["Cuisine"]=country_cuisine[d.id].cuisine;
-                forceplot.wrangleData(filterobject);
 
-                update_imagechart(data_i, data_p, country_cuisine[d.id].cuisine);
-                updateVisualization(data_i, data_p, country_cuisine[d.id].cuisine);
-            });
+            })
             /*.on('click',function(d){
                 next_country=country_cuisine[d.id].name
                 console.log(next_country)

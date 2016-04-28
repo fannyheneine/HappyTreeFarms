@@ -4,12 +4,9 @@ var allData = [];
 var categories_ingredients={};
 
 
-
-
 // Variables for the visualization instances
-var forceplot;
-var forceplot_mini;
-
+var forceplot
+var forceplot2
 
 
 // Start application by loading the dataForceLayout
@@ -24,18 +21,24 @@ queue().defer(d3.csv,"data/recipes_sampled.csv")
     .defer(d3.json,"data/categories.json")
     .await(createVis);
 
-
-
-
 function createVis(error,data1,data2) {
     // Create an object instance
     allData=data1;
     categories_ingredients=data2;
     //console.log(data_ingredients)
-    forceplot = new ForceDiagram("force-layout", allData,categories_ingredients,1000,150);
-    forceplot_mini= new ForceDiagram("force-layout-mini", allData,categories_ingredients,300,50);
+    forceplot2 = new ForceDiagram("force-layout2", allData,categories_ingredients,200,"Force2");
+    forceplot = new ForceDiagram("force-layout", allData,categories_ingredients,500,"Force1");
 }
 
+
+
+//function createVis(error,data1,data2) {
+//    // Create an object instance
+//    allData=data1;
+//    categories_ingredients=data2;
+//    //console.log(data_ingredients)
+//    forceplot2 = new ForceDiagram("force-layout2", allData,categories_ingredients,300,"Force2");
+//}
 
 
 
@@ -51,4 +54,3 @@ function createVis(error,data1,data2) {
 //    areachart.wrangleData();
 //
 //}
-

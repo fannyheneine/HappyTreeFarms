@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>CS171 - Project</title>
+    <title>CS171 - Lab 7</title>
 
     <!-- Load Google Font -->
     <link href='https://fonts.googleapis.com/css?family=Roboto:100,400,300,400italic,700' rel='stylesheet' type='text/css'>
@@ -19,18 +19,215 @@
 </head>
 <body>
 
-<h1 align="center">A discovery of the Cuisines of the World</h1>
-<div class="container-fluid">
-   <a href="#"><div id="force-layout-mini" style="border:2px solid #000; width:300px; height:180px" onclick="forceplot_mini.wrangleData()"></div></a>
 
-    <form>
-    <input type="radio" name="graph-type" value="recipe" checked onchange="forceplot.updateVis()"> Recipes<br>
-    <input type="radio" name="graph-type" value="ingredient" onchange="forceplot.updateVis()"> Ingredients<br>
-</form>
-<div id="force-layout"></div>
+
+<div class="container-fluid" id="mini-container">
+    <!--<h1 align="center">Cuisine: World Map</h1>-->
+    <br>
+    <div class="row">
+
+        <!--<div id="stacked-area-chart" class="mini_svg" align="center"}></div>-->
+        <!--<button type="button" id="bar-chart" class="col-md-2" align="center" onclick="window.show=bar-chart"}></button>-->
+        <!--<button type="button" id="stacked-area-chart" class="col-md-2 " align="center"}></button>-->
+        <button id="bar-chart2" class="col-md-2 col-md-offset-1" align="center"></button>
+        <button id="force-layout2" class="col-md-2 col-md-offset-1"  align="center"></button>
+        <button id="stacked-area-chart2" class="col-md-2 col-md-offset-1" align="center"></button>
+        <!--<div class="col-md-2">-->
+        <!--<button class="col-md-2" type="button" id="force-layout"  align="center"></button>-->
+        <form style="visibility: hidden">
+
+            <input type="radio" name="graph-type" value="recipe" checked onchange="forceplot2.wrangleData()"> Recipes<br>
+            <input type="radio" name="graph-type" value="ingredient" onchange="forceplot2.wrangleData()"> Ingredients<br>
+        </form>
+
+
+    </div>
+</div>
+
+<br>
+<br>
+
+<div class="container-fluid" >
+    <div class="row">
+
+
+        <div id="barchart-title" style="display:none;">
+            <h2>Most popular ingredients in each cuisine</h2>
+        </div>
+
+            <div id="bar-chart" class="col-md-6" style="display:none;"></div>
+
+        <div id="stacked-titles" style="display:none;">
+        <h2>Food Supply Quantity as per UN data</h2>
+        <h3>Detailed annual statistics in grams per capita per day</h3>
+        </div>
+
+    <div id="stacked-area-chart" class="col-md-8" style="display:none;">
+    </div>
+        <!--<div id="timeline" style="display:none;"></div>-->
+
+        <!--<form style="visibility: hidden">-->
+
+            <!--<input type="radio" name="graph-type" value="recipe" checked onchange="forceplot.wrangleData()"> Recipes<br>-->
+            <!--<input type="radio" name="graph-type" value="ingredient" onchange="forceplot.wrangleData()"> Ingredients<br>-->
+        <!--</form>-->
+
+        <div id="force-layout" class="col-md-5" style="display:none;"></div>
+
+        <div id="map-titles">
+            <h2>A World Map of the Cuisines</h2>
+            <h3>Based on the recipes of the different countries</h3>
+
+        </div>
+
+<div class="row">
+        <div id="map-bar" class="col-md-5" align="center"></div>
+        <div id="map-map" class="col-md-3" align="center"></div>
+        <button type="button" id="map-map2" class="col-md-2" align="center" style="display:none;"></button>
+</div>
+
+
+        <!--<button id="btnClick">Click me!</button>-->
+    </div>
+</div>
+
 
 </div>
 
+<!--<div class="container-fluid" >-->
+
+    <!--&lt;!&ndash;<p id="demo"></p>&ndash;&gt;-->
+    <!--&lt;!&ndash;<div class="row">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div id="map-bar" class="col-md-4" align="center"}></div>&ndash;&gt;-->
+
+        <!--&lt;!&ndash;<div id="map-map" class=" col-md-8" align="center"></div>&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+    <!--<div id="map-map" class=" col-md-8 map" align="center"></div>-->
+
+    <!--&lt;!&ndash;<div id="2" style="display:none;">&ndash;&gt;-->
+        <!--&lt;!&ndash;My Dynamic Content&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+
+    <!--&lt;!&ndash;<div id="static" style="display:none;">&ndash;&gt;-->
+        <!--&lt;!&ndash;My Static Content&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+    <!--<div id="stacked-area-chart" class="col-md-6 stackedfanny" align="center" style="display:none;"></div>-->
+
+    <!--<button id="btnClick">Click me!</button>-->
+
+<!--</div>-->
+
+<!--<div class="container-fluid">-->
+
+<!--<h1 align="center">Cuisine: World Map</h1>-->
+
+<!--<br>-->
+<!--<br>-->
+
+<!--<div class="row">-->
+<!--<div id="map-bar" class="col-md-4" align="center"}></div>-->
+
+<!--<div id="map-map" class=" col-md-8" align="center"></div>-->
+<!--</div>-->
+
+<!--</div>-->
+
+<!--<div class="container-fluid">-->
+
+<!--<div class="row">-->
+<!--<div class="col-md-12">-->
+
+<!--<h1>Food Supply Quantity as per UN data</h1>-->
+<!--<h2>Detailed annual statistics in grams per capita per day</h2>-->
+
+<!--&lt;!&ndash; Visualization placeholders &ndash;&gt;-->
+<!--<div id="stacked-area-chart"></div>-->
+<!--<div id="timeline"></div>-->
+
+<!--</div>-->
+<!--</div>-->
+
+<!--</div>-->
+
+<!--<h1 align="left">Force Diagram</h1>-->
+
+<!--&lt;!&ndash;<a download="data.json" id="download">Download</a>&ndash;&gt;-->
+<!--&lt;!&ndash;DON'T DELETE THIS ^&ndash;&gt;-->
+<!--<form>-->
+<!--<input type="radio" name="graph-type" value="recipe" checked onchange="forceplot.wrangleData()"> Recipes<br>-->
+<!--<input type="radio" name="graph-type" value="ingredient" onchange="forceplot.wrangleData()"> Ingredients<br>-->
+<!--</form>-->
+<!--<div id="force-layout"></div>-->
+
+<!--</div>-->
+
+
+
+
+<!--<h1>Popular ingredients per cuisine</h1>-->
+<!--&lt;!&ndash; Select box to choose the selection criteria &ndash;&gt;-->
+<!--<form class="form-inline">-->
+<!--<div class="form-group">-->
+<!--<label for="rankingType">Cuisine</label>-->
+<!--<select class="form-control" id="ranking-type">-->
+<!--<option value="American">American</option>-->
+<!--<option value="British">British</option>-->
+<!--<option value="Canadian">Canadian</option>-->
+<!--<option value="Caribbeans">Caribbeans</option>-->
+<!--<option value="Chinese">Chinese</option>-->
+<!--<option value="East_African">East African</option>-->
+<!--<option value="East_European">East European</option>-->
+<!--<option value="French">French</option>-->
+<!--<option value="Indian">Indian</option>-->
+<!--<option value="Italian">Italian</option>-->
+<!--<option value="Japanese">Japanese</option>-->
+<!--<option value="Korean">Korean</option>-->
+<!--<option value="Mediterranean">Mediterranean</option>-->
+<!--<option value="Mexican">Mexican</option>-->
+<!--<option value="Middle_Eastern">Middle_Eastern</option>-->
+<!--<option value="North_African">North African</option>-->
+<!--<option value="Portuguese_Spanish">Portuguese_Spanish</option>-->
+<!--<option value="Scandinavian">Scandinavian</option>-->
+<!--<option value="South_African">South African</option>-->
+<!--<option value="South_American">South American</option>-->
+<!--<option value="South_Asian">South Asian</option>-->
+<!--<option value="Southeast_Asian">Southeast Asian</option>-->
+<!--<option value="West_African">West African</option>-->
+<!--<option value="West_European">West European</option>-->
+
+<!--</select>-->
+
+
+<!--&lt;!&ndash; Activity IV &ndash;&gt;-->
+<!--&lt;!&ndash;<button type="button" class="btn btn-link" id="change-sorting"><i class="glyphicon glyphicon-sort"></i> Sort</button>&ndash;&gt;-->
+<!--</div>-->
+<!--</form>-->
+
+
+
+<!--&lt;!&ndash;<h2><span id="show-ingredient" class="back"></span></h2>&ndash;&gt;-->
+<!--<row>-->
+<!--<div class="col-md-5">-->
+<!--<div id="bar-chart"></div>-->
+<!--</div>-->
+<!--<div class="col-md-1">-->
+<!--<img id="ingredient-image">-->
+<!--</div>-->
+<!--<div class="col-md-5">-->
+
+<!--<div id="bar-chart2"></div>-->
+<!--</div>-->
+
+<!--</row>-->
+
+
+<!--<row>-->
+<!--<div class="col-md-8">-->
+<!--<div id="image-chart"></div>-->
+<!--</div>-->
+<!--</row>-->
 
 <!-- Load JS libraries -->
 <script src="js/jquery.min.js"></script>
@@ -42,12 +239,31 @@
 <script src="js/colorbrewer.js"></script>
 <script src="js/queue.v1.min.js"></script>
 <script src="js/topojson.v1.min.js"></script>
+<script src="js/layout.js"></script>
+
 
 
 <!-- Visualization objects -->
+<script src="js/map.js"></script>
+<script src="js/main_map.js"></script>
 
+<!--<script src="js/main-force.js"></script>-->
 <script src="js/main-force2.js"></script>
 <script src="js/forceDiagram.js"></script>
+<!--<script src="js/main-barchart.js"></script>-->
+<script src="js/main-barchart2.js"></script>
+
+<script src="js/main_barchart_oo.js"></script>
+
+
+<!-- Load dataForceLayout, create visualizations -->
+<!-- Visualization objects -->
+<script src="js/stackedAreaChart.js"></script>
+<!--<script src="js/timeline.js"></script>-->
+
+<!-- Load data, create visualizations -->
+<script src="js/main_stacked2.js"></script>
+<!--<script src="js/main_stacked.js"></script>-->
 
 
 

@@ -1,15 +1,51 @@
 // SVG drawing area
 
-var margin = {top: 60, right: 20, bottom: 100, left: 30};
+var margin = {top: 40, right: 0, bottom: 60, left: 30};
 
-var width = 500 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+//var margin = {
+//    top: 40,
+//    right: 0,
+//    bottom: 60,
+//    left: 60
+//};
 
-var svg = d3.select("#bar-chart").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom )
+var width = 400  - margin.left - margin.right;
+var height = 400 - margin.top - margin.bottom;
+
+
+var svg = d3.selectAll('.bar-chart2')
+    .append("div")
+    .classed("svg-container", true)
+    .append("svg")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+    .attr("viewbox", "0 0 100 100")
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    .classed("svg-content-responsive", true)
     .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+//var width = svg[0][0].parentElement.parentElement.clientWidth - margin.left - margin.right;
+//var  height = svg[0][0].parentElement.parentElement.clientHeight - margin.top - margin.bottom;
+
+    //.attr("viewBox", "0 0 1000 500")
+
+//var width = svg[0][0].parentElement.clientWidth - margin.left - margin.right;
+//var height = svg[0][0].parentElement.clientHeight - margin.top - margin.bottom;
+
+//
+//console.log(svg[0][0])
+//console.log(svg[0][0].parentElement.clientWidth)
+//
+
+    //svg
+    ////.attr("width", width + margin.left + margin.right)
+    ////.attr("height", height + margin.top + margin.bottom )
+    //.append("g")
+    //.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+    //.attr("viewbox", "0 0 800 500")
+    //.attr("preserveAspectRatio", "xMinYMin meet")
+    ////.attr("transform", "scale(0.5)");
+
 
 var svg2;
 var svg3;
