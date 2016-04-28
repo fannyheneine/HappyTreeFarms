@@ -444,7 +444,6 @@ ForceDiagram.prototype.updateVis = function() {
 //        .attr("class", "ingredients-label");
 //}
 
-    vis.rect=vis.svg.append("g");
 
     vis.toggleNode=0;
     vis.selectedNode;
@@ -512,8 +511,8 @@ ForceDiagram.prototype.updateVis = function() {
 
 
     function mouseOutFunction(d,thisvar) {
-        vis.rect.selectAll("text").remove();
-        vis.rect.selectAll("rect").remove();
+        vis.rect.remove();
+
         if (!vis.toggleNode) {
             clearAllFunction();
             vis.tip.hide(d);
@@ -550,6 +549,8 @@ ForceDiagram.prototype.updateVis = function() {
     }
 
     function mouseOverFunction(d,thisvar) {
+        vis.rect=vis.svg.append("g");
+
         if (!vis.toggleNode){
             vis.tip.show(d);
             setIfDifferent_att(thisvar, d, 'r', vis.nodeRadius_highlight);
@@ -594,6 +595,7 @@ ForceDiagram.prototype.updateVis = function() {
 
 
             });
+
 
             if (vis.selectedVal == "recipe"){
                 printIngredients(d);}
