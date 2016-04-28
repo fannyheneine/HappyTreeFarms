@@ -309,7 +309,7 @@ ForceDiagram.prototype.updateVis = function() {
     if (vis.selectedVal == "recipe") {
         vis.displayData = vis.linksNodesData_Recipes;
         vis.categoryKeys = _.uniq(vis.displayData.Nodes.map(function (recipe) {
-            return recipe.Cuisine;
+            return recipe.Cuisine.replace(/_/g, ' ');
         }));
     } else if (vis.selectedVal == "ingredient") {
         vis.displayData = vis.linksNodesData_Ingredients;
@@ -360,10 +360,10 @@ ForceDiagram.prototype.updateVis = function() {
 
     vis.tip.html(function (d) {
         if (vis.selectedVal == "recipe") {
-            return d.Cuisine;
+            return d.Cuisine.replace(/_/g, ' ');
         }
         else if (vis.selectedVal == "ingredient") {
-            return d.id;
+            return d.id.replace(/_/g, ' ');
         }
     });
     vis.svg.call(vis.tip);
@@ -465,7 +465,7 @@ ForceDiagram.prototype.updateVis = function() {
             })
             .attr("fill", function (d, i) {
                 if (vis.selectedVal == "recipe") {
-                    return vis.colorScale(d.Cuisine)
+                    return vis.colorScale(d.Cuisine.replace(/_/g, ' '))
                 }
                 else if (vis.selectedVal == "ingredient") {
                     return vis.colorScale(d.category)
@@ -492,10 +492,10 @@ ForceDiagram.prototype.updateVis = function() {
                         .attr("y", d.y-8)
                         .attr("font-size",18);
                     if (vis.selectedVal == "recipe") {
-                        vis.textToolTipFreeze.text(d.Cuisine);
+                        vis.textToolTipFreeze.text(d.Cuisine.replace(/_/g, ' '));
                     }
                     else if (vis.selectedVal == "ingredient") {
-                        vis.textToolTipFreeze.text(d.id);
+                        vis.textToolTipFreeze.text(d.id.replace(/_/g, ' '));
                     }
                     vis.toggleNode = 1;
                     vis.selectedNode = d;
@@ -638,7 +638,10 @@ ForceDiagram.prototype.updateVis = function() {
                 vis.link.each(function(l)
                 {var el = d3.select(this);
                     if (((d === l.source && vis.selectedNode=== l.target) || (d === l.target && vis.selectedNode=== l.source)) && (l.strength > vis.threshold)){
-                        l.intersection.forEach(function (text1, i) {
+                        var uniqueIntersection= l.intersection.filter(function(item, pos) {
+                            return l.intersection.indexOf(item) == pos;
+                        });
+                        uniqueIntersection.forEach(function (text1, i) {
                             vis.rect.append("rect")
                                 .attr("class","force-hover-label-rectangle")
                                 .attr("x",150)
@@ -648,7 +651,7 @@ ForceDiagram.prototype.updateVis = function() {
                                 .attr("width",140)
                                 .attr("height",20);
                             vis.rect.append("text")
-                                .text(text1)
+                                .text(text1.replace(/_/g, ' '))
                                 .attr("x",155)
                                 .attr("y", i* 25)
                                 .style("fill", "#000")
@@ -665,7 +668,7 @@ ForceDiagram.prototype.updateVis = function() {
 
     function printIngredients(d){
         var trans_x= d.x+70;
-        if (trans_x > vis.width*.9){
+        if (trans_x > vis.width*.85){
             trans_x= d.x-200;
         }
 
@@ -695,7 +698,7 @@ ForceDiagram.prototype.updateVis = function() {
                 .attr("width",140)
                 .attr("height",20);
             vis.rectmoved.append("text")
-                .text(text1)
+                .text(text1.replace(/_/g, ' '))
                 .attr("y", i* 25)
                 .style("fill", "#000")
                 .attr("class", "force-hover-label");
@@ -705,7 +708,7 @@ ForceDiagram.prototype.updateVis = function() {
 
     function printRecipes(d){
         var trans_x= d.x+70;
-        if (trans_x > vis.width*.9){
+        if (trans_x > vis.width*.85){
             trans_x= d.x-200;
         }
 //avoid top and bottom
@@ -713,8 +716,8 @@ ForceDiagram.prototype.updateVis = function() {
         if (trans_y <50) {
             trans_y=50;
         }
-        if (trans_y > vis.height*.85){
-            trans_y=vis.height*.85;
+        if (trans_y > vis.height*.8){
+            trans_y=vis.height*.8;
         }
         vis.rectmoved=vis.rect.attr("transform", "translate("+ trans_x +","+trans_y+")");
         vis.rectmoved.append("text")
@@ -742,7 +745,7 @@ ForceDiagram.prototype.updateVis = function() {
                 .attr("width",140)
                 .attr("height",20);
             vis.rectmoved.append("text")
-                .text(text1)
+                .text(text1.replace(/_/g, ' '))
                 .attr("y", i* 25)
                 .style("fill", "#000")
                 .attr("class", "force-hover-label");
