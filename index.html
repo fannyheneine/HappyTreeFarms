@@ -46,7 +46,8 @@
 			<h1 align="center">A discovery of the Cuisines of the World</h1>
 		</div>
 		<p>We scraped three recipes website to discover more about the cuisines of each country.
-			Play with the interactive visualizations below to explore the different cuisines and their particularities.</p>
+			Play with the interactive visualizations below to explore the different cuisines and their particularities.
+        By choosing a country on the map, all the visualizations will update.</p>
         <a id="explore" class="button button-primary" href="#Map" onClick="$('#Map')">EXPLORE</a>
 
 	</div>'
@@ -103,17 +104,20 @@
     </div>
     </div>
 
-		<h2 align="left">Force Diagram</h2>
+<h2 align="left">Self-Organized Data</h2>
 
-	<!--<a download="data.json" id="download">Download</a>-->
-	<!--DON'T DELETE THIS ^-->
-        <form>
-            <input type="radio" name="graph-type" value="recipe" checked onchange="forceplot.updateVis()"> Recipes<br>
-            <input type="radio" name="graph-type" value="ingredient" onchange="forceplot.updateVis()"> Ingredients<br>
-        </form>
-        <div id="force-layout"></div>
+<div class="btn-group" data-toggle="buttons">
+    <label class="btn active">
+        <input type="radio" name="graph-type" value="recipe" checked onchange="forceplot.updateVis()"><i class="fa fa-circle-o fa-2x"></i><i class="fa fa-check-circle-o fa-2x"></i><span> Recipes</span>
+    </label>
+    <label class="btn">
+        <input type="radio" name="graph-type" value="ingredient" onchange="forceplot.updateVis()"><i class="fa fa-circle-o fa-2x"></i><i class="fa fa-check-circle-o fa-2x"></i><span> Ingredients</span>
+    </label>
+</div>
 
-	</div>
+<div id="force-layout"></div>
+
+</div>
 
 
 
@@ -221,3 +225,7 @@
 
 </body>
 </html>
+
+<!--
+Notes: We need to put something so the user knows what country he clicked (when he clicks, the color changes and stays this way.
+When you click a country appears.-->

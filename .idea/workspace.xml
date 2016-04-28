@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="217e5e64-48fe-4fff-bc02-5126296ac389" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/testFan.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/style.css" afterPath="$PROJECT_DIR$/css/style.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/main_stacked.js" afterPath="$PROJECT_DIR$/js/main_stacked.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/forceDiagram.js" afterPath="$PROJECT_DIR$/js/forceDiagram.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/main-force.js" afterPath="$PROJECT_DIR$/js/main-force.js" />
     </list>
     <ignored path="HappyTreeFarms.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -27,11 +25,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3225">
-              <caret line="215" column="13" selection-start-line="215" selection-start-column="13" selection-end-line="215" selection-end-column="13" />
+            <state relative-caret-position="393">
+              <caret line="119" column="6" selection-start-line="119" selection-start-column="6" selection-end-line="119" selection-end-column="6" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
@@ -49,10 +47,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="testFan.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="testFan.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/testFan.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6189">
+            <state relative-caret-position="2595">
               <caret line="418" column="12" selection-start-line="418" selection-start-column="12" selection-end-line="418" selection-end-column="12" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
@@ -153,7 +151,7 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="53" />
+    <option name="x" value="229" />
     <option name="y" value="23" />
     <option name="width" value="1250" />
     <option name="height" value="736" />
@@ -393,15 +391,15 @@
       <workItem from="1461622813606" duration="440000" />
       <workItem from="1461623796449" duration="1040000" />
       <workItem from="1461624976345" duration="134000" />
-      <workItem from="1461625552794" duration="25443000" />
+      <workItem from="1461625552794" duration="26001000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27964000" />
+    <option name="totallyTimeSpent" value="28522000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="53" y="23" width="1250" height="736" extended-state="0" />
+    <frame x="229" y="23" width="1250" height="736" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1408" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -826,16 +824,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3225">
-          <caret line="215" column="13" selection-start-line="215" selection-start-column="13" selection-end-line="215" selection-end-column="13" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/stackedAreaChart.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1602">
@@ -846,10 +834,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/testFan.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6189">
+        <state relative-caret-position="2595">
           <caret line="418" column="12" selection-start-line="418" selection-start-column="12" selection-end-line="418" selection-end-column="12" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="393">
+          <caret line="119" column="6" selection-start-line="119" selection-start-column="6" selection-end-line="119" selection-end-column="6" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
