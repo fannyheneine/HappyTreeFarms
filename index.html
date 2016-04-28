@@ -6,34 +6,71 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>CS171 - Project</title>
 
-	<!-- Load Google Font -->
-	<link href='https://fonts.googleapis.com/css?family=Roboto:100,400,300,400italic,700' rel='stylesheet' type='text/css'>
+    <!-- FONT
+ –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,300,400italic,700' rel='stylesheet' type='text/css'>
 
 	<!-- CSS libraries -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/colorbrewer.css">
+    <link rel="stylesheet" href="css/nv.d3.css">
 
 	<!-- Custom CSS code -->
 	<link rel="stylesheet" href="css/style.css">
+
 </head>
 <body>
 
-<h1 align="center">A discovery of the Cuisines of the World</h1>
-	<div class="container-fluid">
+<!-- navigation circles persisting in a fixed position, losers -->
+<div id="navi-container" class="vert-buttons">
+	<div id="slide-one" class="slide selected"><div class="circle"></div></div>
+	<div id="slide-two" class="slide"><div class="circle"></div></div>
+	<div id="slide-three" class="slide"><div class="circle"></div></div>
+	<div id="slide-four" class="slide"><div class="circle"></div></div>
+</div>
 
-		<h2 align="center">A World Map of the Cuisines</h2>
+<div id="main-container">
+<!-- the first slide -->
+
+	<div style="background-image: url('images/Background.jpg')" >
+<center id="title-container" class="slide">
+	<div class="title-contents">
+		<div class="title-logo">
+			<div id="logo-icon" aria-hidden="true">
+			<a href="#body">
+				<img src="images/Logo.jpg" width="60" height="60" alt="Logo">
+			</a>
+			</div>
+			<h1 align="center">A discovery of the Cuisines of the World</h1>
+		</div>
+		<p>We scraped three recipes website to discover more about the cuisines of each country.
+			Play with the interactive visualizations below to explore the different cuisines and their particularities.</p>
+        <a id="explore" class="button button-primary" href="#Map" onClick="$('#Map')">EXPLORE</a>
+
+	</div>'
+
+
+</center>"
+		</div>
+
+	</div>
+
+<div class="container2">
+	<section id="Map" class="slide">
+<h2 align="center">A World Map of the Cuisines</h2>
 		<h3>Based on the recipes of the different countries</h3>
         <br>
         <br>
 
 		<div class="row">
-			<div id="map-bar" class="col-md-4" align="center"}></div>
+			<div id="map-bar" class="col-md-4" align="center"></div>
 
 			<div id="map-map" class=" col-md-8" align="center"></div>
         </div>
 
-	</div>
+</div>
 
 	<div class="container-fluid">
 
@@ -51,6 +88,20 @@
 		</div>
 
 	</div>
+
+<div class="container-fluid">
+
+<div class="row">
+    <div class="col-md-12">
+
+        <h2>Last Visualization</h2>
+
+<div class="vis-extra">
+    <svg id="stacked_trial"></svg>
+    </div>
+        </div>
+    </div>
+    </div>
 
 		<h2 align="left">Force Diagram</h2>
 
@@ -136,13 +187,23 @@
 	<script src="js/d3.min.js"></script>
 	<script src="js/d3.tip.js"></script>
 	<script src="js/underscore-min.js"></script>
+    <script src="js/nv.d3.js"></script>
     <script src="js/d3-legend.min.js"></script>
 	<script src="js/colorbrewer.js"></script>
     <script src="js/queue.v1.min.js"></script>
 	<script src="js/topojson.v1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-smooth-scroll/1.5.5/jquery.smooth-scroll.min.js" charset="utf-8"></script>
 
 
-	<!-- Visualization objects -->
+
+
+<script type="text/javascript">
+    $('a').smoothScroll();
+</script>
+
+
+
+<!-- Visualization objects -->
 	<script src="js/map.js"></script>
 	<script src="js/main-force.js"></script>
     <script src="js/forceDiagram.js"></script>
@@ -152,6 +213,7 @@
 	<!-- Visualization objects -->
 	<script src="js/stackedAreaChart.js"></script>
 	<script src="js/timeline.js"></script>
+<script src="testFan.js"></script>-->
 
 	<!-- Load data, create visualizations -->
 	<script src="js/main_stacked.js"></script>

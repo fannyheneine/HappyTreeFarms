@@ -9,7 +9,7 @@ var parseDate = d3.time.format("%Y").parse;
 // Variables for the visualization instances
 var areachart, timeline;
 var filtered = false;
-var country_chosen_st="Canada";
+var country_chosen_st="United States";
 
 // Start application by loading the data
 loadData_stacked();
