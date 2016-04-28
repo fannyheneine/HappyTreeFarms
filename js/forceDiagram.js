@@ -29,9 +29,9 @@ ForceDiagram.prototype.initVis = function(){
     vis.width = vis.svgWidth - vis.margin.left - vis.margin.right;
     vis.height = vis.svgHeight - vis.margin.top - vis.margin.bottom;
 
-    vis.nodeRadius_normal=vis.width/230;
-    vis.nodeRadius_highlight=vis.width/180;
-    vis.nodeRadius_selected=vis.width/130;
+    vis.nodeRadius_normal=vis.width/280;
+    vis.nodeRadius_highlight=vis.width/230;
+    vis.nodeRadius_selected=vis.width/180;
 
     vis.nodeStrokeWidth=1;
     vis.nodeStrokeWidthActive=2;
@@ -665,7 +665,19 @@ ForceDiagram.prototype.updateVis = function() {
 
     function printIngredients(d){
         var trans_x= d.x+70;
+        if (trans_x > vis.width*.9){
+            trans_x= d.x-200;
+        }
+
+        //avoid top and bottom
         var trans_y= d.y-40;
+        if (trans_y <50) {
+            trans_y=50;
+        }
+        if (trans_y > vis.height*.7){
+            trans_y=vis.height*.7;
+        }
+
         vis.rectmoved=vis.rect.attr("transform", "translate("+ trans_x +","+trans_y+")");
         vis.rectmoved.append("text")
             .attr("class","force-hover-label-title")
@@ -693,7 +705,17 @@ ForceDiagram.prototype.updateVis = function() {
 
     function printRecipes(d){
         var trans_x= d.x+70;
+        if (trans_x > vis.width*.9){
+            trans_x= d.x-200;
+        }
+//avoid top and bottom
         var trans_y= d.y-40;
+        if (trans_y <50) {
+            trans_y=50;
+        }
+        if (trans_y > vis.height*.85){
+            trans_y=vis.height*.85;
+        }
         vis.rectmoved=vis.rect.attr("transform", "translate("+ trans_x +","+trans_y+")");
         vis.rectmoved.append("text")
             .attr("class","force-hover-label-title")
