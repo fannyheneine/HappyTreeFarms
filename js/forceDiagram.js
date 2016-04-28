@@ -62,8 +62,7 @@ ForceDiagram.prototype.initVis = function(){
         .attr("class", "legend")
         .attr("transform", "translate("+vis.width*.05+","+vis.height *.3+")");
 
-    vis.rect=vis.svg.append("g")
-        .attr("transform", "translate("+vis.width*.65+","+vis.height *.2+")");
+    vis.rect=vis.svg.append("g");
 
     vis.rect.append("rect")
         .attr("width",vis.width *.15)
@@ -621,6 +620,7 @@ ForceDiagram.prototype.updateVis = function() {
                     printRecipes(d)
                 }
 
+
                 vis.rect.append("text")
                     .attr("class","force-hover-label-title")
                     .attr("y",-30)
@@ -656,14 +656,23 @@ ForceDiagram.prototype.updateVis = function() {
     }
 
     function printIngredients(d){
-        vis.rect.append("text")
+        var trans_x= d.x+70;
+        var trans_y= d.y-40;
+        vis.rectmoved=vis.rect.attr("transform", "translate("+ trans_x +","+trans_y+")");
+        vis.rectmoved.append("line")
+            .attr("x1", 0)
+            .attr("y1", 0)
+            .attr("x2",-d.x)
+            .attr("y2",-d.y)
+            .attr("stroke","#ccc");
+        vis.rectmoved.append("text")
             .attr("class","force-hover-label-title")
             .attr("y",-30)
             .attr("x",-10)
             .text("Ingredients:")
             .attr("fill","#777");
         d.Ingredients.forEach(function (text1, i) {
-            vis.rect.append("rect")
+            vis.rectmoved.append("rect")
                 .attr("class","force-hover-label-rectangle")
                 .attr("x",-5)
                 .attr("y",i*25-15)
@@ -671,7 +680,7 @@ ForceDiagram.prototype.updateVis = function() {
                 .attr("ry",7)
                 .attr("width",140)
                 .attr("height",20);
-            vis.rect.append("text")
+            vis.rectmoved.append("text")
                 .text(text1)
                 .attr("y", i* 25)
                 .style("fill", "#000")
@@ -681,7 +690,10 @@ ForceDiagram.prototype.updateVis = function() {
     }
 
     function printRecipes(d){
-        vis.rect.append("text")
+        var trans_x= d.x+70;
+        var trans_y= d.y-40;
+        vis.rectmoved=vis.rect.attr("transform", "translate("+ trans_x +","+trans_y+")");
+        vis.rectmoved.append("text")
             .attr("class","force-hover-label-title")
             .attr("y",-30)
             .attr("x",-10)
@@ -697,7 +709,7 @@ ForceDiagram.prototype.updateVis = function() {
         });
 
         uniqueCuisines.forEach(function (text1, i) {
-            vis.rect.append("rect")
+            vis.rectmoved.append("rect")
                 .attr("class","force-hover-label-rectangle")
                 .attr("x",-5)
                 .attr("y",i*25-15)
@@ -705,7 +717,7 @@ ForceDiagram.prototype.updateVis = function() {
                 .attr("ry",7)
                 .attr("width",140)
                 .attr("height",20);
-            vis.rect.append("text")
+            vis.rectmoved.append("text")
                 .text(text1)
                 .attr("y", i* 25)
                 .style("fill", "#000")
