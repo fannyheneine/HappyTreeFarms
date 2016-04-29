@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="217e5e64-48fe-4fff-bc02-5126296ac389" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/style.css" afterPath="$PROJECT_DIR$/css/style.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/forceDiagram.js" afterPath="$PROJECT_DIR$/js/forceDiagram.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/main-force.js" afterPath="$PROJECT_DIR$/js/main-force.js" />
     </list>
@@ -25,10 +25,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="393">
+            <state relative-caret-position="423">
               <caret line="119" column="6" selection-start-line="119" selection-start-column="6" selection-end-line="119" selection-end-column="6" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -37,11 +37,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
+      <file leaf-file-name="style.css" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/css/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="371" column="13" selection-start-line="371" selection-start-column="13" selection-end-line="371" selection-end-column="13" />
+            <state relative-caret-position="390">
+              <caret line="44" column="0" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="main-force.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/main-force.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="780">
+              <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -64,6 +74,16 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="570">
               <caret line="143" column="42" selection-start-line="143" selection-start-column="42" selection-end-line="143" selection-end-column="42" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="forceDiagram.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/forceDiagram.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1110">
+              <caret line="83" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -130,8 +150,6 @@
         <option value="$PROJECT_DIR$/data/cuisine_ingredient.json" />
         <option value="$PROJECT_DIR$/js/cuisine_map.js" />
         <option value="$PROJECT_DIR$/data/country_cuisine_map.json" />
-        <option value="$PROJECT_DIR$/js/main-force.js" />
-        <option value="$PROJECT_DIR$/js/forceDiagram.js" />
         <option value="$PROJECT_DIR$/js/timeline.js" />
         <option value="$PROJECT_DIR$/js/stackedAreaChart.js" />
         <option value="$PROJECT_DIR$/js/map.js" />
@@ -139,9 +157,11 @@
         <option value="$PROJECT_DIR$/css/nv.d3.min.css" />
         <option value="$PROJECT_DIR$/js/nv.d3.min.js" />
         <option value="$PROJECT_DIR$/data/Canada.json" />
-        <option value="$PROJECT_DIR$/css/style.css" />
         <option value="$PROJECT_DIR$/testFan.js" />
         <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/js/forceDiagram.js" />
+        <option value="$PROJECT_DIR$/js/main-force.js" />
+        <option value="$PROJECT_DIR$/css/style.css" />
       </list>
     </option>
   </component>
@@ -151,7 +171,7 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="229" />
+    <option name="x" value="50" />
     <option name="y" value="23" />
     <option name="width" value="1250" />
     <option name="height" value="736" />
@@ -391,15 +411,15 @@
       <workItem from="1461622813606" duration="440000" />
       <workItem from="1461623796449" duration="1040000" />
       <workItem from="1461624976345" duration="134000" />
-      <workItem from="1461625552794" duration="26001000" />
+      <workItem from="1461625552794" duration="26791000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="28522000" />
+    <option name="totallyTimeSpent" value="29312000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="229" y="23" width="1250" height="736" extended-state="0" />
+    <frame x="50" y="23" width="1250" height="736" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1408" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -718,26 +738,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/main-force.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1020">
-          <caret line="110" column="25" selection-start-line="110" selection-start-column="25" selection-end-line="110" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/data/All_countries.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/forceDiagram.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1230">
-          <caret line="99" column="23" selection-start-line="99" selection-start-column="23" selection-end-line="99" selection-end-column="23" />
           <folding />
         </state>
       </provider>
@@ -800,14 +804,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="371" column="13" selection-start-line="371" selection-start-column="13" selection-end-line="371" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/main-barchart.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -842,13 +838,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/js/forceDiagram.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1110">
+          <caret line="83" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="393">
+        <state relative-caret-position="423">
           <caret line="119" column="6" selection-start-line="119" selection-start-column="6" selection-end-line="119" selection-end-column="6" />
           <folding>
             <element signature="n#style#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/main-force.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="780">
+          <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="44" column="0" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
